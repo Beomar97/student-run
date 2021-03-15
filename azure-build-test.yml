@@ -1,0 +1,29 @@
+trigger:
+    - master
+
+pool: Default
+
+steps:
+    - task: NodeTool@0
+      inputs:
+          versionSpec: "15.x"
+      displayName: "Install Node.js"
+
+    - task: Npm@1
+      inputs:
+          command: "install"
+          workingDir: "app"
+      displayName: "Install app dependencies"
+
+    - task: Npm@1
+      inputs:
+          command: "custom"
+          workingDir: "app"
+          customCommand: "test"
+      displayName: "Test app"
+
+    - task: Bash@3
+      displayName: "Publish app test result"
+      inputs:
+          targetType: "inline"
+          script: 'gh pr comment $(System.PullRequest.PullRequestNumber) --body "$(cd app; node_modules/jest/bin/jest.js --silent | head -n -1 | tail -n+2)" --repo https://github.zhaw.ch/PathFinder/StudentRun/'

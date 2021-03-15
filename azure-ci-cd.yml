@@ -1,0 +1,72 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+    - master
+
+pr: none
+
+pool: Default
+
+jobs:
+    - job: CICD
+      steps:
+          - task: NodeTool@0
+            inputs:
+                versionSpec: "14.x"
+            displayName: "Install Node.js"
+
+          - task: Npm@1
+            displayName: Installing app dependencies
+            inputs:
+                command: "install"
+                workingDir: "app"
+
+          - task: Npm@1
+            displayName: Testing app
+            inputs:
+                command: "custom"
+                workingDir: "app"
+                customCommand: "test"
+
+          - task: CmdLine@2
+            displayName: Sonar scanner on app
+            inputs:
+                script: |
+                    export SONAR_SCANNER_VERSION=4.4.0.2170
+                    export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+                    curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+                    unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+                    export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+                    export SONAR_SCANNER_OPTS="-server"
+
+                    cd app/
+
+                    sonar-scanner \
+                      -Dsonar.organization=pathfinder \
+                      -Dsonar.projectKey=StudentRun \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=https://sonarcloud.io \
+                      -Dsonar.login=$(SONARLOGIN) \
+                      -Dsonar.testExecutionReportPaths=test-report.xml \
+                      -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
+                      -Dsonar.coverage.exclusions=\*\*/__tests__/\*\*,\*\*/config/\*\*,jest.config.js
+
+          - task: CopyFilesOverSSH@0
+            displayName: Copy app to server
+            inputs:
+                sshEndpoint: "PSIT Server"
+                contents: "**"
+                targetFolder: "/opt/studentRun/"
+                readyTimeout: "20000"
+
+          - task: SSH@0
+            displayName: Restart service on server
+            inputs:
+                sshEndpoint: "PSIT Server"
+                runOptions: "commands"
+                commands: "sudo systemctl restart studentrun.service"
+                readyTimeout: "20000"
+                interactiveSession: true
