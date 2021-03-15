@@ -88,6 +88,10 @@ Wir haben folgende Entscheidungen getroffen:
 -   Phaser: Phaser ist ein Frontend Gaming Framework, dass sehr verbreitet ist und eine grosse Community hat.
 -   matter.js: Die Physics-Engine bietet grosse Funktionalität und wird oft genutzt. Ausserdem lässt sie sich in Phaser integrieren.
 
+#### 15.03.2021
+
+-   NodeJS Version 15.x: Wir haben für die aktuellste NodeJS-Version 15.x entschieden.
+
 ## Technologien
 
 Technologiestack:
