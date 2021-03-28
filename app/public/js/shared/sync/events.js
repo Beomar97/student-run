@@ -1,6 +1,7 @@
 var events = {
 	CONNECTION: "connection",
-	MESSAGE: "message",
+	GAME_STATE_UPDATE: "gameStateUpdate",
+	START_MOVING: "startMoving",
 };
 
 module.exports = events;
