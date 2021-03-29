@@ -18,11 +18,28 @@ const server = http.Server(app);
 const syncController = new SyncController(socketIo(server));
 const physics = new Physics(Matter);
 
-const wall = physics
+const floor = physics
 	.getMatter()
-	.Bodies.rectangle(0, 580, 800, 20, { isStatic: true });
-const player = physics.getMatter().Bodies.rectangle(50, 0, 30, 30);
-physics.getMatter().World.addBody(physics.getEngine().world, wall);
+	.Bodies.rectangle(0, 580, 1600, 20, { isStatic: true });
+
+const ledgeOne = physics
+	.getMatter()
+	.Bodies.rectangle(400, 450, 400, 20, { isStatic: true });
+
+const ledgeTwo = physics
+	.getMatter()
+	.Bodies.rectangle(0, 300, 600, 20, { isStatic: true });
+
+const ledgeThree = physics
+	.getMatter()
+	.Bodies.rectangle(700, 200, 800, 20, { isStatic: true });
+
+const player = physics.getMatter().Bodies.circle(250, 250, 20);
+
+physics.getMatter().World.addBody(physics.getEngine().world, floor);
+physics.getMatter().World.addBody(physics.getEngine().world, ledgeOne);
+physics.getMatter().World.addBody(physics.getEngine().world, ledgeTwo);
+physics.getMatter().World.addBody(physics.getEngine().world, ledgeThree);
 physics.getMatter().World.addBody(physics.getEngine().world, player);
 
 const game = new GameFactory()
@@ -31,7 +48,22 @@ const game = new GameFactory()
 	.withPhysics(physics)
 	.withGameObjects([
 		new GameObject(0 /*id.next()*/, gameObjectTypes.PLAYER, player),
-		new GameObject(1 /*id.next()*/, gameObjectTypes.STATIC_OBSTICAL, wall),
+		new GameObject(1 /*id.next()*/, gameObjectTypes.STATIC_OBSTACLE, floor),
+		new GameObject(
+			2 /*id.next()*/,
+			gameObjectTypes.STATIC_OBSTICAL,
+			ledgeOne
+		),
+		new GameObject(
+			3 /*id.next()*/,
+			gameObjectTypes.STATIC_OBSTICAL,
+			ledgeTwo
+		),
+		new GameObject(
+			4 /*id.next()*/,
+			gameObjectTypes.STATIC_OBSTICAL,
+			ledgeThree
+		),
 	])
 	.create();
 

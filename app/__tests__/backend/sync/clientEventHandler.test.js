@@ -22,19 +22,21 @@ describe("Test the ClientEventHandler class", () => {
 		expect(syncController.control).toHaveBeenCalled();
 	});
 
-	test("if _startMoving method calls physics correctly.", () => {
+	test("if _startMovingLeft method calls physics correctly.", () => {
 		let gameState = new GameState();
 		let physics = new Physics();
 		let testee = new ClientEventHandler({}, gameState, physics);
-		let gameObject = new GameObject(1, "", {});
 		let position = { x: 1, y: 1 };
+		let gameObject = new GameObject(1, "", {position: position});
+		let force = { x: -0.001, y: 0 };
 		gameState.addAll([gameObject]);
 
-		testee._startMoving(testee, gameObject.id, position);
+		testee._startMovingLeft(testee, gameObject.id, position);
 
-		expect(physics.setPosition).lastCalledWith(
+		expect(physics.applyForce).lastCalledWith(
 			gameObject.innerObject,
-			position
+			position,
+			force
 		);
 	});
 });

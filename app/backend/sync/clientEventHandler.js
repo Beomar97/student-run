@@ -11,26 +11,72 @@ class ClientEventHandler {
 		let self = this;
 		this.syncController.control((serverSync) => {
 			console.log("Connection " + serverSync.getId());
-			serverSync.on(events.START_MOVING, (positionUpdate) =>
-				this._startMoving(
+			serverSync.on(events.START_MOVING_LEFT, (positionUpdate) =>
+				this._startMovingLeft(
 					self,
 					positionUpdate.id,
-					positionUpdate.position
+				)
+			);
+			serverSync.on(events.START_MOVING_RIGHT, (positionUpdate) =>
+				this._startMovingRight(
+					self,
+					positionUpdate.id,
+				)
+			);
+			serverSync.on(events.START_MOVING_UP, (positionUpdate) =>
+				this._startMovingUp(
+					self,
+					positionUpdate.id,
 				)
 			);
 		});
 	}
 
-	_startMoving(self, id, position) {
+	_startMovingLeft(self, id) {
+		let player = self.gameState.getGameObject(id).innerObject;
 		console.log(
-			"start moving. id: " +
+			"start moving left. id: " +
 				id +
 				". position: " +
-				JSON.stringify(position)
+				JSON.stringify(player.position)
 		);
-		this.physics.setPosition(
+		
+		this.physics.applyForce(
 			self.gameState.getGameObject(id).innerObject,
-			position
+			player.position,
+			{ x: -0.001, y: 0 }
+		);
+	}
+
+	_startMovingRight(self, id) {
+		let player = self.gameState.getGameObject(id).innerObject;
+		console.log(
+			"start moving right. id: " +
+				id +
+				". position: " +
+				JSON.stringify(player.position)
+		);
+		
+		this.physics.applyForce(
+			self.gameState.getGameObject(id).innerObject,
+			player.position,
+			{ x: 0.001, y: 0 }
+		);
+	}
+
+	_startMovingUp(self, id) {
+		let player = self.gameState.getGameObject(id).innerObject;
+		console.log(
+			"start moving up. id: " +
+				id +
+				". position: " +
+				JSON.stringify(player.position)
+		);
+		
+		this.physics.applyForce(
+			self.gameState.getGameObject(id).innerObject,
+			player.position,
+			{ x: 0, y: -0.001 }
 		);
 	}
 }

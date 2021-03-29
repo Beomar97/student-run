@@ -16,6 +16,14 @@ class Physics {
 		this.matter.Body.setPosition(object, position);
 	}
 
+	applyForce(object, position, force) {
+		this.matter.Body.applyForce(object, position, force);
+	}
+
+	setVelocity(object, position, velocity) {
+		this.matter.Body.applyForce(object, position, velocity);
+	}
+
 	update(time) {
 		this.matter.Engine.update(this.engine, time);
 	}

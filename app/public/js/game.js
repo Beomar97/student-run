@@ -22,22 +22,41 @@ var config = {
 };
 
 var game = new Phaser.Game(config);
+var cursors;
+var player;
 
-function preload() {}
+function preload() {
+	this.load.image("sky", "assets/sky.png");
+}
 
 function create() {
+	// Init World
+	this.add.image(400, 300, "sky");
 	this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
 
+	// Objects
+	let floor = this.matter.add.rectangle(0, 580, 1600, 20, {
+		isStatic: true,
+	});
+	let ledgeOne = this.matter.add.rectangle(400, 450, 400, 20, {
+		isStatic: true,
+	});
+	let ledgeTwo = this.matter.add.rectangle(0, 300, 600, 20, {
+		isStatic: true,
+	});
+	let ledgeThree = this.matter.add.rectangle(700, 200, 800, 20, {
+		isStatic: true,
+	});
+	player = this.matter.add.circle(250, 250, 20);
+
+	// Sync
 	this.gameState = new GameState();
-	let floor = this.matter.add.rectangle(0, 580, 800, 20, {
-		isStatic: true,
-	});
-	let player = this.matter.add.rectangle(0, 550, 30, 30, {
-		isStatic: true,
-	});
 	this.gameState.addAll([
 		new GameObject(0, gameObjectTypes.PLAYER, player),
 		new GameObject(1, gameObjectTypes.STATIC_OBSTACLE, floor),
+		new GameObject(2, gameObjectTypes.STATIC_OBSTACLE, ledgeOne),
+		new GameObject(3, gameObjectTypes.STATIC_OBSTACLE, ledgeTwo),
+		new GameObject(4, gameObjectTypes.STATIC_OBSTACLE, ledgeThree),
 	]);
 
 	this.clientSync = new ClientSync();
@@ -48,15 +67,25 @@ function create() {
 	);
 	this.updateHandler.init();
 
-	this.input.on("pointerup", (event) => {
-		this.clientSync.emit(events.START_MOVING, {
-			id: 0,
-			position: {
-				x: event.prevPosition.x,
-				y: event.prevPosition.y,
-			},
+	cursors = this.input.keyboard.createCursorKeys();
+}
+
+function update() {
+	if (cursors.left.isDown) {
+		this.clientSync.emit(events.START_MOVING_LEFT, {
+			id: 0
 		});
-	});
+	} else if (cursors.right.isDown) {
+		this.clientSync.emit(events.START_MOVING_RIGHT, {
+			id: 0
+		});
+	}
+
+	if (cursors.up.isDown) {
+		this.clientSync.emit(events.START_MOVING_UP, {
+			id: 0
+		});
+	}
 }
 
 function update() {}
