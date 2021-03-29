@@ -2,6 +2,8 @@ const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
 const connectDB = require("../config/db");
+const mongoose = require("mongoose");
+const events = require("../public/js/shared/sync/events");
 const Matter = require("matter-js");
 const GameFactory = require("./game/gameFactory");
 const GameObject = require("../public/js/shared/game/gameObject");
@@ -67,6 +69,35 @@ const game = new GameFactory()
 	])
 	.create();
 
+// Connect to db with
+// connectDB()
+
+// new schema to save sth
+// const schema = new mongoose.Schema({field: type});
+
+// new Class that can be saved in db
+// const Cat = mongoose.model("Cat", { field: type});
+
+// new instance of class that can be saved in db
+// const kitty = new Cat({ field: value});
+
+// save it
+// kitty.save()
+// or
+// kitty.save().then() => console.log("meow));
+
+// find object in db
+// Cat.find( BSON OBJECT )
+// Cat.find( {name: /^BeginningOfName/ }, console.log("found sth in db"));
+
+const syncController = new SyncController(server);
+syncController.control((serverSync) => {
+	console.log("Connection " + serverSync.getId());
+	serverSync.on(events.MESSAGE, (message) => {
+		console.log(message);
+		serverSync.emit(events.MESSAGE, "Hallo client");
+	});
+});
 game.start();
 
 module.exports = server;
