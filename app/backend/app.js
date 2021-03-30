@@ -90,7 +90,6 @@ const game = new GameFactory()
 // Cat.find( BSON OBJECT )
 // Cat.find( {name: /^BeginningOfName/ }, console.log("found sth in db"));
 
-const syncController = new SyncController(server);
 syncController.control((serverSync) => {
 	console.log("Connection " + serverSync.getId());
 	serverSync.on(events.MESSAGE, (message) => {

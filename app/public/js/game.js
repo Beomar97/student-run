@@ -73,19 +73,17 @@ function create() {
 function update() {
 	if (cursors.left.isDown) {
 		this.clientSync.emit(events.START_MOVING_LEFT, {
-			id: 0
+			id: 0,
 		});
 	} else if (cursors.right.isDown) {
 		this.clientSync.emit(events.START_MOVING_RIGHT, {
-			id: 0
+			id: 0,
 		});
 	}
 
 	if (cursors.up.isDown) {
 		this.clientSync.emit(events.START_MOVING_UP, {
-			id: 0
+			id: 0,
 		});
 	}
 }
-
-function update() {}
