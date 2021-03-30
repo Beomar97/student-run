@@ -53,17 +53,17 @@ const game = new GameFactory()
 		new GameObject(1 /*id.next()*/, gameObjectTypes.STATIC_OBSTACLE, floor),
 		new GameObject(
 			2 /*id.next()*/,
-			gameObjectTypes.STATIC_OBSTICAL,
+			gameObjectTypes.STATIC_OBSTACLE,
 			ledgeOne
 		),
 		new GameObject(
 			3 /*id.next()*/,
-			gameObjectTypes.STATIC_OBSTICAL,
+			gameObjectTypes.STATIC_OBSTACLE,
 			ledgeTwo
 		),
 		new GameObject(
 			4 /*id.next()*/,
-			gameObjectTypes.STATIC_OBSTICAL,
+			gameObjectTypes.STATIC_OBSTACLE,
 			ledgeThree
 		),
 	])
