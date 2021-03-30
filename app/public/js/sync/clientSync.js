@@ -1,6 +1,6 @@
 class ClientSync {
-	constructor() {
-		this.socket = io();
+	constructor(io) {
+		this.socket = io;
 	}
 
 	on(id, eventHandler) {
