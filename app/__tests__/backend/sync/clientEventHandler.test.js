@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 describe("Test the ClientEventHandler class", () => {
-	test("if init method calls conrtol.", () => {
+	test("if init method calls control.", () => {
 		let syncController = new SyncController();
 		let testee = new ClientEventHandler(syncController, {}, {});
 
@@ -31,6 +31,42 @@ describe("Test the ClientEventHandler class", () => {
 		gameState.addAll([gameObject]);
 
 		testee._startMovingLeft(testee, gameObject.id, position);
+
+		expect(physics.applyForce).lastCalledWith(
+			gameObject.innerObject,
+			position,
+			force
+		);
+	});
+
+	test("if _startMovingRight method calls physics correctly.", () => {
+		let gameState = new GameState();
+		let physics = new Physics();
+		let testee = new ClientEventHandler({}, gameState, physics);
+		let position = { x: 1, y: 1 };
+		let gameObject = new GameObject(1, "", { position: position });
+		let force = { x: 0.001, y: 0 };
+		gameState.addAll([gameObject]);
+
+		testee._startMovingRight(testee, gameObject.id, position);
+
+		expect(physics.applyForce).lastCalledWith(
+			gameObject.innerObject,
+			position,
+			force
+		);
+	});
+
+	test("if _startMovingUp method calls physics correctly.", () => {
+		let gameState = new GameState();
+		let physics = new Physics();
+		let testee = new ClientEventHandler({}, gameState, physics);
+		let position = { x: 1, y: 1 };
+		let gameObject = new GameObject(1, "", { position: position });
+		let force = { x: 0.0, y: -0.001 };
+		gameState.addAll([gameObject]);
+
+		testee._startMovingUp(testee, gameObject.id, position);
 
 		expect(physics.applyForce).lastCalledWith(
 			gameObject.innerObject,
