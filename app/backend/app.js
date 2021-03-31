@@ -68,6 +68,7 @@ const game = new GameFactory()
 		),
 	])
 	.create();
+game.start();
 
 // Connect to db with
 // connectDB()
@@ -89,14 +90,5 @@ const game = new GameFactory()
 // find object in db
 // Cat.find( BSON OBJECT )
 // Cat.find( {name: /^BeginningOfName/ }, console.log("found sth in db"));
-
-syncController.control((serverSync) => {
-	console.log("Connection " + serverSync.getId());
-	serverSync.on(events.MESSAGE, (message) => {
-		console.log(message);
-		serverSync.emit(events.MESSAGE, "Hallo client");
-	});
-});
-game.start();
 
 module.exports = server;

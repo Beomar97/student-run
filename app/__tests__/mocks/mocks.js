@@ -15,6 +15,23 @@ mocks = {
 			},
 		};
 	},
+	socket: () => {
+		return {
+			id: 1,
+			on: jest.fn((id, object) => {}),
+			emit: jest.fn((id, object) => {}),
+			broadcast: {
+				emit: jest.fn((id, object) => {}),
+			},
+		};
+	},
+	util: {
+		resetSocketMock: (socket) => {
+			socket.on.mockClear();
+			socket.emit.mockClear();
+			socket.broadcast.emit.mockClear();
+		},
+	},
 };
 
 module.exports = mocks;
