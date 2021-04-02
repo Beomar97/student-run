@@ -285,3 +285,5 @@ $RECYCLE.BIN/
 test-report.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,vscode,windows,webstorm+all,react
+package.json
+package-lock.json

@@ -72,16 +72,19 @@ function update() {
 	if (this.cursors.left.isDown) {
 		this.clientSync.emit(events.START_MOVING_LEFT, {
 			id: 0,
+			timestamp: Date.now(),
 		});
 	} else if (this.cursors.right.isDown) {
 		this.clientSync.emit(events.START_MOVING_RIGHT, {
 			id: 0,
+			timestamp: Date.now(),
 		});
 	}
 
 	if (this.cursors.up.isDown) {
 		this.clientSync.emit(events.START_MOVING_UP, {
 			id: 0,
+			timestamp: Date.now(),
 		});
 	}
 }
