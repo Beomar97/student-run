@@ -1,19 +1,187 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>StudentRun</title>
+		<link rel="stylesheet" href="styles/global.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+			integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+			crossorigin="anonymous"
+		/>
 	</head>
-
 	<body>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="//cdn.jsdelivr.net/npm/phaser@3.53.1/dist/phaser.min.js"></script>
-		<script src="js/module.js"></script>
-		<script src="js/shared/sync/events.js"></script>
-		<script src="js/shared/game/gameObjectTypes.js"></script>
-		<script src="js/shared/game/gameObject.js"></script>
-		<script src="js/shared/game/gameState.js"></script>
-		<script src="js/sync/updateHandler.js"></script>
-		<script src="js/sync/clientSync.js"></script>
-		<script src="js/game.js"></script>
+		<nav class="navbar" role="navigation" aria-label="main navigation">
+			<div class="navbar-brand">
+				<a class="navbar-item" href="index.html">
+					<img
+						src="https://bulma.io/images/bulma-logo.png"
+						alt="bulma-logo"
+						width="112"
+						height="28"
+					/>
+				</a>
+
+				<a
+					role="button"
+					class="navbar-burger"
+					aria-label="menu"
+					aria-expanded="false"
+					data-target="navbarBasicExample"
+				>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+
+			<div id="navbarBasicExample" class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="index.html"> Home </a>
+
+					<a class="navbar-item"> Game </a>
+
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link"> More </a>
+
+						<div class="navbar-dropdown">
+							<a class="navbar-item"> About </a>
+							<a class="navbar-item"> Contact </a>
+							<hr class="navbar-divider" />
+							<a
+								class="navbar-item"
+								href="https://github.zhaw.ch/PathFinder/StudentRun/issues"
+							>
+								Report an issue
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="navbar-end">
+					<div class="navbar-item">
+						<div class="field is-grouped">
+							<p class="control">
+								<a href="game.html">
+									<button class="button is-danger">
+										<span class="icon is-small">
+											<i class="fas fa-gamepad"></i>
+										</span>
+										<span class="is-uppercase">Play</span>
+									</button></a
+								>
+							</p>
+							<p class="control">
+								<a
+									href="https://github.zhaw.ch/PathFinder/StudentRun"
+								>
+									<button class="button is-light">
+										<span class="icon is-small">
+											<i class="fab fa-github"></i>
+										</span></button
+								></a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div
+			style="
+				background-image: url('https://www.business-punk.com/app/uploads/2021/01/Bildschirmfoto-2021-01-12-um-12.43.27-2340x1208-c-default.jpg');
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-position: right;
+			"
+		>
+			<section class="hero is-large is-transparent">
+				<div class="hero-body">
+					<div class="column is-3 is-offset-3">
+						<h1 class="title is-size-1 has-text-white">
+							StudentRun
+						</h1>
+						<h1 class="subtitle has-text-white">
+							Get ready for action packed races with your friends
+							in StudentRun!
+						</h1>
+						<a href="game.html">
+							<button class="button is-danger is-large">
+								<span class="icon is-small">
+									<i class="fas fa-play"></i>
+								</span>
+								<span class="is-uppercase"
+									>Play now for free</span
+								>
+							</button></a
+						>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div class="tile is-ancestor mt-4">
+			<div class="tile is-vertical is-8">
+				<div class="tile">
+					<div class="tile is-parent is-vertical">
+						<article class="tile is-child notification is-primary">
+							<p class="title">Over 5+ different levels</p>
+							<p class="subtitle">
+								Lorem ipsum dolor sit amet, consectetur
+								adipiscing elit, sed do eiusmod tempor
+								incididunt ut labore et dolore magna aliqua.
+							</p>
+						</article>
+						<article class="tile is-child notification is-warning">
+							<p class="title">More than 10 characters</p>
+							<p class="subtitle">
+								Lorem ipsum dolor sit amet, consectetur
+								adipiscing elit, sed do eiusmod tempor
+								incididunt ut labore et dolore magna aliqua.
+							</p>
+						</article>
+					</div>
+					<div class="tile is-parent">
+						<article class="tile is-child notification is-info">
+							<p class="title">Lots of fun items</p>
+							<p class="subtitle">
+								Lorem ipsum dolor sit amet, consectetur
+								adipiscing elit, sed do eiusmod tempor
+								incididunt ut labore et dolore magna aliqua.
+							</p>
+							<figure class="image is-4by3">
+								<img
+									src="https://bulma.io/images/placeholders/640x480.png"
+									alt="placeholder-image"
+								/>
+							</figure>
+						</article>
+					</div>
+				</div>
+				<div class="tile is-parent">
+					<article class="tile is-child notification is-danger">
+						<p class="title">With up to 4 players</p>
+						<p class="subtitle">
+							Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua.
+						</p>
+					</article>
+				</div>
+			</div>
+			<div class="tile is-parent">
+				<article class="tile is-child notification is-success">
+					<div class="content">
+						<p class="title">Free to play</p>
+						<p class="subtitle">
+							Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua.
+						</p>
+					</div>
+				</article>
+			</div>
+		</div>
 	</body>
 </html>
