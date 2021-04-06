@@ -1,26 +1,55 @@
-/* TODO find out how to test frontend / import frontend files
 const demoLevelJSON = require("../asset/levels/demo-level.json");
 const mocks = require("../mocks/mocks");
 const LevelInitializer = require("../../public/js/levelInitializer");
+const GameObject = require("../../public/js/shared/game/gameObject");
+const gameObjectShapes = require("../../public/js/shared/game/gameObjectShapes");
 
 let phaser = mocks.phaser;
-*/
+
+global.GameObject = GameObject;
+global.gameObjectShapes = gameObjectShapes;
+
+beforeEach(() => {
+	mocks.util.resetPhaserMock(phaser);
+});
 
 describe("Test the LevelLoader class", () => {
-	test("nothing", () => {});
-
-	/*
 	test("if LevelLoader sets client objects correctly", () => {
 		let testee = new LevelInitializer(phaser);
 		let loadedObjects = testee.addJSONObjectsToPhaser(demoLevelJSON);
 
-		expect(phaser.add.rectangle).lastCalledWith(0, 580, 1600, 20, 0x00b300);
-		expect(phaser.add.sprite).lastCalledWith(150, 150, "star");
+		const platformX = 0;
+		const platformY = 580;
+		const platformWidth = 1600;
+		const platformHeight = 20;
+		const platformColor = 0x00b300;
+		const platformIsStatic = true;
+		expect(phaser.add.rectangle).lastCalledWith(
+			platformX,
+			platformY,
+			platformWidth,
+			platformHeight,
+			platformColor
+		);
+		expect(phaser.matter.add.rectangle).lastCalledWith(
+			platformX,
+			platformY,
+			platformWidth,
+			platformHeight,
+			{
+				isStatic: platformIsStatic,
+			}
+		);
 
-		expect(phaser.matter.add.rectangle).lastCalledWith(0, 580, 1600, 20, {
-			isStatic: true,
-		});
-		expect(phaser.matter.add.circle).lastCalledWith(150, 150, 20);
+		const starX = 150;
+		const starY = 150;
+		const starRadius = 20;
+		const starTexture = "star";
+		expect(phaser.add.sprite).lastCalledWith(starX, starY, starTexture);
+		expect(phaser.matter.add.circle).lastCalledWith(
+			starX,
+			starY,
+			starRadius
+		);
 	});
-	*/
 });
