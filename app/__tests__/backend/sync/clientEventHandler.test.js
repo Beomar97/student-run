@@ -27,7 +27,7 @@ describe("Test the ClientEventHandler class", () => {
 		let testee = new ClientEventHandler({}, gameState, physics);
 		let position = { x: 1, y: 1 };
 		let gameObject = new GameObject(1, "", { position: position });
-		let force = { x: -0.001, y: 0 };
+		let force = { x: -0.005, y: 0 };
 		gameState.addAll([gameObject]);
 
 		testee._startMovingLeft(testee, gameObject.id, position);
@@ -45,7 +45,7 @@ describe("Test the ClientEventHandler class", () => {
 		let testee = new ClientEventHandler({}, gameState, physics);
 		let position = { x: 1, y: 1 };
 		let gameObject = new GameObject(1, "", { position: position });
-		let force = { x: 0.001, y: 0 };
+		let force = { x: 0.005, y: 0 };
 		gameState.addAll([gameObject]);
 
 		testee._startMovingRight(testee, gameObject.id, position);
@@ -63,7 +63,7 @@ describe("Test the ClientEventHandler class", () => {
 		let testee = new ClientEventHandler({}, gameState, physics);
 		let position = { x: 1, y: 1 };
 		let gameObject = new GameObject(1, "", { position: position });
-		let force = { x: 0.0, y: -0.001 };
+		let force = { x: 0.0, y: -0.005 };
 		gameState.addAll([gameObject]);
 
 		testee._startMovingUp(testee, gameObject.id, position);

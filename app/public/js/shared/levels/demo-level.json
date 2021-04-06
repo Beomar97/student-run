@@ -1,0 +1,53 @@
+{
+	"id": 0,
+	"name": "Demo Level",
+	"backgroundUrl": "assets/sky.png",
+	"wordWidth": 3000,
+	"wordHeight": 700,
+	"gameObjects": [
+		{
+			"id": 1000,
+			"type": "staticObstacle",
+			"shape": "rectangle",
+			"fillColor": "0x00b300",
+			"x": 500,
+			"y": 600,
+			"width": 10000,
+			"height": 100,
+			"isStatic": true
+		},
+		{
+			"id": 1001,
+			"type": "staticObstacle",
+			"shape": "rectangle",
+			"fillColor": "0x00b300",
+			"x": 300,
+			"y": 200,
+			"width": 300,
+			"height": 60,
+			"isStatic": true
+		},
+		{
+			"id": 1002,
+			"type": "staticObstacle",
+			"shape": "rectangle",
+			"fillColor": "0x00b300",
+			"x": 400,
+			"y": 400,
+			"width": 400,
+			"height": 60,
+			"isStatic": true
+		},
+		{
+			"id": 3,
+			"type": "collectableItem",
+			"shape": "circle",
+			"fillColor": "0xfbd000",
+			"x": 250,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "star"
+		}
+	]
+}

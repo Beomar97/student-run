@@ -1,4 +1,7 @@
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
+const morgan = require("morgan");
 const http = require("http");
 const socketIo = require("socket.io");
 const connectDB = require("../config/db");
@@ -8,65 +11,58 @@ const Matter = require("matter-js");
 const GameFactory = require("./game/gameFactory");
 const GameObject = require("../public/js/shared/game/gameObject");
 const gameObjectTypes = require("../public/js/shared/game/gameObjectTypes");
+const gameObjectShapes = require("../public/js/shared/game/gameObjectShapes");
 const Physics = require("./physics/physics");
 const id = require("./util/id");
 const SyncController = require("./sync/syncController");
 
+const physics = new Physics(Matter);
+const LevelLoader = require("./game/levelLoader");
+const levelLoader = new LevelLoader("../../public/js/shared/levels/", physics);
+
+// Express
 const app = express();
+app.use(morgan("dev"));
 app.use(express.static(__dirname + "/../public"));
+
 app.get("/", (req, res) => res.sendFile(__dirname + "/index.html"));
+app.get("/levels", (req, res) => {
+	return res.send(Object.values(levelLoader.levelCollection));
+});
+app.get("/levels/:levelId", (req, res) => {
+	return res.send(levelLoader.getLevelJSONById(req.params.levelId));
+});
 
 const server = http.Server(app);
 const syncController = new SyncController(socketIo(server));
-const physics = new Physics(Matter);
 
-const floor = physics
-	.getMatter()
-	.Bodies.rectangle(0, 580, 1600, 20, { isStatic: true });
+let gameObjectCollection = [];
 
-const ledgeOne = physics
-	.getMatter()
-	.Bodies.rectangle(400, 450, 400, 20, { isStatic: true });
-
-const ledgeTwo = physics
-	.getMatter()
-	.Bodies.rectangle(0, 300, 600, 20, { isStatic: true });
-
-const ledgeThree = physics
-	.getMatter()
-	.Bodies.rectangle(700, 200, 800, 20, { isStatic: true });
-
-const player = physics.getMatter().Bodies.circle(250, 250, 20);
-
-physics.getMatter().World.addBody(physics.getEngine().world, floor);
-physics.getMatter().World.addBody(physics.getEngine().world, ledgeOne);
-physics.getMatter().World.addBody(physics.getEngine().world, ledgeTwo);
-physics.getMatter().World.addBody(physics.getEngine().world, ledgeThree);
+// Init player
+const player = physics.getMatter().Bodies.circle(300, 300, 25, {
+	frictionAir: 0.3,
+});
 physics.getMatter().World.addBody(physics.getEngine().world, player);
+gameObjectCollection.push(
+	new GameObject(id.next(), gameObjectTypes.PLAYER, player)
+);
 
+// Load level with objects
+const levelObjects = levelLoader.getLevelObjectsById(0);
+gameObjectCollection = gameObjectCollection.concat(levelObjects);
+
+gameObjectCollection.forEach((gameObject) => {
+	physics
+		.getMatter()
+		.World.addBody(physics.getEngine().world, gameObject.innerObject);
+});
+
+// Create game
 const game = new GameFactory()
 	.withSyncController(syncController)
 	.withMilisPerTick(1000 / 40)
 	.withPhysics(physics)
-	.withGameObjects([
-		new GameObject(0 /*id.next()*/, gameObjectTypes.PLAYER, player),
-		new GameObject(1 /*id.next()*/, gameObjectTypes.STATIC_OBSTACLE, floor),
-		new GameObject(
-			2 /*id.next()*/,
-			gameObjectTypes.STATIC_OBSTACLE,
-			ledgeOne
-		),
-		new GameObject(
-			3 /*id.next()*/,
-			gameObjectTypes.STATIC_OBSTACLE,
-			ledgeTwo
-		),
-		new GameObject(
-			4 /*id.next()*/,
-			gameObjectTypes.STATIC_OBSTACLE,
-			ledgeThree
-		),
-	])
+	.withGameObjects(gameObjectCollection)
 	.create();
 game.start();
 

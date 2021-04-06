@@ -4,7 +4,7 @@ class Id {
 	}
 
 	next() {
-		return ++this.sequence;
+		return this.sequence++;
 	}
 }
 

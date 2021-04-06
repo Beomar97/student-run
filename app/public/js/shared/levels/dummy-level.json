@@ -1,0 +1,40 @@
+{
+	"id": 1,
+	"name": "Dummy Level",
+	"backgroundUrl": "assets/dummy.png",
+	"wordWidth": 1000,
+	"wordHeight": 700,
+	"gameObjects": [
+		{
+			"id": 1000,
+			"type": "staticObstacle",
+			"shape": "rectangle",
+			"fillColor": "0x00b300",
+			"x": 0,
+			"y": 580,
+			"width": 1600,
+			"height": 20,
+			"isStatic": true
+		},
+		{
+			"id": 1001,
+			"type": "collectableItem",
+			"shape": "circle",
+			"fillColor": "0xfbd000",
+			"x": 150,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false
+		},
+		{
+			"id": 1002,
+			"type": "collectableItem",
+			"shape": "circle",
+			"fillColor": "0xfbd000",
+			"x": 150,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false
+		}
+	]
+}

@@ -1,9 +1,9 @@
 var config = {
 	type: Phaser.AUTO,
 	parent: "phaser-example",
-	width: 800,
-	height: 600,
-	backgroundColor: "#4d4d4d",
+	width: 1000,
+	height: 700,
+	pixelArt: true,
 	physics: {
 		default: "matter",
 		matter: {
@@ -24,38 +24,66 @@ var config = {
 var game = new Phaser.Game(config);
 
 function preload() {
-	this.load.image("sky", "assets/sky.png");
+	this.load.image("background", "assets/sky.png");
+	this.load.json("levelData", "levels/0");
+	this.load.image("star", "assets/star.png");
+	this.load.spritesheet("player", "assets/dude.png", {
+		frameWidth: 32,
+		frameHeight: 48,
+	});
 }
 
 function create() {
 	// Init World
-	this.add.image(400, 300, "sky");
-	this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
+	let leveldata = this.cache.json.get("levelData");
+	this.matter.world.setBounds(
+		0,
+		0,
+		leveldata.wordWidth,
+		leveldata.worldHeight
+	);
+	let gameObjectCollection = [];
+	this.add
+		.image(game.config.width / 2, game.config.height / 2, "background")
+		.setScale(20);
 
-	// Objects
-	let floor = this.matter.add.rectangle(0, 580, 1600, 20, {
-		isStatic: true,
+	// Init Player
+	this.phaserPlayer = this.add.sprite(300, 300, "player");
+	this.matterPlayer = this.matter.add.circle(300, 300, 25);
+	this.matter.add.gameObject(this.phaserPlayer, this.matterPlayer);
+	gameObjectCollection.push(
+		new GameObject(0, gameObjectTypes.PLAYER, this.matterPlayer)
+	);
+
+	// Init Objects
+	let levelInitializer = new LevelInitializer(this);
+	let loadedObjects = levelInitializer.addJSONObjectsToPhaser(leveldata);
+	gameObjectCollection = gameObjectCollection.concat(loadedObjects);
+
+	// Animation
+	this.anims.create({
+		key: "left",
+		frames: this.anims.generateFrameNumbers("player", { start: 0, end: 3 }),
+		frameRate: 10,
+		repeat: -1,
 	});
-	let ledgeOne = this.matter.add.rectangle(400, 450, 400, 20, {
-		isStatic: true,
+
+	this.anims.create({
+		key: "turn",
+		frames: [{ key: "player", frame: 4 }],
+		frameRate: 20,
 	});
-	let ledgeTwo = this.matter.add.rectangle(0, 300, 600, 20, {
-		isStatic: true,
+
+	this.anims.create({
+		key: "right",
+		frames: this.anims.generateFrameNumbers("player", { start: 5, end: 8 }),
+		frameRate: 10,
+		repeat: -1,
 	});
-	let ledgeThree = this.matter.add.rectangle(700, 200, 800, 20, {
-		isStatic: true,
-	});
-	let player = this.matter.add.circle(250, 250, 20);
 
 	// Sync
 	this.gameState = new GameState();
-	this.gameState.addAll([
-		new GameObject(0, gameObjectTypes.PLAYER, player),
-		new GameObject(1, gameObjectTypes.STATIC_OBSTACLE, floor),
-		new GameObject(2, gameObjectTypes.STATIC_OBSTACLE, ledgeOne),
-		new GameObject(3, gameObjectTypes.STATIC_OBSTACLE, ledgeTwo),
-		new GameObject(4, gameObjectTypes.STATIC_OBSTACLE, ledgeThree),
-	]);
+	this.gameState.addAll(gameObjectCollection);
 
 	this.clientSync = new ClientSync(io());
 	this.updateHandler = new UpdateHandler(
@@ -65,7 +93,9 @@ function create() {
 	);
 	this.updateHandler.init();
 
+	// Input & Output
 	this.cursors = this.input.keyboard.createCursorKeys();
+	this.cameras.main.startFollow(this.phaserPlayer, true, 0.9, 0.9);
 }
 
 function update() {
@@ -74,11 +104,15 @@ function update() {
 			id: 0,
 			timestamp: Date.now(),
 		});
+		this.phaserPlayer.anims.play("left", true);
 	} else if (this.cursors.right.isDown) {
 		this.clientSync.emit(events.START_MOVING_RIGHT, {
 			id: 0,
 			timestamp: Date.now(),
 		});
+		this.phaserPlayer.anims.play("right", true);
+	} else {
+		this.phaserPlayer.anims.play("turn", true);
 	}
 
 	if (this.cursors.up.isDown) {

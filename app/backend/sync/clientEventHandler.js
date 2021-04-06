@@ -52,11 +52,7 @@ class ClientEventHandler {
 			latencyMS: Date.now() - timestamp,
 		});
 
-		this.physics.applyForce(
-			self.gameState.getGameObject(id).innerObject,
-			player.position,
-			{ x: -0.001, y: 0 }
-		);
+		this.physics.applyForce(player, player.position, { x: -0.005, y: 0 });
 	}
 
 	_startMovingRight(self, id, timestamp) {
@@ -71,11 +67,7 @@ class ClientEventHandler {
 			latencyMS: Date.now() - timestamp,
 		});
 
-		this.physics.applyForce(
-			self.gameState.getGameObject(id).innerObject,
-			player.position,
-			{ x: 0.001, y: 0 }
-		);
+		this.physics.applyForce(player, player.position, { x: 0.005, y: 0 });
 	}
 
 	_startMovingUp(self, id, timestamp) {
@@ -90,11 +82,7 @@ class ClientEventHandler {
 			latencyMS: Date.now() - timestamp,
 		});
 
-		this.physics.applyForce(
-			self.gameState.getGameObject(id).innerObject,
-			player.position,
-			{ x: 0, y: -0.001 }
-		);
+		this.physics.applyForce(player, player.position, { x: 0, y: -0.005 });
 	}
 }
 

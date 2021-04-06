@@ -31,6 +31,34 @@ mocks = {
 			socket.emit.mockClear();
 			socket.broadcast.emit.mockClear();
 		},
+		resetPhaserMock: (phaser) => {
+			phaser.add.rectangle.mockClear();
+			phaser.add.sprite.mockClear();
+			phaser.matter.add.rectangle.mockClear();
+			phaser.matter.add.circle.mockClear();
+			phaser.matter.add.gameObject.mockClear();
+		},
+	},
+	phaser: {
+		add: {
+			rectangle: jest.fn((x, y, width, height, color) => {
+				return {};
+			}),
+			sprite: jest.fn((x, y, texture) => {
+				return {};
+			}),
+		},
+		matter: {
+			add: {
+				rectangle: jest.fn((x, y, width, height, color) => {
+					return {};
+				}),
+				circle: jest.fn((x, y, radius) => {
+					return {};
+				}),
+				gameObject: jest.fn((phaserObject, matterObject) => {}),
+			},
+		},
 	},
 };
 
