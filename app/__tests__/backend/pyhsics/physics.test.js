@@ -1,11 +1,10 @@
 const Physics = require("../../../backend/physics/physics");
 const mocks = require("../../mocks/mocks");
 
-let calls = [];
-let matter = mocks.matter((method) => calls.push(method));
+let matter = mocks.matter();
 
 beforeEach(() => {
-	calls = [];
+	mocks.util.resetMatterMock(matter);
 });
 
 describe("Test the Physics class", () => {
@@ -26,9 +25,8 @@ describe("Test the Physics class", () => {
 
 		testee.setPosition(object, position);
 
-		expect(calls.length).toBe(2);
-		expect(calls[0]).toBe("Engine.create");
-		expect(calls[1]).toBe("Body.setPosition");
+		expect(matter.Engine.create).toHaveBeenCalled();
+		expect(matter.Body.setPosition).lastCalledWith(object, position);
 	});
 
 	test("if update method calls matter.Engine.update", () => {
@@ -37,8 +35,7 @@ describe("Test the Physics class", () => {
 
 		testee.update(time);
 
-		expect(calls.length).toBe(2);
-		expect(calls[0]).toBe("Engine.create");
-		expect(calls[1]).toBe("Engine.update");
+		expect(matter.Engine.create).toHaveBeenCalled();
+		expect(matter.Engine.update).lastCalledWith(testee.getEngine(), time);
 	});
 });

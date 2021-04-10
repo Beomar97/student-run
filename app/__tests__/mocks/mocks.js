@@ -1,17 +1,19 @@
 mocks = {
-	matter: (callsCallback) => {
+	matter: () => {
 		return {
-			calls: new Map(),
 			Engine: {
-				create: () => {
-					callsCallback("Engine.create");
-					return {};
-				},
-				update: (engine, time) => callsCallback("Engine.update"),
+				create: jest.fn(() => {}),
+				update: jest.fn((engine, time) => {}),
 			},
 			Body: {
-				setPosition: (object, position) =>
-					callsCallback("Body.setPosition"),
+				setPosition: jest.fn((object, position) => {}),
+			},
+			engine: {
+				create: jest.fn(() => {}),
+				update: jest.fn((engine, time) => {}),
+			},
+			body: {
+				setPosition: jest.fn((object, position) => {}),
 			},
 		};
 	},
@@ -26,6 +28,14 @@ mocks = {
 		};
 	},
 	util: {
+		resetMatterMock: (matter) => {
+			matter.Engine.create.mockClear();
+			matter.Engine.update.mockClear();
+			matter.engine.create.mockClear();
+			matter.engine.update.mockClear();
+			matter.Body.setPosition.mockClear();
+			matter.body.setPosition.mockClear();
+		},
 		resetSocketMock: (socket) => {
 			socket.on.mockClear();
 			socket.emit.mockClear();
