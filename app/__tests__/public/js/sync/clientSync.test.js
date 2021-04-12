@@ -1,6 +1,4 @@
-/* TODO find out how to test frontend / import frontend files
-
-require("../../../../public/js/sync/clientSync");
+const ClientSync = require("../../../../public/js/sync/clientSync");
 const mocks = require("../../../mocks/mocks");
 
 let socket = mocks.socket();
@@ -8,11 +6,8 @@ let socket = mocks.socket();
 beforeEach(() => {
 	mocks.util.resetSocketMock(socket);
 });
-*/
 
 describe("Test the ClientSync class", () => {
-	test("nothing", () => {});
-	/*
 	test("if on method calls socket.", () => {
 		let event = "event";
 		let object = {};
@@ -31,5 +26,5 @@ describe("Test the ClientSync class", () => {
 		testee.emit(event, object);
 
 		expect(socket.emit).lastCalledWith(event, object);
-	});*/
+	});
 });

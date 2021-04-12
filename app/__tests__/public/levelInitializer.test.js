@@ -16,7 +16,7 @@ beforeEach(() => {
 describe("Test the LevelLoader class", () => {
 	test("if LevelLoader sets client objects correctly", () => {
 		let testee = new LevelInitializer(phaser);
-		let loadedObjects = testee.addJSONObjectsToPhaser(demoLevelJSON);
+		testee.addJSONObjectsToPhaser(demoLevelJSON);
 
 		const platformX = 0;
 		const platformY = 580;

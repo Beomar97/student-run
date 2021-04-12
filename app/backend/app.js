@@ -42,7 +42,6 @@ let gameObjectCollection = [];
 const player = physics.getMatter().Bodies.circle(300, 300, 25, {
 	frictionAir: 0.3,
 });
-physics.getMatter().World.addBody(physics.getEngine().world, player);
 gameObjectCollection.push(
 	new GameObject(id.next(), gameObjectTypes.PLAYER, player)
 );

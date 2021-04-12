@@ -11,3 +11,5 @@ class ClientSync {
 		this.socket.emit(id, object);
 	}
 }
+
+module.exports = ClientSync;
