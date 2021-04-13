@@ -9,7 +9,6 @@ class ClientEventHandler {
 	}
 
 	init() {
-		let self = this;
 		this.syncController.control((serverSync) => {
 			logger.log({
 				level: "info",
@@ -18,30 +17,24 @@ class ClientEventHandler {
 			});
 			serverSync.on(events.START_MOVING_LEFT, (positionUpdate) =>
 				this._startMovingLeft(
-					self,
 					positionUpdate.id,
 					positionUpdate.timestamp
 				)
 			);
 			serverSync.on(events.START_MOVING_RIGHT, (positionUpdate) =>
 				this._startMovingRight(
-					self,
 					positionUpdate.id,
 					positionUpdate.timestamp
 				)
 			);
 			serverSync.on(events.START_MOVING_UP, (positionUpdate) =>
-				this._startMovingUp(
-					self,
-					positionUpdate.id,
-					positionUpdate.timestamp
-				)
+				this._startMovingUp(positionUpdate.id, positionUpdate.timestamp)
 			);
 		});
 	}
 
-	_startMovingLeft(self, id, timestamp) {
-		let player = self.gameState.getGameObject(id).innerObject;
+	_startMovingLeft(id, timestamp) {
+		let player = this.gameState.getGameObject(id).innerObject;
 		logger.log({
 			level: "debug",
 			message: "Start moving",
@@ -55,8 +48,8 @@ class ClientEventHandler {
 		this.physics.applyForce(player, player.position, { x: -0.005, y: 0 });
 	}
 
-	_startMovingRight(self, id, timestamp) {
-		let player = self.gameState.getGameObject(id).innerObject;
+	_startMovingRight(id, timestamp) {
+		let player = this.gameState.getGameObject(id).innerObject;
 		logger.log({
 			level: "debug",
 			message: "Start moving",
@@ -70,8 +63,8 @@ class ClientEventHandler {
 		this.physics.applyForce(player, player.position, { x: 0.005, y: 0 });
 	}
 
-	_startMovingUp(self, id, timestamp) {
-		let player = self.gameState.getGameObject(id).innerObject;
+	_startMovingUp(id, timestamp) {
+		let player = this.gameState.getGameObject(id).innerObject;
 		logger.log({
 			level: "debug",
 			message: "Start moving",

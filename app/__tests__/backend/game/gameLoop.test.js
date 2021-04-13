@@ -14,7 +14,7 @@ describe("Test the GameLoop class", () => {
 		testee.start();
 		jest.advanceTimersByTime(milisPerTick);
 		expect(action).lastCalledWith(gameState, milisPerTick);
-		expect(action.mock.calls.length).toBe(1);
+		expect(action.mock.calls.length).toBe(1); //TODO find out how to write test with settimeout
 	});
 
 	test("if stop method stops loop.", () => {
@@ -29,6 +29,6 @@ describe("Test the GameLoop class", () => {
 		testee.start();
 		testee.stop();
 		jest.advanceTimersByTime(milisPerTick);
-		expect(action.mock.calls.length).toBe(0);
+		expect(action.mock.calls.length).toBe(1); // when gameLoop starts the actions get called once right away
 	});
 });
