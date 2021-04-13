@@ -1,5 +1,5 @@
 const events = require("../../public/js/shared/sync/events");
-const logger = require("../Logger");
+const logger = require("../logger");
 
 class ClientEventHandler {
 	constructor(syncController, gameState, physics) {
@@ -43,7 +43,7 @@ class ClientEventHandler {
 	_startMovingLeft(self, id, timestamp) {
 		let player = self.gameState.getGameObject(id).innerObject;
 		logger.log({
-			level: "info",
+			level: "debug",
 			message: "Start moving",
 			direction: "left",
 			id: id,
@@ -58,7 +58,7 @@ class ClientEventHandler {
 	_startMovingRight(self, id, timestamp) {
 		let player = self.gameState.getGameObject(id).innerObject;
 		logger.log({
-			level: "info",
+			level: "debug",
 			message: "Start moving",
 			direction: "right",
 			id: id,
@@ -73,7 +73,7 @@ class ClientEventHandler {
 	_startMovingUp(self, id, timestamp) {
 		let player = self.gameState.getGameObject(id).innerObject;
 		logger.log({
-			level: "info",
+			level: "debug",
 			message: "Start moving",
 			direction: "up",
 			id: id,

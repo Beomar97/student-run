@@ -4,8 +4,9 @@
 	"description": "Student Run Backend",
 	"main": "backend/server.js",
 	"scripts": {
-		"start": "node backend/server.js",
+		"start": "export NODE_ENV=production && node backend/server.js",
 		"app": "nodemon backend/server.js",
+		"debug": "export LOGLEVEL=debug && nodemon backend/server.js",
 		"test": "jest",
 		"css-build": "node-sass --omit-source-map-url public/styles/global.scss public/styles/global.css"
 	},

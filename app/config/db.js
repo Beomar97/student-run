@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const config = require("config");
+const logger = require("../backend/logger");
 
 const dbname = encodeURIComponent(process.env.DBNAME);
 const dbuser = encodeURIComponent(process.env.DBUSER);
@@ -9,12 +10,17 @@ const dbhost = encodeURIComponent(process.env.DBHOST);
 let dburi = "";
 // if congfig can not be read from environment variables, try config files
 if (!dbname || !dbuser || !dbpwd || !dbhost) {
-	console.log(
-		"Getting DB URI from Environment failed. Falling back to config file"
-	);
+	logger.log({
+		level: "info",
+		message:
+			"Getting DB URI from Environment failed. Falling back to config file",
+	});
 	dburi = config.get("mongoURI");
 } else {
-	console.log("Using env vars to build dburi");
+	logger.log({
+		level: "info",
+		message: "Using env vars to build dburi",
+	});
 	dburi = `mongodb://${dbuser}:${dbpwd}@${dbhost}/${dbname}`;
 }
 
@@ -27,9 +33,15 @@ const connectDB = async () => {
 			useUnifiedTopology: true,
 		});
 
-		console.log("MongoDB is Connected...");
+		logger.log({
+			level: "info",
+			message: "MongoDB is Connected...",
+		});
 	} catch (err) {
-		console.error(err.message);
+		logger.log({
+			level: "error",
+			message: err.message,
+		});
 		process.exit(1);
 	}
 };

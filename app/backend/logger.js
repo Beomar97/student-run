@@ -6,8 +6,22 @@ const logger = Winston.createLogger({
 		Winston.format.timestamp(),
 		Winston.format.prettyPrint()
 	),
-	transports: [new Winston.transports.File({ filename: "combined.log" })],
+	transports: [
+		new Winston.transports.File({
+			filename: "./logs/error.log",
+			level: "error",
+		}),
+		new Winston.transports.File({ filename: "./logs/combined.log" }),
+	],
 });
+
+if (process.env.NODE_ENV !== "production") {
+	logger.add(
+		new Winston.transports.Console({
+			format: Winston.format.simple(),
+		})
+	);
+}
 
 logger.log({
 	level: "info",
