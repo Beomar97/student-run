@@ -8,11 +8,10 @@ var config = {
 		default: "matter",
 		matter: {
 			debug: true,
-			gravity: {
-				x: 0,
-				y: 0,
-			},
+			gravity: { x: 0, y: 1, scale: 0.001 },
+			autoUpdate: false,
 		},
+		msPerTic: 1000 / 40,
 	},
 	scene: {
 		preload: preload,
@@ -93,32 +92,47 @@ function create() {
 	);
 	this.updateHandler.init();
 
+	this.running = false;
+	this.clientSync.on(events.GAME_START, (startTime) => {
+		this.gameState.lastTicTime = startTime;
+		this.running = true;
+	});
+
+	this.physicsUpdater = new PhysicsUpdater(
+		this.gameState,
+		this.matter.world.step.bind(this.matter.world),
+		game.config.physics.msPerTic
+	);
+
 	// Input & Output
 	this.cursors = this.input.keyboard.createCursorKeys();
 	this.cameras.main.startFollow(this.phaserPlayer, true, 0.9, 0.9);
 }
 
 function update() {
-	if (this.cursors.left.isDown) {
-		this.clientSync.emit(events.START_MOVING_LEFT, {
-			id: 0,
-			timestamp: Date.now(),
-		});
-		this.phaserPlayer.anims.play("left", true);
-	} else if (this.cursors.right.isDown) {
-		this.clientSync.emit(events.START_MOVING_RIGHT, {
-			id: 0,
-			timestamp: Date.now(),
-		});
-		this.phaserPlayer.anims.play("right", true);
-	} else {
-		this.phaserPlayer.anims.play("turn", true);
-	}
+	if (this.running) {
+		this.physicsUpdater.update();
+		if (this.cursors.left.isDown) {
+			this.clientSync.emit(events.START_MOVING_LEFT, {
+				id: 0,
+				timestamp: Date.now(),
+			});
+			this.phaserPlayer.anims.play("left", true);
+		} else if (this.cursors.right.isDown) {
+			this.clientSync.emit(events.START_MOVING_RIGHT, {
+				id: 0,
+				timestamp: Date.now(),
+			});
+			this.phaserPlayer.anims.play("right", true);
+		} else {
+			this.phaserPlayer.anims.play("turn", true);
+		}
 
-	if (this.cursors.up.isDown) {
-		this.clientSync.emit(events.START_MOVING_UP, {
-			id: 0,
-			timestamp: Date.now(),
-		});
+		if (this.cursors.up.isDown) {
+			this.clientSync.emit(events.START_MOVING_UP, {
+				id: 0,
+				timestamp: Date.now(),
+			});
+		}
 	}
 }

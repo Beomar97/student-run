@@ -30,7 +30,7 @@ describe("Test the ClientEventHandler class", () => {
 		let force = { x: -0.005, y: 0 };
 		gameState.addAll([gameObject]);
 
-		testee._startMovingLeft(testee, gameObject.id, position);
+		testee._startMovingLeft(gameObject.id, position);
 
 		expect(physics.applyForce).lastCalledWith(
 			gameObject.innerObject,
@@ -48,7 +48,7 @@ describe("Test the ClientEventHandler class", () => {
 		let force = { x: 0.005, y: 0 };
 		gameState.addAll([gameObject]);
 
-		testee._startMovingRight(testee, gameObject.id, position);
+		testee._startMovingRight(gameObject.id, position);
 
 		expect(physics.applyForce).lastCalledWith(
 			gameObject.innerObject,
@@ -66,7 +66,7 @@ describe("Test the ClientEventHandler class", () => {
 		let force = { x: 0.0, y: -0.005 };
 		gameState.addAll([gameObject]);
 
-		testee._startMovingUp(testee, gameObject.id, position);
+		testee._startMovingUp(gameObject.id, position);
 
 		expect(physics.applyForce).lastCalledWith(
 			gameObject.innerObject,

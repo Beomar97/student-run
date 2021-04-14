@@ -1,24 +1,49 @@
+const PhysicsUpdater = require("../../public/js/shared/physics/physicsUpdater");
+
 class GameLoop {
 	constructor(gameState, actions, milisPerTick) {
 		this.gameState = gameState;
 		this.actions = actions;
 		this.milisPerTick = milisPerTick;
-		this.loop;
+		this.running = false;
+		this.physicsUpdater = new PhysicsUpdater(
+			this.gameState,
+			this._update.bind(this),
+			this.milisPerTick
+		);
 	}
 
-	start() {
-		let self = this;
-		this.loop = setInterval(() => {
-			self.actions.forEach((action) =>
-				action(self.gameState, self.milisPerTick)
-			);
-		}, self.milisPerTick);
+	start(startTime) {
+		if (startTime) {
+			this.gameState.lastTicTime = startTime;
+		} else {
+			this.gameState.lastTicTime = Date.now() - this.milisPerTick;
+		}
+		this.running = true;
+		this._gameLoop();
+	}
+
+	_gameLoop() {
+		if (this.running) {
+			this.physicsUpdater.update();
+
+			if (
+				Date.now() - this.gameState.lastTicTime <
+				this.milisPerTick - 16
+			) {
+				setTimeout(this._gameLoop.bind(this));
+			} else {
+				setImmediate(this._gameLoop.bind(this));
+			}
+		}
+	}
+
+	_update(delta) {
+		this.actions.forEach((action) => action(this.gameState, delta));
 	}
 
 	stop() {
-		if (this.loop) {
-			clearInterval(this.loop);
-		}
+		this.running = false;
 	}
 }
 

@@ -1,6 +1,8 @@
 class GameState {
 	constructor() {
 		this.gameObjects = new Map();
+		this.tic = 0;
+		this.lastTicTime;
 	}
 
 	addAll(gameObjects) {

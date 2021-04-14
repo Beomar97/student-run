@@ -49,7 +49,7 @@ class GameFactory {
 			gameState,
 			this.physics
 		);
-		return new Game(gameLoop, clientEventHandler);
+		return new Game(gameLoop, clientEventHandler, this.syncController);
 	}
 
 	_validate() {
