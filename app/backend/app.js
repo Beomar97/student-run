@@ -59,25 +59,4 @@ const game = new GameFactory()
 	.create();
 game.start();
 
-// Connect to db with
-// connectDB()
-
-// new schema to save sth
-// const schema = new mongoose.Schema({field: type});
-
-// new Class that can be saved in db
-// const Cat = mongoose.model("Cat", { field: type});
-
-// new instance of class that can be saved in db
-// const kitty = new Cat({ field: value});
-
-// save it
-// kitty.save()
-// or
-// kitty.save().then() => console.log("meow));
-
-// find object in db
-// Cat.find( BSON OBJECT )
-// Cat.find( {name: /^BeginningOfName/ }, console.log("found sth in db"));
-
 module.exports = server;
