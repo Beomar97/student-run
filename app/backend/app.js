@@ -4,7 +4,7 @@ const http = require("http");
 const socketIo = require("socket.io");
 const Matter = require("matter-js");
 const GameFactory = require("./game/gameFactory");
-const GameObject = require("../public/js/shared/game/gameObject");
+const { Player } = require("../public/js/shared/game/gameObject");
 const gameObjectTypes = require("../public/js/shared/game/gameObjectTypes");
 const Physics = require("./physics/physics");
 const id = require("./util/id");
@@ -37,7 +37,7 @@ const player = physics.getMatter().Bodies.circle(300, 300, 25, {
 	frictionAir: 0.3,
 });
 gameObjectCollection.push(
-	new GameObject(id.next(), gameObjectTypes.PLAYER, player)
+	new Player(id.next(), gameObjectTypes.PLAYER, player)
 );
 
 // Load level with objects
@@ -56,6 +56,7 @@ const game = new GameFactory()
 	.withMilisPerTick(1000 / 40)
 	.withPhysics(physics)
 	.withGameObjects(gameObjectCollection)
+	.withFinishLineOffset(50)
 	.create();
 game.start();
 

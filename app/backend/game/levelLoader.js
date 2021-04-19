@@ -1,7 +1,7 @@
 const gameObjectShapes = require("../../public/js/shared/game/gameObjectShapes");
 const path = require("path");
 const fs = require("fs");
-const GameObject = require("../../public/js/shared/game/gameObject");
+const { GameObject } = require("../../public/js/shared/game/gameObject");
 
 class LevelLoader {
 	constructor(levelFolder, physics) {

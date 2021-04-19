@@ -51,7 +51,7 @@ function create() {
 	this.matterPlayer = this.matter.add.circle(300, 300, 25);
 	this.matter.add.gameObject(this.phaserPlayer, this.matterPlayer);
 	gameObjectCollection.push(
-		new GameObject(0, gameObjectTypes.PLAYER, this.matterPlayer)
+		new Player(0, gameObjectTypes.PLAYER, this.matterPlayer)
 	);
 
 	// Init Objects
@@ -112,6 +112,13 @@ function create() {
 function update() {
 	if (this.running) {
 		this.physicsUpdater.update();
+
+		if (this.gameState.getGameObject(0).done) {
+			this.phaserPlayer.anims.play("turn", true);
+			this.running = false;
+			alert("Done!");
+		}
+
 		if (this.cursors.left.isDown) {
 			this.clientSync.emit(events.START_MOVING_LEFT, {
 				id: 0,

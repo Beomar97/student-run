@@ -10,6 +10,9 @@ class UpdateHandler {
 		this.clientSync.on(events.GAME_STATE_UPDATE, (gameObjects) => {
 			this._updateGameState(gameObjects, self);
 		});
+		this.clientSync.on(events.PLAYER_DETAILS_UPDATE, (players) => {
+			this._updatePlayer(players, self);
+		});
 	}
 
 	_updateGameState(gameObjects, self) {
@@ -19,6 +22,14 @@ class UpdateHandler {
 				x: serverGameObject.position.x,
 				y: serverGameObject.position.y,
 			});
+		});
+	}
+
+	_updatePlayer(players, self) {
+		players.forEach((serverPlayer) => {
+			let localPlayer = self.gameState.getGameObject(serverPlayer.id);
+			localPlayer.done = serverPlayer.done;
+			localPlayer.doneAt = serverPlayer.doneAt;
 		});
 	}
 }

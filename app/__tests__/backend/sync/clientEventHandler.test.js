@@ -2,7 +2,7 @@ const SyncController = require("../../../backend/sync/syncController");
 const Physics = require("../../../backend/physics/physics");
 const GameState = require("../../../public/js/shared/game/gameState");
 const ClientEventHandler = require("../../../backend/sync/clientEventHandler");
-const GameObject = require("../../../public/js/shared/game/gameObject");
+const { GameObject } = require("../../../public/js/shared/game/gameObject");
 
 jest.mock("../../../backend/sync/syncController");
 jest.mock("../../../backend/physics/physics");

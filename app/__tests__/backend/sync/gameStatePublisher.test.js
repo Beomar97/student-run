@@ -1,6 +1,6 @@
 const SyncController = require("../../../backend/sync/syncController");
 const GameState = require("../../../public/js/shared/game/gameState");
-const GameObject = require("../../../public/js/shared/game/gameObject");
+const { GameObject } = require("../../../public/js/shared/game/gameObject");
 const GameStatePublisher = require("../../../backend/sync/gameStatePublisher");
 const events = require("../../../public/js/shared/sync/events");
 

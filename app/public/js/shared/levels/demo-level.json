@@ -39,7 +39,18 @@
 			"isStatic": true
 		},
 		{
-			"id": 3,
+			"id": 1003,
+			"type": "finishLine",
+			"shape": "rectangle",
+			"fillColor": "0xffb300",
+			"x": 1000,
+			"y": 555,
+			"width": 20,
+			"height": 200,
+			"isStatic": true
+		},
+		{
+			"id": 100,
 			"type": "collectableItem",
 			"shape": "circle",
 			"fillColor": "0xfbd000",

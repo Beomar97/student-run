@@ -1,14 +1,18 @@
 const GameFactory = require("../../../backend/game/gameFactory");
-const GameObject = require("../../../public/js/shared/game/gameObject");
+const { GameObject } = require("../../../public/js/shared/game/gameObject");
+const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
 const SyncController = require("../../../backend/sync/syncController");
+const FinishLineWatcher = require("../../../backend/rules/finishLineWatcher");
 const Physics = require("../../../backend/physics/physics");
 
 jest.mock("../../../backend/sync/syncController");
 jest.mock("../../../backend/physics/physics");
+jest.mock("../../../backend/rules/finishLineWatcher");
 
 beforeEach(() => {
 	SyncController.mockClear();
 	Physics.mockClear();
+	FinishLineWatcher.mockClear();
 });
 
 describe("Test the GameFactory class", () => {
@@ -17,7 +21,9 @@ describe("Test the GameFactory class", () => {
 		let syncController = new SyncController();
 		let physics = new Physics();
 		let gameObjectId = 1;
-		let gameObjects = [new GameObject(gameObjectId)];
+		let gameObjects = [
+			new GameObject(gameObjectId, gameObjectTypes.FINISH_LINE),
+		];
 
 		let testee = new GameFactory();
 		let game = testee

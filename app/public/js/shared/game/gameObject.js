@@ -6,4 +6,12 @@ class GameObject {
 	}
 }
 
-module.exports = GameObject;
+class Player extends GameObject {
+	constructor(id, type, innerObject) {
+		super(id, type, innerObject);
+		this.done = false;
+		this.doneAt = null;
+	}
+}
+
+module.exports = { GameObject, Player };
