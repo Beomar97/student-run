@@ -1,3 +1,5 @@
+const events = require("../shared/sync/events");
+
 class UpdateHandler {
 	constructor(clientSync, matter, gameState) {
 		this.clientSync = clientSync;

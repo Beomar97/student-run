@@ -1,3 +1,6 @@
+const { GameObject } = require("./shared/game/gameObject");
+const gameObjectShapes = require("./shared/game/gameObjectShapes");
+
 class LevelInitializer {
 	constructor(game) {
 		this.game = game;

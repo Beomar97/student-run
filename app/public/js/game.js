@@ -1,3 +1,14 @@
+const Phaser = require("phaser");
+const { io } = require("socket.io-client");
+const LevelInitializer = require("./levelInitializer");
+const ClientSync = require("./sync/clientSync");
+const UpdateHandler = require("./sync/updateHandler");
+const { Player } = require("./shared/game/gameObject");
+const GameState = require("./shared/game/gameState");
+const gameObjectTypes = require("./shared/game/gameObjectTypes");
+const events = require("./shared/sync/events");
+const PhysicsUpdater = require("./shared/physics/physicsUpdater");
+
 var config = {
 	type: Phaser.AUTO,
 	parent: "phaser-example",

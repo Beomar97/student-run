@@ -4,11 +4,14 @@
 	"description": "Student Run Backend",
 	"main": "backend/server.js",
 	"scripts": {
-		"start": "cross-env NODE_ENV=production node backend/server.js",
-		"app": "nodemon backend/server.js",
-		"debug": "cross-env LOGLEVEL=debug nodemon backend/server.js",
+		"prod": "cross-env NODE_ENV=production node backend/server.js",
+		"dev": "npm run watchify & nodemon backend/server.js",
+		"debug": "cross-env LOGLEVEL=debug npm run dev",
 		"test": "jest",
-		"css-build": "node-sass --omit-source-map-url public/styles/global.scss public/styles/global.css"
+		"watchify": "watchify public/js/game.js -o public/build/bundle.js -v -d",
+		"build": "npm run js-build & npm run css-build",
+		"js-build": "browserify public/js/game.js -o public/build/bundle.js",
+		"css-build": "node-sass --omit-source-map-url public/styles/global.scss public/build/global.css"
 	},
 	"repository": {
 		"type": "git",
@@ -17,12 +20,16 @@
 	"author": "Marco Forster, Marvin Tseng, Manuel Berweger, Dan Hochstrasser, Adrian Schrempp",
 	"license": "MIT",
 	"dependencies": {
+		"browserify": "^17.0.0",
 		"config": "^3.3.4",
 		"express": "^4.17.1",
 		"matter-js": "^0.16.1",
 		"mongoose": "^5.11.15",
 		"morgan": "^1.10.0",
+		"phaser": "^3.54.0",
 		"socket.io": "^3.1.2",
+		"socket.io-client": "^4.0.1",
+		"watchify": "^4.0.0",
 		"winston": "^3.3.3"
 	},
 	"devDependencies": {
