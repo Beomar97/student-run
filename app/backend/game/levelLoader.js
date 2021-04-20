@@ -57,6 +57,8 @@ class LevelLoader {
 				objectDescription.type,
 				innerObject
 			);
+		} else {
+			throw new Error("Couldn't create all game objects.");
 		}
 	}
 

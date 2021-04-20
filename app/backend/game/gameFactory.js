@@ -5,18 +5,49 @@ const Game = require("./game");
 const GameLoop = require("./gameLoop");
 const GameState = require("../../public/js/shared/game/gameState");
 const PlayerDetailsPublisher = require("../sync/playerDetailsPublisher");
+const MoveAction = require("../../public/js/shared/game/moveAction");
+const EventQueue = require("./eventQueue");
+const Timeline = require("./timeline");
+const GameUpdate = require("./gameUpdate");
+const Replay = require("./replay");
+const PhysicsUpdater = require("../../public/js/shared/physics/physicsUpdater");
 
 class GameFactory {
 	constructor() {
 		this.config = {};
-		this.syncController;
-		this.gameObjects;
-		this.physics;
-		this.finishLineOffset;
+		this.syncController = null;
+		this.gameObjects = null;
+		this.physics = null;
+		this.finishLineOffset = null;
 	}
 
-	withMilisPerTick(milisPerTick) {
-		this.config.milisPerTick = milisPerTick;
+	withMilisPerTic(milisPerTic) {
+		this.config.milisPerTic = milisPerTic;
+		return this;
+	}
+
+	withTicsPerPublish(ticsPerPublish) {
+		this.config.ticsPerPublish = ticsPerPublish;
+		return this;
+	}
+
+	withMaxSnapshots(maxSnapshots) {
+		this.config.maxSnapshots = maxSnapshots;
+		return this;
+	}
+
+	withTicsPerSnapshot(ticsPerSnapshot) {
+		this.config.ticsPerSnapshot = ticsPerSnapshot;
+		return this;
+	}
+
+	withMaxEntriesEventQueue(maxEntriesEventQueue) {
+		this.config.maxEntriesEventQueue = maxEntriesEventQueue;
+		return this;
+	}
+
+	withAllowedEventMaxAge(allowedEventMaxAge) {
+		this.config.allowedEventMaxAge = allowedEventMaxAge;
 		return this;
 	}
 
@@ -45,7 +76,6 @@ class GameFactory {
 
 		let gameState = new GameState();
 		gameState.addAll(this.gameObjects);
-		let gameStatePublisher = new GameStatePublisher(this.syncController);
 		let playerDetailsPublisher = new PlayerDetailsPublisher(
 			this.syncController
 		);
@@ -54,26 +84,60 @@ class GameFactory {
 			gameState,
 			this.finishLineOffset
 		);
-		let actions = this._createActions(
-			gameStatePublisher,
-			finishLineWatcher
+		let actions = this._createActions(finishLineWatcher);
+		let gameStatePublisher = new GameStatePublisher(
+			this.syncController,
+			this.config.ticsPerPublish
+		);
+		let timeline = new Timeline(
+			gameState,
+			this.physics,
+			this.config.maxSnapshots,
+			this.config.ticsPerSnapshot
+		);
+		let eventQueue = new EventQueue(this.config.maxEntriesEventQueue);
+		let gameUpdate = new GameUpdate(
+			gameState,
+			actions,
+			eventQueue,
+			timeline
+		);
+		let physicsUpdater = new PhysicsUpdater(
+			gameState,
+			gameUpdate.apply.bind(gameUpdate),
+			this.config.milisPerTic
+		);
+		let replay = new Replay(
+			gameState,
+			eventQueue,
+			timeline,
+			physicsUpdater
 		);
 		let gameLoop = new GameLoop(
 			gameState,
-			actions,
-			this.config.milisPerTick
+			gameStatePublisher,
+			gameUpdate,
+			replay,
+			this.config.milisPerTic
 		);
 		let clientEventHandler = new ClientEventHandler(
 			this.syncController,
 			gameState,
-			this.physics
+			this.physics,
+			eventQueue,
+			this.config.allowedEventMaxAge
 		);
 		return new Game(gameLoop, clientEventHandler, this.syncController);
 	}
 
 	_validate() {
 		let isValid =
-			!this.config.milisPerTick ||
+			!this.config.milisPerTic ||
+			!this.config.ticsPerPublish ||
+			!this.config.maxSnapshots ||
+			!this.config.ticsPerSnapshot ||
+			!this.config.maxEntriesEventQueue ||
+			!this.config.allowedEventMaxAge ||
 			!this.syncController ||
 			!this.gameObjects ||
 			!this.physics;
@@ -83,14 +147,15 @@ class GameFactory {
 		}
 	}
 
-	_createActions(gameStatePublisher, finishLineWatchdog) {
+	_createActions(finishLineWatchdog) {
 		let self = this;
 		let actions = [];
-		actions.push((gameState, milisPerTick) => {
-			self.physics.update(milisPerTick);
+		let moveAction = new MoveAction(this.physics);
+		actions.push((gameState, milisPerTic) => {
+			moveAction.run(gameState);
 		});
-		actions.push((gameState, milisPerTick) => {
-			gameStatePublisher.publish(gameState);
+		actions.push((gameState, milisPerTic) => {
+			self.physics.update(milisPerTic);
 		});
 		actions.push((gameState) => {
 			finishLineWatchdog.checkFinishLine(gameState);

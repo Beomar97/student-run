@@ -15,7 +15,9 @@ describe("Test the Physics class", () => {
 
 	test("if getEngine method returns engine", () => {
 		let testee = new Physics(matter);
-		expect(testee.getEngine()).toStrictEqual(matter.Engine.create());
+		let expectee = matter.Engine.create();
+		expectee.world.gravity = { x: 0, y: 1, scale: 0.001 };
+		expect(testee.getEngine()).toStrictEqual(expectee);
 	});
 
 	test("if setPosition method sets position on matter.Body", () => {

@@ -2,7 +2,7 @@ class GameState {
 	constructor() {
 		this.gameObjects = new Map();
 		this.tic = 0;
-		this.lastTicTime;
+		this.lastTicTime = null;
 	}
 
 	addAll(gameObjects) {
@@ -10,6 +10,14 @@ class GameState {
 		gameObjects.forEach((gameObject) =>
 			self.gameObjects.set(gameObject.id, gameObject)
 		);
+	}
+
+	forEachGameObject(consume, filter) {
+		this.gameObjects.forEach((gameObject) => {
+			if (filter(gameObject)) {
+				consume(gameObject);
+			}
+		});
 	}
 
 	getGameObject(id) {

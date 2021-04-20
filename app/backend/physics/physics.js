@@ -2,6 +2,7 @@ class Physics {
 	constructor(matter) {
 		this.matter = matter;
 		this.engine = this.matter.Engine.create();
+		this.engine.world.gravity = { x: 0, y: 1, scale: 0.001 };
 	}
 
 	getMatter() {
@@ -21,7 +22,7 @@ class Physics {
 	}
 
 	setVelocity(object, position, velocity) {
-		this.matter.Body.applyForce(object, position, velocity);
+		this.matter.Body.setVelocity(object, position, velocity);
 	}
 
 	update(time) {

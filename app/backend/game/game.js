@@ -12,7 +12,7 @@ class Game {
 
 		this.syncController.control((serverSync) => {
 			// when client connects -> game starts
-			let startTime = Date.now() + 1000;
+			let startTime = Date.now() + 1000; //TODO move to GameFactory
 			this.syncController.emit(events.GAME_START, startTime);
 			this.gameLoop.start(startTime);
 		});

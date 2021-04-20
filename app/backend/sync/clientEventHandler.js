@@ -2,80 +2,71 @@ const events = require("../../public/js/shared/sync/events");
 const logger = require("../logger");
 
 class ClientEventHandler {
-	constructor(syncController, gameState, physics) {
+	constructor(syncController, gameState, physics, eventQueue, eventMaxAge) {
 		this.syncController = syncController;
 		this.gameState = gameState;
 		this.physics = physics;
+		this.eventQueue = eventQueue;
+		this.eventMaxAge = eventMaxAge;
 	}
 
 	init() {
 		this.syncController.control((serverSync) => {
-			logger.log({
-				level: "info",
+			logger.info({
 				message: "Connection established",
 				id: serverSync.getId(),
 			});
-			serverSync.on(events.START_MOVING_LEFT, (positionUpdate) =>
-				this._startMovingLeft(
-					positionUpdate.id,
-					positionUpdate.timestamp
-				)
-			);
-			serverSync.on(events.START_MOVING_RIGHT, (positionUpdate) =>
-				this._startMovingRight(
-					positionUpdate.id,
-					positionUpdate.timestamp
-				)
-			);
-			serverSync.on(events.START_MOVING_UP, (positionUpdate) =>
-				this._startMovingUp(positionUpdate.id, positionUpdate.timestamp)
+
+			serverSync.on(
+				events.MOVEMENT_CHANGE_EVENT,
+				this._handleMoveChangeEvent.bind(this)
 			);
 		});
 	}
 
-	_startMovingLeft(id, timestamp) {
-		let player = this.gameState.getGameObject(id).innerObject;
-		logger.log({
-			level: "debug",
-			message: "Start moving",
-			direction: "left",
-			id: id,
-			positionX: player.position.x,
-			positionY: player.position.y,
-			latencyMS: Date.now() - timestamp,
-		});
+	_handleMoveChangeEvent(movementChangeEvent) {
+		this._logEvent(
+			"movement change event",
+			movementChangeEvent,
+			movementChangeEvent.direction
+		);
 
-		this.physics.applyForce(player, player.position, { x: -0.005, y: 0 });
+		this.eventQueue.enqueue(
+			this._evaluateEventTic(movementChangeEvent.tic),
+			(() => {
+				this._applyMovementChange(movementChangeEvent);
+			}).bind(this)
+		);
 	}
 
-	_startMovingRight(id, timestamp) {
-		let player = this.gameState.getGameObject(id).innerObject;
-		logger.log({
-			level: "debug",
-			message: "Start moving",
-			direction: "right",
-			id: id,
-			positionX: player.position.x,
-			positionY: player.position.y,
-			latencyMS: Date.now() - timestamp,
-		});
-
-		this.physics.applyForce(player, player.position, { x: 0.005, y: 0 });
+	_applyMovementChange(movementChangeEvent) {
+		let player = this.gameState.getGameObject(movementChangeEvent.id);
+		player.setDirection(movementChangeEvent.direction);
 	}
 
-	_startMovingUp(id, timestamp) {
-		let player = this.gameState.getGameObject(id).innerObject;
-		logger.log({
-			level: "debug",
-			message: "Start moving",
-			direction: "up",
-			id: id,
-			positionX: player.position.x,
-			positionY: player.position.y,
-			latencyMS: Date.now() - timestamp,
-		});
+	_evaluateEventTic(eventTic) {
+		let diff = this.gameState.tic - eventTic;
+		if (diff > this.eventMaxAge) {
+			logger.warn({
+				message: "Max age of event exceeded.",
+				eventMaxAge: this.eventMaxAge,
+				eventTic: eventTic,
+				ticDiff: diff,
+			});
+			return this.gameState.tic - this.eventMaxAge;
+		} else {
+			return eventTic;
+		}
+	}
 
-		this.physics.applyForce(player, player.position, { x: 0, y: -0.005 });
+	_logEvent(message, event, additionalInfo) {
+		logger.debug({
+			message: message,
+			id: event.id,
+			eventTic: event.tic,
+			ticDiff: this.gameState.tic - event.tic,
+			additionalInfo: additionalInfo,
+		});
 	}
 }
 

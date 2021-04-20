@@ -11,7 +11,9 @@ const logger = Winston.createLogger({
 			filename: "./logs/error.log",
 			level: "error",
 		}),
-		new Winston.transports.File({ filename: "./logs/combined.log" }),
+		new Winston.transports.File({
+			filename: "./logs/combined.log",
+		}),
 	],
 });
 

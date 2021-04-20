@@ -2,11 +2,14 @@ mocks = {
 	matter: () => {
 		return {
 			Engine: {
-				create: jest.fn(() => {}),
+				create: jest.fn(() => {
+					return { world: {} };
+				}),
 				update: jest.fn((engine, time) => {}),
 			},
 			Body: {
 				setPosition: jest.fn((object, position) => {}),
+				setVelocity: jest.fn((object, velocity) => {}),
 			},
 			engine: {
 				create: jest.fn(() => {}),
@@ -14,6 +17,7 @@ mocks = {
 			},
 			body: {
 				setPosition: jest.fn((object, position) => {}),
+				setVelocity: jest.fn((object, velocity) => {}),
 			},
 		};
 	},
@@ -26,6 +30,9 @@ mocks = {
 				emit: jest.fn((id, object) => {}),
 			},
 		};
+	},
+	updateLock: (isLocked) => {
+		return { isLocked: (param1, param2) => isLocked };
 	},
 	util: {
 		resetMatterMock: (matter) => {

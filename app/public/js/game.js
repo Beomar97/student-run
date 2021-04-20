@@ -8,6 +8,8 @@ const GameState = require("./shared/game/gameState");
 const gameObjectTypes = require("./shared/game/gameObjectTypes");
 const events = require("./shared/sync/events");
 const PhysicsUpdater = require("./shared/physics/physicsUpdater");
+const UpdateLock = require("./sync/updateLock");
+const MoveAction = require("./shared/game/moveAction");
 
 var config = {
 	type: Phaser.AUTO,
@@ -59,11 +61,17 @@ function create() {
 
 	// Init Player
 	this.phaserPlayer = this.add.sprite(300, 300, "player");
-	this.matterPlayer = this.matter.add.circle(300, 300, 25);
-	this.matter.add.gameObject(this.phaserPlayer, this.matterPlayer);
-	gameObjectCollection.push(
-		new Player(0, gameObjectTypes.PLAYER, this.matterPlayer)
+	this.matterPlayer = this.matter.add.circle(300, 300, 25, {
+		frictionAir: 0.3,
+	});
+	this.player = new Player(
+		0,
+		gameObjectTypes.PLAYER,
+		this.matterPlayer,
+		0.005
 	);
+	this.matter.add.gameObject(this.phaserPlayer, this.matterPlayer);
+	gameObjectCollection.push(this.player);
 
 	// Init Objects
 	let levelInitializer = new LevelInitializer(this);
@@ -95,11 +103,13 @@ function create() {
 	this.gameState = new GameState();
 	this.gameState.addAll(gameObjectCollection);
 
+	this.updateLock = new UpdateLock(this.player.id);
 	this.clientSync = new ClientSync(io());
 	this.updateHandler = new UpdateHandler(
 		this.clientSync,
 		this.matter,
-		this.gameState
+		this.gameState,
+		this.updateLock
 	);
 	this.updateHandler.init();
 
@@ -109,9 +119,15 @@ function create() {
 		this.running = true;
 	});
 
+	let moveAction = new MoveAction(this.matter.body);
+	let updatePhysics = (delta) => {
+		moveAction.run(this.gameState);
+		this.matter.world.step(delta);
+	};
+
 	this.physicsUpdater = new PhysicsUpdater(
 		this.gameState,
-		this.matter.world.step.bind(this.matter.world),
+		updatePhysics,
 		game.config.physics.msPerTic
 	);
 
@@ -122,35 +138,41 @@ function create() {
 
 function update() {
 	if (this.running) {
-		this.physicsUpdater.update();
-
-		if (this.gameState.getGameObject(0).done) {
+		if (this.player.done) {
 			this.phaserPlayer.anims.play("turn", true);
 			this.running = false;
 			alert("Done!");
 		}
 
+		let steeringDirection = { x: 0, y: 0 };
 		if (this.cursors.left.isDown) {
-			this.clientSync.emit(events.START_MOVING_LEFT, {
-				id: 0,
-				timestamp: Date.now(),
-			});
+			steeringDirection.x = -1;
 			this.phaserPlayer.anims.play("left", true);
 		} else if (this.cursors.right.isDown) {
-			this.clientSync.emit(events.START_MOVING_RIGHT, {
-				id: 0,
-				timestamp: Date.now(),
-			});
+			steeringDirection.x = 1;
 			this.phaserPlayer.anims.play("right", true);
 		} else {
 			this.phaserPlayer.anims.play("turn", true);
 		}
 
 		if (this.cursors.up.isDown) {
-			this.clientSync.emit(events.START_MOVING_UP, {
-				id: 0,
-				timestamp: Date.now(),
-			});
+			steeringDirection.y = -1;
 		}
+
+		let playerDirection = this.player.direction;
+		if (
+			playerDirection.x !== steeringDirection.x ||
+			playerDirection.y !== steeringDirection.y
+		) {
+			this.player.setDirection(steeringDirection);
+			this.clientSync.emit(events.MOVEMENT_CHANGE_EVENT, {
+				id: this.player.id,
+				tic: this.gameState.tic,
+				direction: steeringDirection,
+			});
+			this.updateLock.lock(this.gameState.tic);
+		}
+
+		this.physicsUpdater.update(Date.now());
 	}
 }

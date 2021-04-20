@@ -51,6 +51,8 @@ class LevelInitializer {
 						matterObject
 					)
 				);
+			} else {
+				throw new Error("Couldn't initialize all game objects.");
 			}
 		});
 
