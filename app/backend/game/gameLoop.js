@@ -1,15 +1,25 @@
 const PhysicsUpdater = require("../../public/js/shared/physics/physicsUpdater");
+const logger = require("../logger");
 
 class GameLoop {
-	constructor(gameState, actions, milisPerTick) {
+	constructor(
+		gameState,
+		gameStatePublisher,
+		gameUpdate,
+		replay,
+		milisPerTic
+	) {
 		this.gameState = gameState;
-		this.actions = actions;
-		this.milisPerTick = milisPerTick;
+		this.gameStatePublisher = gameStatePublisher;
+		this.gameUpdate = gameUpdate;
+		this.replay = replay;
+		this.milisPerTic = milisPerTic;
 		this.running = false;
+		this.setTimeoutOffset = 16;
 		this.physicsUpdater = new PhysicsUpdater(
 			this.gameState,
-			this._update.bind(this),
-			this.milisPerTick
+			this._replayUpdatePublish.bind(this),
+			this.milisPerTic
 		);
 	}
 
@@ -17,7 +27,7 @@ class GameLoop {
 		if (startTime) {
 			this.gameState.lastTicTime = startTime;
 		} else {
-			this.gameState.lastTicTime = Date.now() - this.milisPerTick;
+			this.gameState.lastTicTime = Date.now() - this.milisPerTic;
 		}
 		this.running = true;
 		this._gameLoop();
@@ -25,11 +35,22 @@ class GameLoop {
 
 	_gameLoop() {
 		if (this.running) {
-			this.physicsUpdater.update();
+			let now = Date.now();
+
+			this.physicsUpdater.update(now);
+
+			let diff = Date.now() - now;
+			if (diff > this.milisPerTic * 0.8) {
+				logger.warn({
+					message:
+						"Interation needed more than 80% percent of time available",
+					duration: diff,
+				});
+			}
 
 			if (
 				Date.now() - this.gameState.lastTicTime <
-				this.milisPerTick - 16
+				this.milisPerTic - this.setTimeoutOffset
 			) {
 				setTimeout(this._gameLoop.bind(this));
 			} else {
@@ -38,8 +59,10 @@ class GameLoop {
 		}
 	}
 
-	_update(delta) {
-		this.actions.forEach((action) => action(this.gameState, delta));
+	_replayUpdatePublish(delta) {
+		this.replay.mayRevertAndReplay();
+		this.gameUpdate.apply(delta);
+		this.gameStatePublisher.publish(this.gameState);
 	}
 
 	stop() {

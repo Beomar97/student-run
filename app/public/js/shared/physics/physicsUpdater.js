@@ -1,25 +1,22 @@
 class PhysicsUpdater {
-	constructor(gameState, updatePhysics, milisPerTick) {
+	constructor(gameState, updatePhysics, milisPerTic) {
 		this.gameState = gameState;
 		this.updatePhysics = updatePhysics;
-		this.milisPerTick = milisPerTick;
-		this.accumulator = 0;
+		this.milisPerTic = milisPerTic;
 	}
 
-	update() {
-		let now = Date.now();
+	update(updateUntil) {
+		if (this.gameState.lastTicTime + this.milisPerTic <= updateUntil) {
+			let delta = updateUntil - this.gameState.lastTicTime;
+			let accumulator = delta;
 
-		if (this.gameState.lastTicTime + this.milisPerTick <= now) {
-			let delta = now - this.gameState.lastTicTime;
-			this.accumulator += delta;
-
-			while (this.accumulator >= this.milisPerTick) {
-				this.accumulator -= this.milisPerTick;
+			while (accumulator >= this.milisPerTic) {
+				accumulator -= this.milisPerTic;
+				this.updatePhysics(this.milisPerTic);
 				this.gameState.tic++;
-				this.updatePhysics(this.milisPerTick);
 			}
 
-			this.gameState.lastTicTime = now;
+			this.gameState.lastTicTime = updateUntil - accumulator;
 		}
 	}
 }

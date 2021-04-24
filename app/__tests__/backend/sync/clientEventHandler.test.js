@@ -1,15 +1,18 @@
 const SyncController = require("../../../backend/sync/syncController");
 const Physics = require("../../../backend/physics/physics");
+const EventQueue = require("../../../backend/game/eventQueue");
 const GameState = require("../../../public/js/shared/game/gameState");
 const ClientEventHandler = require("../../../backend/sync/clientEventHandler");
-const { GameObject } = require("../../../public/js/shared/game/gameObject");
+const { Player } = require("../../../public/js/shared/game/gameObject");
 
 jest.mock("../../../backend/sync/syncController");
 jest.mock("../../../backend/physics/physics");
+jest.mock("../../../backend/game/eventQueue");
 
 beforeEach(() => {
 	SyncController.mockClear();
 	Physics.mockClear();
+	EventQueue.mockClear();
 });
 
 describe("Test the ClientEventHandler class", () => {
@@ -21,57 +24,33 @@ describe("Test the ClientEventHandler class", () => {
 		expect(syncController.control).toHaveBeenCalled();
 	});
 
-	test("if _startMovingLeft method calls physics correctly.", () => {
-		let gameState = new GameState();
-		let physics = new Physics();
-		let testee = new ClientEventHandler({}, gameState, physics);
-		let position = { x: 1, y: 1 };
-		let gameObject = new GameObject(1, "", { position: position });
-		let force = { x: -0.005, y: 0 };
-		gameState.addAll([gameObject]);
+	test("if _handleMoveChangeEvent method calls eventQueue.", () => {
+		let eventQueue = new EventQueue();
+		let movementChangeEvent = { tic: 49 };
+		let testee = new ClientEventHandler({}, {}, {}, eventQueue, 50);
 
-		testee._startMovingLeft(gameObject.id, position);
+		testee._handleMoveChangeEvent(movementChangeEvent);
 
-		expect(physics.applyForce).lastCalledWith(
-			gameObject.innerObject,
-			position,
-			force
+		expect(eventQueue.enqueue).lastCalledWith(
+			movementChangeEvent.tic,
+			expect.any(Function)
 		);
 	});
 
-	test("if _startMovingRight method calls physics correctly.", () => {
+	test("if _applyMovementChange method sets direction correctly.", () => {
 		let gameState = new GameState();
 		let physics = new Physics();
 		let testee = new ClientEventHandler({}, gameState, physics);
-		let position = { x: 1, y: 1 };
-		let gameObject = new GameObject(1, "", { position: position });
-		let force = { x: 0.005, y: 0 };
-		gameState.addAll([gameObject]);
+		let player = new Player(1, "", {}, 0.01);
+		gameState.addAll([player]);
+		let movementChangeEvent = {
+			id: player.id,
+			tic: 49,
+			direction: { x: 1, y: 1 },
+		};
 
-		testee._startMovingRight(gameObject.id, position);
+		testee._applyMovementChange(movementChangeEvent);
 
-		expect(physics.applyForce).lastCalledWith(
-			gameObject.innerObject,
-			position,
-			force
-		);
-	});
-
-	test("if _startMovingUp method calls physics correctly.", () => {
-		let gameState = new GameState();
-		let physics = new Physics();
-		let testee = new ClientEventHandler({}, gameState, physics);
-		let position = { x: 1, y: 1 };
-		let gameObject = new GameObject(1, "", { position: position });
-		let force = { x: 0.0, y: -0.005 };
-		gameState.addAll([gameObject]);
-
-		testee._startMovingUp(gameObject.id, position);
-
-		expect(physics.applyForce).lastCalledWith(
-			gameObject.innerObject,
-			position,
-			force
-		);
+		expect(player.direction).toStrictEqual(movementChangeEvent.direction);
 	});
 });

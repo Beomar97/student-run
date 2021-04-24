@@ -37,7 +37,7 @@ const player = physics.getMatter().Bodies.circle(300, 300, 25, {
 	frictionAir: 0.3,
 });
 gameObjectCollection.push(
-	new Player(id.next(), gameObjectTypes.PLAYER, player)
+	new Player(id.next(), gameObjectTypes.PLAYER, player, 0.005)
 );
 
 // Load level with objects
@@ -53,7 +53,12 @@ gameObjectCollection.forEach((gameObject) => {
 // Create game
 const game = new GameFactory()
 	.withSyncController(syncController)
-	.withMilisPerTick(1000 / 40)
+	.withMilisPerTic(1000 / 40)
+	.withTicsPerPublish(4)
+	.withMaxSnapshots(10)
+	.withTicsPerSnapshot(8)
+	.withMaxEntriesEventQueue(80)
+	.withAllowedEventMaxAge(70)
 	.withPhysics(physics)
 	.withGameObjects(gameObjectCollection)
 	.withFinishLineOffset(50)

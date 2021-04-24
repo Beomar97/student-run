@@ -1,35 +1,48 @@
 const events = require("../shared/sync/events");
 
 class UpdateHandler {
-	constructor(clientSync, matter, gameState) {
+	constructor(clientSync, matter, gameState, updateLock) {
 		this.clientSync = clientSync;
 		this.matter = matter;
 		this.gameState = gameState;
+		this.updateLock = updateLock;
 	}
 
 	init() {
-		let self = this;
-		this.clientSync.on(events.GAME_STATE_UPDATE, (gameObjects) => {
-			this._updateGameState(gameObjects, self);
+		this.clientSync.on(events.GAME_STATE_UPDATE, (gameStateUpdate) => {
+			this._updateGameState(gameStateUpdate);
 		});
 		this.clientSync.on(events.PLAYER_DETAILS_UPDATE, (players) => {
-			this._updatePlayer(players, self);
+			this._updatePlayer(players);
 		});
 	}
 
-	_updateGameState(gameObjects, self) {
-		gameObjects.forEach((serverGameObject) => {
-			let gameObject = self.gameState.getGameObject(serverGameObject.id);
-			self.matter.body.setPosition(gameObject.innerObject, {
-				x: serverGameObject.position.x,
-				y: serverGameObject.position.y,
-			});
+	_updateGameState(gameStateUpdate) {
+		gameStateUpdate.gameObjects.forEach((serverGameObject) => {
+			if (
+				!this.updateLock.isLocked(
+					serverGameObject.id,
+					gameStateUpdate.tic
+				)
+			) {
+				let gameObject = this.gameState.getGameObject(
+					serverGameObject.id
+				);
+				this.matter.body.setPosition(
+					gameObject.innerObject,
+					serverGameObject.position
+				);
+				this.matter.body.setVelocity(
+					gameObject.innerObject,
+					serverGameObject.velocity
+				);
+			}
 		});
 	}
 
-	_updatePlayer(players, self) {
+	_updatePlayer(players) {
 		players.forEach((serverPlayer) => {
-			let localPlayer = self.gameState.getGameObject(serverPlayer.id);
+			let localPlayer = this.gameState.getGameObject(serverPlayer.id);
 			localPlayer.done = serverPlayer.done;
 			localPlayer.doneAt = serverPlayer.doneAt;
 		});

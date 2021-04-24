@@ -14,19 +14,28 @@ describe("Test the GameStatePublisher class", () => {
 	test("if publish method calls syncController.", () => {
 		let syncController = new SyncController();
 		let gameState = new GameState();
+		gameState.tic = 1;
 		let id = 1;
 		let position = { x: 1, y: 1 };
-		let gameObject = new GameObject(id, "", { position: position });
+		let velocity = { x: 1, y: 1 };
+		let gameObject = new GameObject(id, "", {
+			position: position,
+			velocity: velocity,
+		});
 		gameState.addAll([gameObject]);
-		let testee = new GameStatePublisher(syncController);
+		let testee = new GameStatePublisher(syncController, 1);
 
 		testee.publish(gameState);
 
-		expect(syncController.emit).lastCalledWith(events.GAME_STATE_UPDATE, [
-			{
-				id: id,
-				position: position,
-			},
-		]);
+		expect(syncController.emit).lastCalledWith(events.GAME_STATE_UPDATE, {
+			tic: gameState.tic,
+			gameObjects: [
+				{
+					id: id,
+					position: position,
+					velocity: velocity,
+				},
+			],
+		});
 	});
 });

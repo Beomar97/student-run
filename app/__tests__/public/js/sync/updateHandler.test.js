@@ -5,8 +5,6 @@ const UpdateHandler = require("../../../../public/js/sync/updateHandler");
 const mocks = require("../../../mocks/mocks");
 const gameObjectTypes = require("../../../../public/js/shared/game/gameObjectTypes");
 
-global.events = events;
-
 let socket = mocks.socket();
 let matter = mocks.matter();
 
@@ -34,24 +32,41 @@ describe("Test the UpdateHandler class", () => {
 		);
 	});
 
-	test("if _updateGameState method calls socket.", () => {
+	test("if _updateGameState method updates gameObjects.", () => {
 		let gameState = new GameState();
 		let object = { id: 0, innerObject: { thisIsInnerObject: true } };
 		gameState.addAll([object]);
-		let update = {
+		let gameObjectUpdate = {
 			id: 0,
 			position: {
 				x: 12,
 				y: 13,
 			},
+			velocity: {
+				x: 14,
+				y: 15,
+			},
 		};
-		let testee = new UpdateHandler(socket, matter, gameState);
+		let update = {
+			tic: 0,
+			gameObjects: [gameObjectUpdate],
+		};
+		let testee = new UpdateHandler(
+			socket,
+			matter,
+			gameState,
+			mocks.updateLock(false)
+		);
 
-		testee._updateGameState([update], testee);
+		testee._updateGameState(update, testee);
 
 		expect(matter.body.setPosition).lastCalledWith(
 			object.innerObject,
-			update.position
+			gameObjectUpdate.position
+		);
+		expect(matter.body.setVelocity).lastCalledWith(
+			object.innerObject,
+			gameObjectUpdate.velocity
 		);
 	});
 
