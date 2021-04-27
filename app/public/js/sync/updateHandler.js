@@ -1,11 +1,12 @@
 const events = require("../shared/sync/events");
 
 class UpdateHandler {
-	constructor(clientSync, matter, gameState, updateLock) {
+	constructor(clientSync, matter, gameState, updateLock, myPlayerId) {
 		this.clientSync = clientSync;
 		this.matter = matter;
 		this.gameState = gameState;
 		this.updateLock = updateLock;
+		this.myPlayerId = myPlayerId;
 	}
 
 	init() {
@@ -15,6 +16,19 @@ class UpdateHandler {
 		this.clientSync.on(events.PLAYER_DETAILS_UPDATE, (players) => {
 			this._updatePlayer(players);
 		});
+		this.clientSync.on(
+			events.MOVEMENT_CHANGE_EVENT,
+			(movementChangeEvent) => {
+				this._applyMovementChange(movementChangeEvent);
+			}
+		);
+	}
+
+	_applyMovementChange(movementChangeEvent) {
+		if (movementChangeEvent.id !== this.myPlayerId) {
+			let player = this.gameState.getGameObject(movementChangeEvent.id);
+			player.setDirection(movementChangeEvent.direction);
+		}
 	}
 
 	_updateGameState(gameStateUpdate) {

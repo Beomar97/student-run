@@ -15,6 +15,10 @@ class SyncController {
 	emit(id, object) {
 		this.io.emit(id, object);
 	}
+
+	to(id, client, object) {
+		this.io.to(client).emit(id, object);
+	}
 }
 
 module.exports = SyncController;

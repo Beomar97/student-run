@@ -33,10 +33,11 @@ class MovingGameObject extends GameObject {
 }
 
 class Player extends MovingGameObject {
-	constructor(id, type, innerObject, baseForce) {
+	constructor(id, type, innerObject, baseForce, name) {
 		super(id, type, innerObject, baseForce);
 		this.done = false;
 		this.doneAt = null;
+		this.name = name;
 	}
 }
 

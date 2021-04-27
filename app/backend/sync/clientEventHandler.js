@@ -31,6 +31,11 @@ class ClientEventHandler {
 			movementChangeEvent.direction
 		);
 
+		this.syncController.emit(
+			events.MOVEMENT_CHANGE_EVENT,
+			movementChangeEvent
+		);
+
 		this.eventQueue.enqueue(
 			this._evaluateEventTic(movementChangeEvent.tic),
 			(() => {

@@ -3,9 +3,8 @@ const { io } = require("socket.io-client");
 const LevelInitializer = require("./levelInitializer");
 const ClientSync = require("./sync/clientSync");
 const UpdateHandler = require("./sync/updateHandler");
-const { Player } = require("./shared/game/gameObject");
+const PlayerInitializer = require("./playerInitializer");
 const GameState = require("./shared/game/gameState");
-const gameObjectTypes = require("./shared/game/gameObjectTypes");
 const events = require("./shared/sync/events");
 const PhysicsUpdater = require("./shared/physics/physicsUpdater");
 const UpdateLock = require("./sync/updateLock");
@@ -38,6 +37,7 @@ var game = new Phaser.Game(config);
 function preload() {
 	this.load.image("background", "assets/sky.png");
 	this.load.json("levelData", "levels/0");
+	this.load.json("playerData", "players");
 	this.load.image("star", "assets/star.png");
 	this.load.spritesheet("player", "assets/dude.png", {
 		frameWidth: 32,
@@ -60,18 +60,12 @@ function create() {
 		.setScale(20);
 
 	// Init Player
-	this.phaserPlayer = this.add.sprite(300, 300, "player");
-	this.matterPlayer = this.matter.add.circle(300, 300, 25, {
-		frictionAir: 0.3,
-	});
-	this.player = new Player(
-		0,
-		gameObjectTypes.PLAYER,
-		this.matterPlayer,
-		0.005
-	);
-	this.matter.add.gameObject(this.phaserPlayer, this.matterPlayer);
-	gameObjectCollection.push(this.player);
+	let playerData = this.cache.json.get("playerData");
+	let playerInitializer = new PlayerInitializer(this);
+	let loadedPlayers = playerInitializer.addJSONObjectsToPhaser(playerData);
+	this.myPlayerId = parseInt(localStorage.getItem("playerId"));
+	this.myPhaserPlayer = playerInitializer.getPlayerById(this.myPlayerId);
+	gameObjectCollection = gameObjectCollection.concat(loadedPlayers);
 
 	// Init Objects
 	let levelInitializer = new LevelInitializer(this);
@@ -103,13 +97,14 @@ function create() {
 	this.gameState = new GameState();
 	this.gameState.addAll(gameObjectCollection);
 
-	this.updateLock = new UpdateLock(this.player.id);
+	this.updateLock = new UpdateLock(this.myPlayerId);
 	this.clientSync = new ClientSync(io());
 	this.updateHandler = new UpdateHandler(
 		this.clientSync,
 		this.matter,
 		this.gameState,
-		this.updateLock
+		this.updateLock,
+		this.myPlayerId
 	);
 	this.updateHandler.init();
 
@@ -133,13 +128,13 @@ function create() {
 
 	// Input & Output
 	this.cursors = this.input.keyboard.createCursorKeys();
-	this.cameras.main.startFollow(this.phaserPlayer, true, 0.9, 0.9);
+	this.cameras.main.startFollow(this.myPhaserPlayer, true, 0.9, 0.9);
 }
 
 function update() {
 	if (this.running) {
-		if (this.player.done) {
-			this.phaserPlayer.anims.play("turn", true);
+		if (this.gameState.getGameObject(this.myPlayerId).done) {
+			this.myPhaserPlayer.anims.play("turn", true);
 			this.running = false;
 			alert("Done!");
 		}
@@ -147,26 +142,29 @@ function update() {
 		let steeringDirection = { x: 0, y: 0 };
 		if (this.cursors.left.isDown) {
 			steeringDirection.x = -1;
-			this.phaserPlayer.anims.play("left", true);
+			this.myPhaserPlayer.anims.play("left", true);
 		} else if (this.cursors.right.isDown) {
 			steeringDirection.x = 1;
-			this.phaserPlayer.anims.play("right", true);
+			this.myPhaserPlayer.anims.play("right", true);
 		} else {
-			this.phaserPlayer.anims.play("turn", true);
+			this.myPhaserPlayer.anims.play("turn", true);
 		}
 
 		if (this.cursors.up.isDown) {
 			steeringDirection.y = -1;
 		}
 
-		let playerDirection = this.player.direction;
+		let playerDirection = this.gameState.getGameObject(this.myPlayerId)
+			.direction;
 		if (
 			playerDirection.x !== steeringDirection.x ||
 			playerDirection.y !== steeringDirection.y
 		) {
-			this.player.setDirection(steeringDirection);
+			this.gameState
+				.getGameObject(this.myPlayerId)
+				.setDirection(steeringDirection);
 			this.clientSync.emit(events.MOVEMENT_CHANGE_EVENT, {
-				id: this.player.id,
+				id: this.myPlayerId,
 				tic: this.gameState.tic,
 				direction: steeringDirection,
 			});

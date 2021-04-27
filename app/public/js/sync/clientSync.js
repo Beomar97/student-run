@@ -3,6 +3,10 @@ class ClientSync {
 		this.socket = io;
 	}
 
+	getId() {
+		return this.socket.id;
+	}
+
 	on(id, eventHandler) {
 		this.socket.on(id, eventHandler);
 	}

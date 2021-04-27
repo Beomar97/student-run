@@ -25,9 +25,16 @@ describe("Test the ClientEventHandler class", () => {
 	});
 
 	test("if _handleMoveChangeEvent method calls eventQueue.", () => {
+		let syncController = new SyncController();
 		let eventQueue = new EventQueue();
 		let movementChangeEvent = { tic: 49 };
-		let testee = new ClientEventHandler({}, {}, {}, eventQueue, 50);
+		let testee = new ClientEventHandler(
+			syncController,
+			{},
+			{},
+			eventQueue,
+			50
+		);
 
 		testee._handleMoveChangeEvent(movementChangeEvent);
 
