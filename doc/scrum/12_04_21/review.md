@@ -1,6 +1,6 @@
 # Review Sprint 2
 
-## Actions aus Review Sprint 1
+## Actions aus Retro Sprint 1
 
 -   kleinere und unabhängigere Tickets -> es ist besser geworden, aber noch nicht optimal. Noch mehr drauf achten!
 -   Ein Teil der Scrum-Meeting-Tasks (Schätzen) wird beim Weekly gemacht -> Haben wir gemacht.
