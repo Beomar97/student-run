@@ -6,7 +6,8 @@ const Physics = require("../physics/physics");
 const id = require("../util/id");
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const GameFactory = require("./gameFactory");
-const LevelLoader = require("../game/levelLoader");
+const LevelLoader = require("./levelLoader");
+const LevelHolder = require("./levelHolder");
 
 class Room {
 	constructor(syncController) {
@@ -54,9 +55,10 @@ class Room {
 	}
 
 	_generateGameObjects(physics) {
-		let levelLoader = new LevelLoader(
+		let levelLoader = new LevelLoader();
+		let levelHolder = new LevelHolder(
 			"../../public/js/shared/levels/",
-			physics
+			levelLoader
 		);
 
 		this.waitingPlayers.forEach((player) => {
@@ -68,7 +70,7 @@ class Room {
 		});
 		let gameObjectCollection = this.waitingPlayers;
 		gameObjectCollection = gameObjectCollection.concat(
-			levelLoader.getLevelObjectsById(0)
+			levelHolder.getLevelObjectsById(0, physics)
 		);
 		gameObjectCollection.forEach((gameObject) => {
 			physics

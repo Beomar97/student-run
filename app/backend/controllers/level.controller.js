@@ -1,13 +1,14 @@
-const Matter = require("matter-js");
-const Physics = require("../physics/physics");
-const physics = new Physics(Matter);
 const LevelLoader = require("../game/levelLoader");
-const levelLoader = new LevelLoader("../../public/js/shared/levels/", physics);
+const LevelHolder = require("../game/levelHolder");
+const levelHolder = new LevelHolder(
+	"../../public/js/shared/levels/",
+	new LevelLoader()
+);
 
 exports.getById = (req, res) => {
-	res.send(levelLoader.getLevelJSONById(req.params.id));
+	res.send(levelHolder.getLevelJSONById(req.params.id));
 };
 
 exports.getAll = (req, res) => {
-	res.send(Object.values(levelLoader.levelCollection));
+	res.send(Object.values(levelHolder.levelCollection));
 };
