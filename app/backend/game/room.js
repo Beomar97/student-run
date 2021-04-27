@@ -11,7 +11,7 @@ const LevelHolder = require("./levelHolder");
 
 class Room {
 	constructor(syncController) {
-		this.levelId = 0;
+		this.levelId = 2;
 		this.waitingPlayers = [];
 		this.game = null;
 
@@ -70,7 +70,7 @@ class Room {
 		});
 		let gameObjectCollection = this.waitingPlayers;
 		gameObjectCollection = gameObjectCollection.concat(
-			levelHolder.getLevelObjectsById(0, physics)
+			levelHolder.getLevelObjectsById(2, physics)
 		);
 		gameObjectCollection.forEach((gameObject) => {
 			physics

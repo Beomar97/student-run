@@ -12,7 +12,7 @@ const MoveAction = require("./shared/game/moveAction");
 
 var config = {
 	type: Phaser.AUTO,
-	parent: "phaser-example",
+	parent: "student-run",
 	width: 1000,
 	height: 700,
 	pixelArt: true,
@@ -36,13 +36,26 @@ var game = new Phaser.Game(config);
 
 function preload() {
 	this.load.image("background", "assets/sky.png");
-	this.load.json("levelData", "levels/0");
+	this.load.json("levelData", "levels/2");
+	this.load.spritesheet("flag", "assets/sprites/flag.png", {
+		frameWidth: 80,
+		frameHeight: 128,
+	});
 	this.load.json("playerData", "players");
 	this.load.image("star", "assets/star.png");
 	this.load.spritesheet("player", "assets/dude.png", {
 		frameWidth: 32,
 		frameHeight: 48,
 	});
+	this.load.image("platform", "assets/world/platform.png");
+	this.load.image("platform2", "assets/world/platform2.png");
+	this.load.image("ground", "assets/world/ground.png");
+	this.load.image("dirt", "assets/world/dirt.png");
+	this.load.image("signpost", "assets/world/signpost.png");
+	this.load.image("tree", "assets/world/tree.png");
+	this.load.image("stone", "assets/world/stone.png");
+	this.load.image("rope_railing", "assets/world/rope_railing.png");
+	this.load.image("wood_railing", "assets/world/wood_railing.png");
 }
 
 function create() {
@@ -59,6 +72,11 @@ function create() {
 		.image(game.config.width / 2, game.config.height / 2, "background")
 		.setScale(20);
 
+	// Init Objects
+	let levelInitializer = new LevelInitializer(this);
+	let loadedObjects = levelInitializer.addJSONObjectsToPhaser(leveldata);
+	gameObjectCollection = gameObjectCollection.concat(loadedObjects);
+
 	// Init Player
 	let playerData = this.cache.json.get("playerData");
 	let playerInitializer = new PlayerInitializer(this);
@@ -66,11 +84,6 @@ function create() {
 	this.myPlayerId = parseInt(localStorage.getItem("playerId"));
 	this.myPhaserPlayer = playerInitializer.getPlayerById(this.myPlayerId);
 	gameObjectCollection = gameObjectCollection.concat(loadedPlayers);
-
-	// Init Objects
-	let levelInitializer = new LevelInitializer(this);
-	let loadedObjects = levelInitializer.addJSONObjectsToPhaser(leveldata);
-	gameObjectCollection = gameObjectCollection.concat(loadedObjects);
 
 	// Animation
 	this.anims.create({

@@ -36,5 +36,6 @@
 			"radius": 20,
 			"isStatic": false
 		}
-	]
+	],
+	"decorations": []
 }

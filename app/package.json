@@ -5,15 +5,19 @@
 	"main": "backend/server.js",
 	"scripts": {
 		"prod": "cross-env NODE_ENV=production node backend/server.js",
-		"dev": "npm-run-all --parallel watchify sass-watch nodemon",
+		"dev": "npm-run-all --parallel watch-js watch-sass nodemon",
 		"debug": "cross-env LOGLEVEL=debug npm run dev",
 		"test": "jest",
 		"nodemon": "nodemon backend/server.js",
-		"watchify": "watchify public/js/game.js -o public/build/bundle.js -v -d",
-		"sass-watch": "sass --no-source-map --watch public/styles/global.scss public/build/global.css",
+		"watch-js": "npm-run-all --parallel watch-js-game watch-js-join",
+		"watch-js-game": "watchify public/js/game.js -o public/build/game-bundle.js -v -d",
+		"watch-js-join": "watchify public/js/join.js -o public/build/join-bundle.js -v -d",
+		"watch-sass": "sass --no-source-map --watch public/styles/global.scss public/build/global.css",
 		"build": "npm-run-all --parallel js-build css-build",
-		"js-build": "browserify public/js/game.js -o public/build/bundle.js",
-		"css-build": "sass --no-source-map public/styles/global.scss public/build/global.css"
+		"js-build": "npm-run-all --parallel game-bundle join-bundle",
+		"css-build": "sass --no-source-map public/styles/global.scss public/build/global.css",
+		"game-bundle": "browserify public/js/game.js -o public/build/game-bundle.js",
+		"join-bundle": "browserify public/js/join.js -o public/build/join-bundle.js"
 	},
 	"repository": {
 		"type": "git",
@@ -22,11 +26,11 @@
 	"author": "Marco Forster, Marvin Tseng, Manuel Berweger, Dan Hochstrasser, Adrian Schrempp",
 	"license": "MIT",
 	"dependencies": {
-		"body-parser": "^1.19.0",
 		"browserify": "^17.0.0",
 		"config": "^3.3.4",
 		"express": "^4.17.1",
 		"fast-safe-stringify": "^2.0.7",
+		"jquery": "^3.6.0",
 		"matter-js": "^0.16.1",
 		"mongoose": "^5.11.15",
 		"morgan": "^1.10.0",

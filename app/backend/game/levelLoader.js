@@ -1,11 +1,27 @@
 const GameObjectBuilder = require("./gameObjectBuilder");
 const gameObjectShapes = require("../../public/js/shared/game/gameObjectShapes");
+const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 
 class LevelLoader {
 	constructor() {}
 
 	deserializeGameObject(objectDescription, physics) {
-		if (objectDescription.shape === gameObjectShapes.RECTANGLE) {
+		if (objectDescription.type === gameObjectTypes.FINISH_LINE) {
+			let uniqueCollisionCategory = physics
+				.getMatter()
+				.Body.nextCategory();
+			return new GameObjectBuilder()
+				.withPhysics(physics)
+				.withId(objectDescription.id)
+				.withGameObjectType(objectDescription.type)
+				.withX(objectDescription.x)
+				.withY(objectDescription.y)
+				.withWidth(objectDescription.width)
+				.withHeight(objectDescription.height)
+				.withIsStatic(objectDescription.isStatic)
+				.withCollisionCategory(uniqueCollisionCategory)
+				.createRectangle();
+		} else if (objectDescription.shape === gameObjectShapes.RECTANGLE) {
 			return new GameObjectBuilder()
 				.withPhysics(physics)
 				.withId(objectDescription.id)

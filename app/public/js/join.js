@@ -1,14 +1,20 @@
+const $ = require("jquery");
+const { io } = require("socket.io-client");
+const events = require("./shared/sync/events");
+const ClientSync = require("./sync/clientSync");
+const TableGenerator = require("./helper/tableGenerator");
+
 $(function () {
 	let clientSync = new ClientSync(io());
 
-	$("#joinGame").click(function (event) {
+	$("#joinGame").on("click", function (event) {
 		event.preventDefault();
 
 		let name = window.prompt("Your Name", "Mustermann");
 		clientSync.emit(events.PLAYER_JOINED, { name: name });
 	});
 
-	$("#startGame").click(function (event) {
+	$("#startGame").on("click", function (event) {
 		event.preventDefault();
 		clientSync.emit(events.INITIALIZE_GAME);
 	});

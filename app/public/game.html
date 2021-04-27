@@ -12,16 +12,15 @@
 			crossorigin="anonymous"
 		/>
 	</head>
-	<body>
-		<nav class="navbar" role="navigation" aria-label="main navigation">
+	<body class="has-navbar-fixed-top">
+		<nav
+			class="navbar is-fixed-top"
+			role="navigation"
+			aria-label="main navigation"
+		>
 			<div class="navbar-brand">
 				<a class="navbar-item" href="index.html">
-					<img
-						src="https://bulma.io/images/bulma-logo.png"
-						alt="bulma-logo"
-						width="112"
-						height="28"
-					/>
+					<img src="assets/logo.png" alt="studentrun-logo" />
 				</a>
 
 				<a
@@ -42,7 +41,6 @@
 					<a class="navbar-item" href="index.html"> Home </a>
 
 					<a class="navbar-item"> Game </a>
-					<a class="navbar-item" href="credits.html"> Credits </a>
 
 					<div class="navbar-item has-dropdown is-hoverable">
 						<a class="navbar-link"> More </a>
@@ -50,6 +48,9 @@
 						<div class="navbar-dropdown">
 							<a class="navbar-item"> About </a>
 							<a class="navbar-item"> Contact </a>
+							<a class="navbar-item" href="credits.html">
+								Credits
+							</a>
 							<hr class="navbar-divider" />
 							<a
 								class="navbar-item"
@@ -65,10 +66,13 @@
 					<div class="navbar-item">
 						<div class="field is-grouped">
 							<p class="control">
-								<a href="game.html">
+								<a href="join.html">
 									<button class="button is-danger">
 										<span class="icon is-small">
-											<i class="fas fa-gamepad"></i>
+											<i
+												class="fas fa-gamepad"
+												aria-hidden="true"
+											></i>
 										</span>
 										<span class="is-uppercase">Play</span>
 									</button></a
@@ -80,7 +84,10 @@
 								>
 									<button class="button is-light">
 										<span class="icon is-small">
-											<i class="fab fa-github"></i>
+											<i
+												class="fab fa-github"
+												aria-hidden="true"
+											></i>
 										</span></button
 								></a>
 							</p>
@@ -90,6 +97,15 @@
 			</div>
 		</nav>
 
-		<script src="build/bundle.js"></script>
+		<div class="columns">
+			<div
+				id="student-run"
+				class="column is-three-fifths is-offset-one-fifth"
+			>
+				<!-- Phaser will be displayed inside this div -->
+			</div>
+		</div>
+
+		<script src="build/game-bundle.js"></script>
 	</body>
 </html>

@@ -6,6 +6,10 @@ const {
 class GameObjectBuilder {
 	constructor() {
 		this.properties = {};
+		this.properties.collisionFilter = {
+			category: 1,
+			mask: -1,
+		};
 		this.physics = null;
 	}
 
@@ -54,6 +58,14 @@ class GameObjectBuilder {
 		return this;
 	}
 
+	withCollisionCategory(collisionCategory) {
+		this.properties.collisionFilter = {
+			collisionFilter: collisionCategory,
+			mask: 0,
+		};
+		return this;
+	}
+
 	createRectangle() {
 		this._validateBase();
 		this._validateRectangle();
@@ -67,6 +79,7 @@ class GameObjectBuilder {
 				this.properties.height,
 				{
 					isStatic: this.properties.isStatic,
+					collisionFilter: this.properties.collisionFilter,
 				}
 			);
 

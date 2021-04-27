@@ -1,0 +1,308 @@
+{
+	"id": 2,
+	"name": "First Level",
+	"backgroundUrl": "assets/sky.png",
+	"wordWidth": 5000,
+	"wordHeight": 1000,
+	"gameObjects": [
+		{
+			"id": 1000,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "dirt",
+			"x": 2000,
+			"y": 950,
+			"width": 6000,
+			"height": 500,
+			"isStatic": true
+		},
+		{
+			"id": 1001,
+			"type": "finishLine",
+			"shape": "rectangle",
+			"texture": "flag",
+			"x": 4800,
+			"y": 300,
+			"width": 80,
+			"height": 128,
+			"isStatic": true
+		},
+		{
+			"id": 1002,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": -100,
+			"y": 625,
+			"width": 1800,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1003,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 1250,
+			"y": 625,
+			"width": 300,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1004,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 2100,
+			"y": 625,
+			"width": 800,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1005,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 2875,
+			"y": 625,
+			"width": 150,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1006,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 3325,
+			"y": 625,
+			"width": 150,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1007,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 3900,
+			"y": 625,
+			"width": 400,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1008,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "dirt",
+			"x": 5050,
+			"y": 625,
+			"width": 1900,
+			"height": 150,
+			"isStatic": true
+		},
+		{
+			"id": 1009,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 4300,
+			"y": 500,
+			"width": 400,
+			"height": 100,
+			"isStatic": true
+		},
+		{
+			"id": 1010,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "dirt",
+			"x": 5250,
+			"y": 500,
+			"width": 1500,
+			"height": 100,
+			"isStatic": true
+		},
+		{
+			"id": 1011,
+			"type": "staticObstacleTileSprite",
+			"shape": "rectangle",
+			"texture": "ground",
+			"x": 5250,
+			"y": 400,
+			"width": 1500,
+			"height": 100,
+			"isStatic": true
+		},
+		{
+			"id": 2001,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform",
+			"x": 800,
+			"y": 350,
+			"width": 300,
+			"height": 40,
+			"isStatic": true
+		},
+		{
+			"id": 2002,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform",
+			"x": 1400,
+			"y": 350,
+			"width": 300,
+			"height": 40,
+			"isStatic": true
+		},
+		{
+			"id": 2003,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform",
+			"x": 2500,
+			"y": 350,
+			"width": 200,
+			"height": 40,
+			"isStatic": true
+		},
+		{
+			"id": 2004,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform",
+			"x": 2900,
+			"y": 350,
+			"width": 400,
+			"height": 40,
+			"isStatic": true
+		},
+		{
+			"id": 2005,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform",
+			"x": 3450,
+			"y": 350,
+			"width": 200,
+			"height": 40,
+			"isStatic": true
+		},
+		{
+			"id": 3001,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform2",
+			"x": 1800,
+			"y": 175,
+			"width": 150,
+			"height": 40,
+			"isStatic": true
+		},
+		{
+			"id": 3002,
+			"type": "staticObstacleSprite",
+			"shape": "rectangle",
+			"texture": "platform2",
+			"x": 3800,
+			"y": 175,
+			"width": 150,
+			"height": 40,
+			"isStatic": true
+		}
+	],
+	"decorations": [
+		{
+			"id": 101,
+			"type": "decoration",
+			"texture": "signpost",
+			"scale": 0.8,
+			"x": 400,
+			"y": 505
+		},
+		{
+			"id": 102,
+			"type": "decoration",
+			"texture": "stone",
+			"scale": 0.3,
+			"x": 1340,
+			"y": 540
+		},
+		{
+			"id": 103,
+			"type": "decoration",
+			"texture": "tree",
+			"scale": 0.6,
+			"x": 2150,
+			"y": 410
+		},
+		{
+			"id": 104,
+			"type": "decoration",
+			"texture": "stone",
+			"scale": 0.4,
+			"x": 2200,
+			"y": 536
+		},
+		{
+			"id": 105,
+			"type": "decoration",
+			"texture": "rope_railing",
+			"scale": 0.25,
+			"x": 2874,
+			"y": 538
+		},
+		{
+			"id": 106,
+			"type": "decoration",
+			"texture": "rope_railing",
+			"scale": 0.25,
+			"x": 3324,
+			"y": 538
+		},
+		{
+			"id": 107,
+			"type": "decoration",
+			"texture": "signpost",
+			"scale": 0.8,
+			"x": 3980,
+			"y": 505
+		},
+		{
+			"id": 201,
+			"type": "decoration",
+			"texture": "tree",
+			"scale": 0.6,
+			"x": 1400,
+			"y": 190
+		},
+		{
+			"id": 202,
+			"type": "decoration",
+			"texture": "wood_railing",
+			"scale": 0.6,
+			"x": 2900,
+			"y": 302
+		},
+		{
+			"id": 301,
+			"type": "decoration",
+			"texture": "signpost",
+			"scale": 0.8,
+			"x": 1800,
+			"y": 110
+		},
+		{
+			"id": 302,
+			"type": "decoration",
+			"texture": "tree",
+			"scale": 0.4,
+			"x": 3800,
+			"y": 65
+		}
+	]
+}

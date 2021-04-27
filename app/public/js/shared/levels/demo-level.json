@@ -60,5 +60,6 @@
 			"isStatic": false,
 			"texture": "star"
 		}
-	]
+	],
+	"decorations": []
 }

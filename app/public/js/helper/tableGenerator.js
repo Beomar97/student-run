@@ -1,3 +1,5 @@
+const $ = require("jquery");
+
 class TableGenerator {
 	constructor() {}
 
