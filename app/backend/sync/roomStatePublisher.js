@@ -8,18 +8,18 @@ class RoomStatePublisher {
 
 	publishRoomUpdate(room) {
 		this.syncController.emit(events.ROOM_STATE_UPATE, {
-			waitingPlayers: this._stringifyPlayers(room.waitingPlayers),
+			waitingPlayers: this._stringifyPlayers(
+				Array.from(room.waitingPlayers.values()) //TODO publish not all player information
+			),
 		});
 	}
 
-	publishInitDone() {
-		this.syncController.emit(events.GAME_READY);
+	loadGame() {
+		this.syncController.emit(events.LOAD_GAME);
 	}
 
 	publishPlayerId(socketId, playerId) {
-		this.syncController.to(events.PLAYER_JOINED, socketId, {
-			playerId: playerId,
-		});
+		this.syncController.to(events.PLAYER_ID_ALLOCATION, socketId, playerId);
 	}
 
 	_stringifyPlayers(waitingPlayers) {

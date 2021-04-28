@@ -12,11 +12,6 @@ class ClientEventHandler {
 
 	init() {
 		this.syncController.control((serverSync) => {
-			logger.info({
-				message: "Connection established",
-				id: serverSync.getId(),
-			});
-
 			serverSync.on(
 				events.MOVEMENT_CHANGE_EVENT,
 				this._handleMoveChangeEvent.bind(this)

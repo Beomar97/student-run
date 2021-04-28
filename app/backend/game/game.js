@@ -9,13 +9,9 @@ class Game {
 
 	start() {
 		this.clientEventHandler.init();
-
-		this.syncController.control((serverSync) => {
-			// when client connects -> game starts
-			let startTime = Date.now() + 1000; //TODO move to GameFactory
-			this.syncController.emit(events.GAME_START, startTime);
-			this.gameLoop.start(startTime);
-		});
+		let startTime = Date.now() + 1000; //TODO move to GameFactory
+		this.syncController.emit(events.GAME_START, startTime);
+		this.gameLoop.start(startTime);
 	}
 }
 

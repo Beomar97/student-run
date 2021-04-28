@@ -127,6 +127,7 @@ function create() {
 	this.clientSync.on(events.GAME_START, (startTime) => {
 		this.gameState.lastTicTime = startTime;
 		this.running = true;
+		console.log("start game at: " + startTime + ", now: " + Date.now());
 	});
 
 	let moveAction = new MoveAction(this.matter.body);
@@ -138,12 +139,15 @@ function create() {
 	this.physicsUpdater = new PhysicsUpdater(
 		this.gameState,
 		updatePhysics,
-		game.config.physics.msPerTic
+		game.config.physics.msPerTic,
+		{ log: (messageJson) => console.log(JSON.stringify(messageJson)) }
 	);
 
 	// Input & Output
 	this.cursors = this.input.keyboard.createCursorKeys();
 	this.cameras.main.startFollow(this.myPhaserPlayer, true, 0.9, 0.9);
+
+	this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
 }
 
 function update() {
