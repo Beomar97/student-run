@@ -11,7 +11,10 @@ $(function () {
 		event.preventDefault();
 
 		let name = window.prompt("Your Name", "Mustermann");
-		clientSync.emit(events.PLAYER_JOINED, { name: name });
+		if (name) {
+			clientSync.emit(events.PLAYER_JOINED, { name: name });
+			$("#joinGame").prop("disabled", true);
+		}
 	});
 
 	$("#startGame").on("click", function (event) {

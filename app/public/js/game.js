@@ -43,7 +43,7 @@ function preload() {
 	});
 	this.load.json("playerData", "players");
 	this.load.image("star", "assets/star.png");
-	this.load.spritesheet("player", "assets/dude.png", {
+	this.load.spritesheet("player", "assets/sprites/dude.png", {
 		frameWidth: 32,
 		frameHeight: 48,
 	});
@@ -82,7 +82,9 @@ function create() {
 	let playerInitializer = new PlayerInitializer(this);
 	let loadedPlayers = playerInitializer.addJSONObjectsToPhaser(playerData);
 	this.myPlayerId = parseInt(localStorage.getItem("playerId"));
-	this.myPhaserPlayer = playerInitializer.getPlayerById(this.myPlayerId);
+	this.myPhaserPlayer = playerInitializer.getPhaserPlayerById(
+		this.myPlayerId
+	);
 	gameObjectCollection = gameObjectCollection.concat(loadedPlayers);
 
 	// Animation

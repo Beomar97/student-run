@@ -12,10 +12,13 @@ describe("Test the GameObjectBuilder class", () => {
 		let width = 0;
 		let height = 0;
 		let isStatic = true;
+		let collision = {
+			category: 1,
+			mask: -1,
+		};
 
-		let testee = new GameObjectBuilder();
+		let testee = new GameObjectBuilder(physics);
 		let rectangleGameObject = testee
-			.withPhysics(physics)
 			.withId(id)
 			.withGameObjectType(type)
 			.withX(x)
@@ -23,6 +26,7 @@ describe("Test the GameObjectBuilder class", () => {
 			.withWidth(width)
 			.withHeight(height)
 			.withIsStatic(isStatic)
+			.withCollisionCategory(collision)
 			.createRectangle();
 
 		expect(rectangleGameObject.id).toBe(id);
@@ -40,9 +44,8 @@ describe("Test the GameObjectBuilder class", () => {
 		let radius = 1;
 		let isStatic = true;
 
-		let testee = new GameObjectBuilder();
+		let testee = new GameObjectBuilder(physics);
 		let rectangleGameObject = testee
-			.withPhysics(physics)
 			.withId(id)
 			.withGameObjectType(type)
 			.withX(x)
@@ -66,9 +69,8 @@ describe("Test the GameObjectBuilder class", () => {
 		let radius = 1;
 		let isStatic = true;
 
-		let testee = new GameObjectBuilder();
+		let testee = new GameObjectBuilder(physics);
 		let rectangleGameObject = testee
-			.withPhysics(physics)
 			.withId(id)
 			.withGameObjectType(type)
 			.withX(x)
@@ -81,14 +83,13 @@ describe("Test the GameObjectBuilder class", () => {
 	});
 
 	test("if create rectangle method throws error if mandatory attribute is not set.", () => {
+		let physics = new Physics(Matter);
 		let width = 0;
-		let height = 0;
 		let isStatic = true;
 
-		let testee = new GameObjectBuilder();
+		let testee = new GameObjectBuilder(physics);
 		let rectangleGameObject = testee
 			.withWidth(width)
-			.withHeight(height)
 			.withIsStatic(isStatic);
 
 		expect(() => testee.createRectangle()).toThrow(
@@ -96,14 +97,37 @@ describe("Test the GameObjectBuilder class", () => {
 		);
 	});
 
-	test("if create rectangle method throws error if mandatory attribute is not set.", () => {
+	test("if create circle method throws error if mandatory attribute is not set.", () => {
+		let physics = new Physics(Matter);
+		let id = 0;
+		let type = "rectangle";
+		let x = 0;
+		let y = 0;
 		let isStatic = true;
 
-		let testee = new GameObjectBuilder();
-		let rectangleGameObject = testee.withIsStatic(isStatic);
+		let testee = new GameObjectBuilder(physics);
+		let rectangleGameObject = testee
+			.withId(id)
+			.withGameObjectType(type)
+			.withX(x)
+			.withY(y)
+			.withIsStatic(isStatic);
 
 		expect(() => testee.createCircle()).toThrow(
-			"Cannot create game object. Values are missing"
+			"Cannot create circle game object. Values are missing."
+		);
+	});
+
+	test("if create player method throws error if mandatory attribute is not set.", () => {
+		let physics = new Physics(Matter);
+		let id = 0;
+		let name = "hans";
+
+		let testee = new GameObjectBuilder(physics);
+		let rectangleGameObject = testee.withId(id);
+
+		expect(() => testee.createPlayer()).toThrow(
+			"Cannot create player game object. Values are missing."
 		);
 	});
 });

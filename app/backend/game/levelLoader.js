@@ -10,8 +10,7 @@ class LevelLoader {
 			let uniqueCollisionCategory = physics
 				.getMatter()
 				.Body.nextCategory();
-			return new GameObjectBuilder()
-				.withPhysics(physics)
+			return new GameObjectBuilder(physics)
 				.withId(objectDescription.id)
 				.withGameObjectType(objectDescription.type)
 				.withX(objectDescription.x)
@@ -22,8 +21,7 @@ class LevelLoader {
 				.withCollisionCategory(uniqueCollisionCategory)
 				.createRectangle();
 		} else if (objectDescription.shape === gameObjectShapes.RECTANGLE) {
-			return new GameObjectBuilder()
-				.withPhysics(physics)
+			return new GameObjectBuilder(physics)
 				.withId(objectDescription.id)
 				.withGameObjectType(objectDescription.type)
 				.withX(objectDescription.x)
@@ -33,8 +31,7 @@ class LevelLoader {
 				.withIsStatic(objectDescription.isStatic)
 				.createRectangle();
 		} else if (objectDescription.shape === gameObjectShapes.CIRCLE) {
-			return new GameObjectBuilder()
-				.withPhysics(physics)
+			return new GameObjectBuilder(physics)
 				.withId(objectDescription.id)
 				.withGameObjectType(objectDescription.type)
 				.withX(objectDescription.x)

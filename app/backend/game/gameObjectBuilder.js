@@ -1,16 +1,18 @@
+const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
+const physicalConstant = require("../../public/js/shared/physics/physicalConstant");
 const {
 	GameObject,
 	Player,
 } = require("../../public/js/shared/game/gameObject");
 
 class GameObjectBuilder {
-	constructor() {
+	constructor(physics) {
 		this.properties = {};
 		this.properties.collisionFilter = {
 			category: 1,
 			mask: -1,
 		};
-		this.physics = null;
+		this.physics = physics;
 	}
 
 	withId(id) {
@@ -53,16 +55,16 @@ class GameObjectBuilder {
 		return this;
 	}
 
-	withPhysics(physics) {
-		this.physics = physics;
-		return this;
-	}
-
 	withCollisionCategory(collisionCategory) {
 		this.properties.collisionFilter = {
 			collisionFilter: collisionCategory,
 			mask: 0,
 		};
+		return this;
+	}
+
+	withName(name) {
+		this.properties.name = name;
 		return this;
 	}
 
@@ -112,14 +114,36 @@ class GameObjectBuilder {
 		);
 	}
 
+	createPlayer() {
+		this._validatePlayer();
+
+		let innerObject = this.physics
+			.getMatter()
+			.Bodies.circle(
+				physicalConstant.PLAYER_SPAWN_X,
+				physicalConstant.PLAYER_SPAWN_Y,
+				physicalConstant.PLAYER_SIZE,
+				{
+					frictionAir: physicalConstant.FRICTION_AIR,
+				}
+			);
+
+		return new Player(
+			this.properties.id,
+			gameObjectTypes.PLAYER,
+			innerObject,
+			physicalConstant.BASE_FORCE,
+			this.properties.name
+		);
+	}
+
 	_validateBase() {
 		let isNotValid =
-			this.properties.x === undefined ||
-			this.properties.y === undefined ||
-			this.properties.isStatic === undefined ||
-			this.properties.gameObjectType === undefined ||
-			this.properties.id === undefined ||
-			this.physics === undefined;
+			this.properties.x == null ||
+			this.properties.y == null ||
+			this.properties.gameObjectType == null ||
+			this.properties.id == null ||
+			this.physics == null;
 
 		if (isNotValid) {
 			throw new Error("Cannot create game object. Values are missing.");
@@ -128,8 +152,9 @@ class GameObjectBuilder {
 
 	_validateRectangle() {
 		let isNotValid =
-			this.properties.width === undefined ||
-			this.properties.height === undefined;
+			this.properties.isStatic == null ||
+			this.properties.width == null ||
+			this.properties.height == null;
 
 		if (isNotValid) {
 			throw new Error(
@@ -139,11 +164,21 @@ class GameObjectBuilder {
 	}
 
 	_validateCircle() {
-		let isNotValid = !this.properties.radius;
+		let isNotValid = this.properties.radius == null;
 
 		if (isNotValid) {
 			throw new Error(
 				"Cannot create circle game object. Values are missing."
+			);
+		}
+	}
+
+	_validatePlayer() {
+		let isNotValid = this.properties.name == null;
+
+		if (isNotValid) {
+			throw new Error(
+				"Cannot create player game object. Values are missing."
 			);
 		}
 	}

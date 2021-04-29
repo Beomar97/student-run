@@ -8,6 +8,7 @@ const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const GameFactory = require("./gameFactory");
 const LevelLoader = require("./levelLoader");
 const LevelHolder = require("./levelHolder");
+const GameObjectBuilder = require("./gameObjectBuilder");
 
 class Room {
 	constructor(syncController) {
@@ -27,7 +28,7 @@ class Room {
 		let playerName = newPlayer.name;
 
 		this.waitingPlayers.push(
-			new Player(playerId, gameObjectTypes.PLAYER, {}, 0.005, playerName)
+			new Player(playerId, gameObjectTypes.PLAYER, {}, 0, playerName)
 		);
 
 		this.roomStatePublisher.publishPlayerId(socketId, playerId);
@@ -37,7 +38,7 @@ class Room {
 	initializeGame() {
 		let physics = new Physics(Matter);
 
-		this.game = new GameFactory()
+		this.game = new GameFactory(physics)
 			.withSyncController(this.syncController)
 			.withMilisPerTic(1000 / 40)
 			.withTicsPerPublish(4)
@@ -55,32 +56,42 @@ class Room {
 	}
 
 	_generateGameObjects(physics) {
+		let gameObjectCollection = [];
+
+		gameObjectCollection = gameObjectCollection.concat(
+			this._getPlayerObjects(physics, new GameObjectBuilder(physics))
+		);
+		gameObjectCollection = gameObjectCollection.concat(
+			this._getLevelObjects(physics)
+		);
+		physics.addGameObjectsToWorld(gameObjectCollection);
+
+		return gameObjectCollection;
+	}
+
+	_getPlayerObjects(physics, gameObjectBuilder) {
+		let gameObjectCollection = [];
+
+		this.waitingPlayers.forEach((player) => {
+			gameObjectCollection.push(
+				gameObjectBuilder
+					.withId(player.id)
+					.withName(player.name)
+					.createPlayer()
+			);
+		});
+
+		return gameObjectCollection;
+	}
+
+	_getLevelObjects(physics) {
 		let levelLoader = new LevelLoader();
 		let levelHolder = new LevelHolder(
 			"../../public/js/shared/levels/",
 			levelLoader
 		);
 
-		this.waitingPlayers.forEach((player) => {
-			player.innerObject = physics
-				.getMatter()
-				.Bodies.circle(300, 300, 25, {
-					frictionAir: 0.3,
-				});
-		});
-		let gameObjectCollection = this.waitingPlayers;
-		gameObjectCollection = gameObjectCollection.concat(
-			levelHolder.getLevelObjectsById(2, physics)
-		);
-		gameObjectCollection.forEach((gameObject) => {
-			physics
-				.getMatter()
-				.World.addBody(
-					physics.getEngine().world,
-					gameObject.innerObject
-				);
-		});
-		return gameObjectCollection;
+		return levelHolder.getLevelObjectsById(this.levelId, physics);
 	}
 }
 

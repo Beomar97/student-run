@@ -28,6 +28,15 @@ class Physics {
 	update(time) {
 		this.matter.Engine.update(this.engine, time);
 	}
+
+	addGameObjectsToWorld(gameObjectCollection) {
+		gameObjectCollection.forEach((gameObject) => {
+			this.matter.World.addBody(
+				this.getEngine().world,
+				gameObject.innerObject
+			);
+		});
+	}
 }
 
 module.exports = Physics;

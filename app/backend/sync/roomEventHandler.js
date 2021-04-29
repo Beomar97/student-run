@@ -8,6 +8,8 @@ class RoomEventHandler {
 
 	init() {
 		this.syncController.control((serverSync) => {
+			this.room.roomStatePublisher.publishRoomUpdate(this.room);
+
 			serverSync.on(events.PLAYER_JOINED, (newPlayer) => {
 				this._handlePlayerJoinedEvent(serverSync.getId(), newPlayer);
 			});
