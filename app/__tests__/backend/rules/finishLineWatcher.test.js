@@ -7,6 +7,7 @@ const {
 } = require("../../../public/js/shared/game/gameObject");
 const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
 
+const OFFSET = 100;
 jest.mock("../../../backend/sync/playerDetailsPublisher");
 
 beforeEach(() => {
@@ -15,9 +16,8 @@ beforeEach(() => {
 
 describe("Test Finish Line Watcher", () => {
 	test("if detects finish line.", () => {
-		const OFFSET = 100;
-		let finishLinePosition = 1000;
-		let positionNotDone = { x: 0, y: 0 };
+		let finishLinePosition = 50;
+		let positionNotDone = { x: 0, y: 1 };
 		let positionDone = { x: finishLinePosition, y: 0 };
 
 		let player = new Player(0, gameObjectTypes.PLAYER, {
@@ -39,7 +39,6 @@ describe("Test Finish Line Watcher", () => {
 	});
 
 	test("if player is not marked as done.", () => {
-		const OFFSET = 100;
 		let finishLinePosition = 1000;
 		let positionNotDone = { x: 0, y: 0 };
 		let positionDone = { x: finishLinePosition, y: 0 };
@@ -65,7 +64,6 @@ describe("Test Finish Line Watcher", () => {
 	});
 
 	test("if player is marked as done.", () => {
-		const OFFSET = 100;
 		let finishLinePosition = 1000;
 		let positionDone = { x: finishLinePosition, y: 0 };
 
@@ -88,7 +86,6 @@ describe("Test Finish Line Watcher", () => {
 	});
 
 	test("if throws error without finish line.", () => {
-		const OFFSET = 100;
 		let position = { x: 200, y: 0 };
 
 		let player = new Player(0, gameObjectTypes.PLAYER, {

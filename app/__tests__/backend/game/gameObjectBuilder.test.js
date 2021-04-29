@@ -45,7 +45,7 @@ describe("Test the GameObjectBuilder class", () => {
 		let isStatic = true;
 
 		let testee = new GameObjectBuilder(physics);
-		let rectangleGameObject = testee
+		let circleGameObject = testee
 			.withId(id)
 			.withGameObjectType(type)
 			.withX(x)
@@ -54,10 +54,10 @@ describe("Test the GameObjectBuilder class", () => {
 			.withIsStatic(isStatic)
 			.createCircle();
 
-		expect(rectangleGameObject.id).toBe(id);
-		expect(rectangleGameObject.type).toBe(type);
-		expect(rectangleGameObject.innerObject.position.x).toBe(x);
-		expect(rectangleGameObject.innerObject.position.y).toBe(y);
+		expect(circleGameObject.id).toBe(id);
+		expect(circleGameObject.type).toBe(type);
+		expect(circleGameObject.innerObject.position.x).toBe(x);
+		expect(circleGameObject.innerObject.position.y).toBe(y);
 	});
 
 	test("if create method throws error if mandatory attribute is not set.", () => {
@@ -66,11 +66,10 @@ describe("Test the GameObjectBuilder class", () => {
 		let type = "rectangle";
 		let x = 0;
 		let y = 0;
-		let radius = 1;
 		let isStatic = true;
 
 		let testee = new GameObjectBuilder(physics);
-		let rectangleGameObject = testee
+		testee
 			.withId(id)
 			.withGameObjectType(type)
 			.withX(x)
@@ -88,9 +87,7 @@ describe("Test the GameObjectBuilder class", () => {
 		let isStatic = true;
 
 		let testee = new GameObjectBuilder(physics);
-		let rectangleGameObject = testee
-			.withWidth(width)
-			.withIsStatic(isStatic);
+		testee.withWidth(width).withIsStatic(isStatic);
 
 		expect(() => testee.createRectangle()).toThrow(
 			"Cannot create game object. Values are missing"
@@ -106,7 +103,7 @@ describe("Test the GameObjectBuilder class", () => {
 		let isStatic = true;
 
 		let testee = new GameObjectBuilder(physics);
-		let rectangleGameObject = testee
+		testee
 			.withId(id)
 			.withGameObjectType(type)
 			.withX(x)
@@ -121,10 +118,9 @@ describe("Test the GameObjectBuilder class", () => {
 	test("if create player method throws error if mandatory attribute is not set.", () => {
 		let physics = new Physics(Matter);
 		let id = 0;
-		let name = "hans";
 
 		let testee = new GameObjectBuilder(physics);
-		let rectangleGameObject = testee.withId(id);
+		testee.withId(id);
 
 		expect(() => testee.createPlayer()).toThrow(
 			"Cannot create player game object. Values are missing."

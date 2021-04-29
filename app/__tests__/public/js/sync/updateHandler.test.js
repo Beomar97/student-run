@@ -87,4 +87,25 @@ describe("Test the UpdateHandler class", () => {
 		expect(gameState.gameObjects.get(0).done).toBe(true);
 		expect(gameState.gameObjects.get(0).doneAt).toBe(date);
 	});
+
+	test("if _applyMovementChange changes player.", () => {
+		let id = 0;
+		let direction = {
+			x: 1,
+			y: 0,
+		};
+		let player = new Player(id, gameObjectTypes.PLAYER, {});
+		let gameState = new GameState();
+		gameState.addAll([player]);
+
+		let update = {
+			id: id,
+			tic: 858,
+			direction: direction,
+		};
+		let testee = new UpdateHandler(socket, matter, gameState);
+
+		testee._applyMovementChange(update, testee);
+		expect(gameState.gameObjects.get(id).direction).toBe(direction);
+	});
 });

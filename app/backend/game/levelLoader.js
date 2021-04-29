@@ -3,8 +3,6 @@ const gameObjectShapes = require("../../public/js/shared/game/gameObjectShapes")
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 
 class LevelLoader {
-	constructor() {}
-
 	deserializeGameObject(objectDescription, physics) {
 		if (objectDescription.type === gameObjectTypes.FINISH_LINE) {
 			let uniqueCollisionCategory = physics

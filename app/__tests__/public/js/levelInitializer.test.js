@@ -1,8 +1,8 @@
-const demoLevelJSON = require("../asset/levels/demo-level.json");
-const mocks = require("../mocks/mocks");
-const LevelInitializer = require("../../public/js/levelInitializer");
-const { GameObject } = require("../../public/js/shared/game/gameObject");
-const gameObjectShapes = require("../../public/js/shared/game/gameObjectShapes");
+const demoLevelJSON = require("../../asset/levels/demo-level.json");
+const mocks = require("../../mocks/mocks");
+const LevelInitializer = require("../../../public/js/levelInitializer");
+const { GameObject } = require("../../../public/js/shared/game/gameObject");
+const gameObjectShapes = require("../../../public/js/shared/game/gameObjectShapes");
 
 let phaser = mocks.phaser;
 

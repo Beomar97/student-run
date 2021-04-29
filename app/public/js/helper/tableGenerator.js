@@ -1,29 +1,25 @@
-const $ = require("jquery");
-
 class TableGenerator {
-	constructor() {}
-
-	static generate(labels, objects, container) {
-		$("#players").html("");
+	generate(labels, objects, container) {
+		container.innerHTML = "";
 
 		let table = document.createElement("table");
 		let thead = document.createElement("thead");
 		let tbody = document.createElement("tbody");
 
 		const theadTr = document.createElement("tr");
-		for (let i = 0; i < labels.length; i++) {
+		for (const item of labels) {
 			let theadTh = document.createElement("th");
-			theadTh.innerHTML = labels[i];
+			theadTh.innerHTML = item;
 			theadTr.appendChild(theadTh);
 		}
 		thead.appendChild(theadTr);
 		table.appendChild(thead);
 
-		for (let j = 0; j < objects.length; j++) {
+		for (const item of objects) {
 			let tbodyTr = document.createElement("tr");
-			for (let k = 0; k < labels.length; k++) {
+			for (const item1 of labels) {
 				let tbodyTd = document.createElement("td");
-				tbodyTd.innerHTML = objects[j][labels[k].toLowerCase()];
+				tbodyTd.innerHTML = item[item1.toLowerCase()];
 				tbodyTr.appendChild(tbodyTd);
 			}
 			tbody.appendChild(tbodyTr);

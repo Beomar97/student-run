@@ -59,7 +59,7 @@ jobs:
                       -Dsonar.login=$(SONARLOGIN) \
                       -Dsonar.testExecutionReportPaths=test-report.xml \
                       -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
-                      -Dsonar.coverage.exclusions=\*\*/__tests__/\*\*,\*\*/config/\*\*,jest.config.js,\*\*/app.js,\*\*/server.js,\*\*/updateHandler.js,public/js/module.js
+                      -Dsonar.coverage.exclusions=\*\*/__tests__/\*\*,\*\*/config/\*\*,jest.config.js,\*\*/server.js,public/js/module.js,__tests__/
 
           - task: CopyFilesOverSSH@0
             displayName: Copy app to server

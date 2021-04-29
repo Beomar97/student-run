@@ -2,40 +2,26 @@ const $ = require("jquery");
 const { io } = require("socket.io-client");
 const events = require("./shared/sync/events");
 const ClientSync = require("./sync/clientSync");
+const RoomUpdateHandler = require("./sync/roomUpdateHandler");
 const TableGenerator = require("./helper/tableGenerator");
 
-$(function () {
-	let clientSync = new ClientSync(io());
+let clientSync = new ClientSync(io());
+let tableGenerator = new TableGenerator();
 
-	$("#joinGame").on("click", function (event) {
-		event.preventDefault();
+let roomUpdateHandler = new RoomUpdateHandler(clientSync, tableGenerator);
+roomUpdateHandler.init();
 
-		let name = window.prompt("Your Name", "Mustermann");
-		if (name) {
-			clientSync.emit(events.PLAYER_JOINED, { name: name });
-			$("#joinGame").prop("disabled", true);
-		}
-	});
+$("#joinGame").on("click", function (event) {
+	event.preventDefault();
 
-	$("#startGame").on("click", function (event) {
-		event.preventDefault();
-		clientSync.emit(events.INITIALIZE_GAME);
-	});
+	let name = window.prompt("Your Name", "Mustermann");
+	if (name) {
+		clientSync.emit(events.PLAYER_JOINED, { name: name });
+		$("#joinGame").prop("disabled", true);
+	}
+});
 
-	clientSync.on(events.ROOM_STATE_UPATE, (roomUpdate) => {
-		let waitingPlayers = JSON.parse(roomUpdate.waitingPlayers);
-		TableGenerator.generate(
-			["id", "name"],
-			waitingPlayers,
-			document.getElementById("players")
-		);
-	});
-
-	clientSync.on(events.PLAYER_JOINED, (newId) => {
-		localStorage.setItem("playerId", newId.playerId);
-	});
-
-	clientSync.on(events.GAME_READY, () => {
-		window.location = "/game.html";
-	});
+$("#startGame").on("click", function (event) {
+	event.preventDefault();
+	clientSync.emit(events.INITIALIZE_GAME);
 });
