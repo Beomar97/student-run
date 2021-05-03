@@ -30,4 +30,15 @@ describe("Test the ServerSync class", () => {
 
 		expect(socket.emit).lastCalledWith(event, object);
 	});
+
+	test("if to method calls socket.", () => {
+		let client = "asdf";
+		let event = "event";
+		let object = {};
+		let testee = new SyncController(socket);
+
+		testee.to(client, event, object);
+
+		expect(socket.to).lastCalledWith(event);
+	});
 });

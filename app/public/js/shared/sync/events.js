@@ -3,7 +3,7 @@ var events = {
 	DISCONNECT: "disconnect",
 	PLAYER_JOINED: "playerJoined",
 	INITIALIZE_GAME: "initializeGame",
-	ROOM_STATE_UPATE: "roomStateUpdate",
+	ROOM_STATE_UPDATE: "roomStateUpdate",
 	LOAD_GAME: "loadGame",
 	GAME_START: "gameStart",
 	GAME_STATE_UPDATE: "gameStateUpdate",

@@ -4,9 +4,17 @@ const events = require("../../../../public/js/shared/sync/events");
 const UpdateHandler = require("../../../../public/js/sync/updateHandler");
 const mocks = require("../../../mocks/mocks");
 const gameObjectTypes = require("../../../../public/js/shared/game/gameObjectTypes");
+const TableGenerator = require("../../../../public/js/helper/tableGenerator");
+const { JSDOM } = require("jsdom");
+const dom = new JSDOM();
+
+document = dom.window.document;
+window = dom.window;
 
 let socket = mocks.socket();
 let matter = mocks.matter();
+
+jest.mock("../../../../public/js/helper/tableGenerator");
 
 beforeEach(() => {
 	mocks.util.resetSocketMock(socket);
@@ -81,7 +89,14 @@ describe("Test the UpdateHandler class", () => {
 			done: true,
 			doneAt: date,
 		};
-		let testee = new UpdateHandler(socket, matter, gameState);
+		let testee = new UpdateHandler(
+			socket,
+			matter,
+			gameState,
+			{},
+			0,
+			new TableGenerator()
+		);
 
 		testee._updatePlayer([update], testee);
 		expect(gameState.gameObjects.get(0).done).toBe(true);

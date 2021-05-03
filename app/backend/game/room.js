@@ -15,6 +15,7 @@ class Room {
 		this.levelId = 2;
 		this.waitingPlayers = new Map();
 		this.game = null;
+		this.roomLocked = false;
 
 		this.syncController = syncController;
 		this.roomStatePublisher = new RoomStatePublisher(syncController, this);
@@ -42,6 +43,7 @@ class Room {
 	}
 
 	initializeGame() {
+		this.roomLocked = true;
 		let physics = new Physics(Matter);
 		this.game = new GameFactory()
 			.withSyncController(this.syncController)

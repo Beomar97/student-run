@@ -1,5 +1,6 @@
 const Phaser = require("phaser");
 const { io } = require("socket.io-client");
+const $ = require("jquery");
 const LevelInitializer = require("./levelInitializer");
 const ClientSync = require("./sync/clientSync");
 const UpdateHandler = require("./sync/updateHandler");
@@ -9,6 +10,7 @@ const events = require("./shared/sync/events");
 const PhysicsUpdater = require("./shared/physics/physicsUpdater");
 const UpdateLock = require("./sync/updateLock");
 const MoveAction = require("./shared/game/moveAction");
+const TableGenerator = require("./helper/tableGenerator");
 
 var config = {
 	type: Phaser.AUTO,
@@ -114,12 +116,14 @@ function create() {
 
 	this.updateLock = new UpdateLock(this.myPlayerId);
 	this.clientSync = new ClientSync(io());
+	this.tableGenerator = new TableGenerator();
 	this.updateHandler = new UpdateHandler(
 		this.clientSync,
 		this.matter,
 		this.gameState,
 		this.updateLock,
-		this.myPlayerId
+		this.myPlayerId,
+		this.tableGenerator
 	);
 	this.updateHandler.init();
 
@@ -155,7 +159,7 @@ function update() {
 		if (this.gameState.getGameObject(this.myPlayerId).done) {
 			this.myPhaserPlayer.anims.play("turn", true);
 			this.running = false;
-			alert("Done!");
+			$("#student-run").remove();
 		}
 
 		let steeringDirection = { x: 0, y: 0 };

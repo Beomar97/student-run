@@ -1,4 +1,5 @@
 const events = require("../shared/sync/events");
+const $ = require("jquery");
 
 class RoomUpdateHandler {
 	constructor(clientSync, tableGenerator) {
@@ -7,8 +8,9 @@ class RoomUpdateHandler {
 	}
 
 	init() {
-		this.clientSync.on(events.ROOM_STATE_UPATE, (roomUpdate) => {
+		this.clientSync.on(events.ROOM_STATE_UPDATE, (roomUpdate) => {
 			this._displayPlayers(roomUpdate.waitingPlayers);
+			this._blockJoinGame(roomUpdate.roomLocked);
 		});
 
 		this.clientSync.on(events.PLAYER_ID_ALLOCATION, (playerId) => {
@@ -35,6 +37,22 @@ class RoomUpdateHandler {
 
 	_launchGame() {
 		window.location = "/game.html";
+	}
+
+	_blockJoinGame(gameInProgress) {
+		let buttonsDisabled;
+		let text;
+
+		if (gameInProgress) {
+			buttonsDisabled = true;
+			text = "Game is Running, can't join";
+		} else {
+			buttonsDisabled = false;
+			text = "Game is not Running, you may join";
+		}
+
+		$("#gameStatus").text(text);
+		$(":button").prop("disabled", buttonsDisabled);
 	}
 }
 

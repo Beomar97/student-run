@@ -1,12 +1,21 @@
 const events = require("../shared/sync/events");
+const TableGenerator = require("../helper/tableGenerator");
 
 class UpdateHandler {
-	constructor(clientSync, matter, gameState, updateLock, myPlayerId) {
+	constructor(
+		clientSync,
+		matter,
+		gameState,
+		updateLock,
+		myPlayerId,
+		tableGenerator
+	) {
 		this.clientSync = clientSync;
 		this.matter = matter;
 		this.gameState = gameState;
 		this.updateLock = updateLock;
 		this.myPlayerId = myPlayerId;
+		this.tableGenerator = tableGenerator;
 	}
 
 	init() {
@@ -60,6 +69,12 @@ class UpdateHandler {
 			localPlayer.done = serverPlayer.done;
 			localPlayer.doneAt = serverPlayer.doneAt;
 		});
+
+		this.tableGenerator.generate(
+			["id", "name", "done", "doneAt"],
+			players,
+			document.getElementById("scoreBoard")
+		);
 	}
 }
 

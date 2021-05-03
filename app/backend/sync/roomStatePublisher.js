@@ -7,7 +7,7 @@ class RoomStatePublisher {
 	}
 
 	publishRoomUpdate(room) {
-		this.syncController.emit(events.ROOM_STATE_UPATE, {
+		this.syncController.emit(events.ROOM_STATE_UPDATE, {
 			waitingPlayers: this._stringifyPlayers(
 				Array.from(room.waitingPlayers.values()) //TODO publish not all player information
 			),

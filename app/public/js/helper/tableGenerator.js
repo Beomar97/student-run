@@ -15,16 +15,17 @@ class TableGenerator {
 		thead.appendChild(theadTr);
 		table.appendChild(thead);
 
-		for (const item of objects) {
+		for (const object of objects) {
 			let tbodyTr = document.createElement("tr");
-			for (const item1 of labels) {
+			for (const label of labels) {
 				let tbodyTd = document.createElement("td");
-				tbodyTd.innerHTML = item[item1.toLowerCase()];
+				tbodyTd.innerHTML = object[label];
 				tbodyTr.appendChild(tbodyTd);
 			}
 			tbody.appendChild(tbodyTr);
 		}
 		table.appendChild(tbody);
+		table.className = "table";
 
 		container.appendChild(table);
 	}

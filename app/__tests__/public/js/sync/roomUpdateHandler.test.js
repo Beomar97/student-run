@@ -24,7 +24,7 @@ describe("Test the RoomUpdateHandler class", () => {
 
 		expect(socket.on).toHaveBeenNthCalledWith(
 			1,
-			events.ROOM_STATE_UPATE,
+			events.ROOM_STATE_UPDATE,
 			expect.any(Function)
 		);
 

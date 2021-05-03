@@ -29,6 +29,9 @@ mocks = {
 			broadcast: {
 				emit: jest.fn((id, object) => {}),
 			},
+			to: jest.fn((client, id, object) => {
+				return { emit: jest.fn((id, object) => {}) };
+			}),
 		};
 	},
 	updateLock: (isLocked) => {

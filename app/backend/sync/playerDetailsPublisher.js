@@ -14,6 +14,7 @@ class PlayerDetailsPublisher {
 
 				syncObjects.push({
 					id: player.id,
+					name: player.name,
 					done: player.done,
 					doneAt: player.doneAt,
 				});
