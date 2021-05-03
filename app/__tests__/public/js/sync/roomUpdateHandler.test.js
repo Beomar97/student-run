@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 
 describe("Test the RoomUpdateHandler class", () => {
-	test("if run method moves movable objects.", () => {
+	test("if init method initializes listeners.", () => {
 		let testee = new RoomUpdateHandler(socket);
 		testee.init();
 
@@ -30,13 +30,13 @@ describe("Test the RoomUpdateHandler class", () => {
 
 		expect(socket.on).toHaveBeenNthCalledWith(
 			2,
-			events.PLAYER_JOINED,
+			events.PLAYER_ID_ALLOCATION,
 			expect.any(Function)
 		);
 
 		expect(socket.on).toHaveBeenNthCalledWith(
 			3,
-			events.GAME_READY,
+			events.LOAD_GAME,
 			expect.any(Function)
 		);
 	});

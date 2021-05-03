@@ -19,7 +19,8 @@ class GameLoop {
 		this.physicsUpdater = new PhysicsUpdater(
 			this.gameState,
 			this._replayUpdatePublish.bind(this),
-			this.milisPerTic
+			this.milisPerTic,
+			{ log: logger.debug.bind(logger) }
 		);
 	}
 

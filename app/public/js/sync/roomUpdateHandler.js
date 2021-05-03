@@ -11,11 +11,11 @@ class RoomUpdateHandler {
 			this._displayPlayers(roomUpdate.waitingPlayers);
 		});
 
-		this.clientSync.on(events.PLAYER_JOINED, (id) => {
-			this._savePlayerId(id);
+		this.clientSync.on(events.PLAYER_ID_ALLOCATION, (playerId) => {
+			this._savePlayerId(playerId);
 		});
 
-		this.clientSync.on(events.GAME_READY, () => {
+		this.clientSync.on(events.LOAD_GAME, () => {
 			this._launchGame();
 		});
 	}
@@ -29,8 +29,8 @@ class RoomUpdateHandler {
 		);
 	}
 
-	_savePlayerId(id) {
-		localStorage.setItem("playerId", id.playerId);
+	_savePlayerId(playerId) {
+		localStorage.setItem("playerId", playerId);
 	}
 
 	_launchGame() {

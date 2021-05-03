@@ -13,23 +13,29 @@ const GameObjectBuilder = require("./gameObjectBuilder");
 class Room {
 	constructor(syncController) {
 		this.levelId = 2;
-		this.waitingPlayers = [];
+		this.waitingPlayers = new Map();
 		this.game = null;
 
 		this.syncController = syncController;
+		this.roomStatePublisher = new RoomStatePublisher(syncController, this);
 		this.roomEventHandler = new RoomEventHandler(syncController, this);
 		this.roomEventHandler.init();
-
-		this.roomStatePublisher = new RoomStatePublisher(syncController, this);
 	}
 
 	addPlayer(socketId, newPlayer) {
 		let playerId = id.next();
 		let playerName = newPlayer.name;
 
-		this.waitingPlayers.push(
-			new Player(playerId, gameObjectTypes.PLAYER, {}, 0, playerName)
+		//TODO why use game obejct here
+		let player = new Player(
+			playerId,
+			gameObjectTypes.PLAYER,
+			{},
+			0.005,
+			playerName
 		);
+		player.ready = false;
+		this.waitingPlayers.set(playerId, player);
 
 		this.roomStatePublisher.publishPlayerId(socketId, playerId);
 		this.roomStatePublisher.publishRoomUpdate(this);
@@ -37,8 +43,7 @@ class Room {
 
 	initializeGame() {
 		let physics = new Physics(Matter);
-
-		this.game = new GameFactory(physics)
+		this.game = new GameFactory()
 			.withSyncController(this.syncController)
 			.withMilisPerTic(1000 / 40)
 			.withTicsPerPublish(4)
@@ -51,15 +56,14 @@ class Room {
 			.withFinishLineOffset(50)
 			.create();
 
-		this.game.start();
-		this.roomStatePublisher.publishInitDone();
+		this.roomStatePublisher.loadGame();
 	}
 
 	_generateGameObjects(physics) {
 		let gameObjectCollection = [];
 
 		gameObjectCollection = gameObjectCollection.concat(
-			this._getPlayerObjects(physics, new GameObjectBuilder(physics))
+			this._getPlayerObjects(new GameObjectBuilder(physics))
 		);
 		gameObjectCollection = gameObjectCollection.concat(
 			this._getLevelObjects(physics)
@@ -69,7 +73,7 @@ class Room {
 		return gameObjectCollection;
 	}
 
-	_getPlayerObjects(physics, gameObjectBuilder) {
+	_getPlayerObjects(gameObjectBuilder) {
 		let gameObjectCollection = [];
 
 		this.waitingPlayers.forEach((player) => {
@@ -92,6 +96,21 @@ class Room {
 		);
 
 		return levelHolder.getLevelObjectsById(this.levelId, physics);
+	}
+
+	playerReady(playerId) {
+		this.waitingPlayers.get(playerId).ready = true;
+		if (this._allPlayersReady()) {
+			this.game.start();
+		}
+	}
+
+	_allPlayersReady() {
+		let allPlayersReady = true;
+		this.waitingPlayers.forEach((player) => {
+			allPlayersReady = allPlayersReady && player.ready;
+		});
+		return allPlayersReady;
 	}
 }
 

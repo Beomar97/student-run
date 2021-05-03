@@ -22,14 +22,16 @@ describe("Test the RoomStatePublisher class", () => {
 			waitingPlayers: "[]",
 		});
 	});
-	test("if publishRoomUpdate method calls syncController.", () => {
+
+	test("if loadGame method calls syncController.", () => {
 		let syncController = new SyncController();
 		let testee = new RoomStatePublisher(syncController);
 
-		testee.publishInitDone();
+		testee.loadGame();
 
-		expect(syncController.emit).lastCalledWith(events.GAME_READY);
+		expect(syncController.emit).lastCalledWith(events.LOAD_GAME);
 	});
+
 	test("if publishRoomUpdate method calls syncController.", () => {
 		let socketId = "aSocketId";
 		let playerId = 0;
@@ -39,11 +41,9 @@ describe("Test the RoomStatePublisher class", () => {
 		testee.publishPlayerId(socketId, playerId);
 
 		expect(syncController.to).lastCalledWith(
-			events.PLAYER_JOINED,
+			events.PLAYER_ID_ALLOCATION,
 			socketId,
-			{
-				playerId: playerId,
-			}
+			playerId
 		);
 	});
 });

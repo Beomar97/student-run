@@ -3,5 +3,5 @@ const roomManger = require("../game/roomManager");
 
 exports.getAll = (req, res) => {
 	let room = roomManger.getRoom(0);
-	res.send(safeStringify(room.waitingPlayers));
+	res.send(safeStringify(Array.from(room.waitingPlayers.values())));
 };

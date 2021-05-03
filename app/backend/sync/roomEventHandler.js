@@ -17,6 +17,10 @@ class RoomEventHandler {
 			serverSync.on(events.INITIALIZE_GAME, () => {
 				this._handleInitializeGame();
 			});
+
+			serverSync.on(events.PLAYER_READY, (playerId) => {
+				this._handlePlayerReadyEvent(playerId);
+			});
 		});
 	}
 
@@ -26,6 +30,10 @@ class RoomEventHandler {
 
 	_handleInitializeGame() {
 		this.room.initializeGame();
+	}
+
+	_handlePlayerReadyEvent(playerId) {
+		this.room.playerReady(playerId);
 	}
 }
 
