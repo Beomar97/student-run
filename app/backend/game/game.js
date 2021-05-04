@@ -13,6 +13,11 @@ class Game {
 		this.syncController.emit(events.GAME_START, startTime);
 		this.gameLoop.start(startTime);
 	}
+
+	stop() {
+		this.gameLoop.stop();
+		this.syncController.emit(events.GAME_STOP);
+	}
 }
 
 module.exports = Game;

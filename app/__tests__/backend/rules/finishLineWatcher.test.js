@@ -6,9 +6,11 @@ const {
 	Player,
 } = require("../../../public/js/shared/game/gameObject");
 const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
+const Room = require("../../../backend/game/room");
 
 const OFFSET = 100;
 jest.mock("../../../backend/sync/playerDetailsPublisher");
+jest.mock("../../../backend/game/room");
 
 beforeEach(() => {
 	PlayerDetailsPublisher.mockClear();
@@ -32,6 +34,7 @@ describe("Test Finish Line Watcher", () => {
 
 		let testee = new FinishLineWatcher(
 			new PlayerDetailsPublisher(),
+			new Room(),
 			gameState,
 			OFFSET
 		);
@@ -55,6 +58,7 @@ describe("Test Finish Line Watcher", () => {
 
 		let testee = new FinishLineWatcher(
 			new PlayerDetailsPublisher(),
+			new Room(),
 			gameState,
 			OFFSET
 		);
@@ -79,7 +83,12 @@ describe("Test Finish Line Watcher", () => {
 
 		let pdpMock = new PlayerDetailsPublisher();
 
-		let testee = new FinishLineWatcher(pdpMock, gameState, OFFSET);
+		let testee = new FinishLineWatcher(
+			pdpMock,
+			new Room(),
+			gameState,
+			OFFSET
+		);
 		testee.checkFinishLine(gameState);
 
 		expect(pdpMock.publish).toHaveBeenCalled();
@@ -98,6 +107,7 @@ describe("Test Finish Line Watcher", () => {
 		expect(() => {
 			new FinishLineWatcher(
 				new PlayerDetailsPublisher(),
+				new Room(),
 				gameState,
 				OFFSET
 			);

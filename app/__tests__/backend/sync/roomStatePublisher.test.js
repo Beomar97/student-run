@@ -19,6 +19,7 @@ describe("Test the RoomStatePublisher class", () => {
 		testee.publishRoomUpdate(room);
 
 		expect(syncController.emit).lastCalledWith(events.ROOM_STATE_UPDATE, {
+			roomLocked: false,
 			waitingPlayers: "[]",
 		});
 	});

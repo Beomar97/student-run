@@ -46,6 +46,7 @@ class Room {
 		this.roomLocked = true;
 		let physics = new Physics(Matter);
 		this.game = new GameFactory()
+			.inRoom(this)
 			.withSyncController(this.syncController)
 			.withMilisPerTic(1000 / 40)
 			.withTicsPerPublish(4)
@@ -59,6 +60,15 @@ class Room {
 			.create();
 
 		this.roomStatePublisher.loadGame();
+	}
+
+	stopGame() {
+		this.game.stop();
+		this.waitingPlayers = new Map();
+		this.game = null;
+		id.sequence = 0;
+		this.roomLocked = false;
+		this.roomStatePublisher.publishRoomUpdate(this);
 	}
 
 	_generateGameObjects(physics) {

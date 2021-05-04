@@ -20,6 +20,10 @@ class RoomUpdateHandler {
 		this.clientSync.on(events.LOAD_GAME, () => {
 			this._launchGame();
 		});
+
+		this.clientSync.on(events.GAME_STOP, () => {
+			this._clearPlayerId();
+		});
 	}
 
 	_displayPlayers(waitingPlayers) {
@@ -35,15 +39,19 @@ class RoomUpdateHandler {
 		localStorage.setItem("playerId", playerId);
 	}
 
+	_clearPlayerId() {
+		localStorage.clear();
+	}
+
 	_launchGame() {
 		window.location = "/game.html";
 	}
 
-	_blockJoinGame(gameInProgress) {
+	_blockJoinGame(roomLocked) {
 		let buttonsDisabled;
 		let text;
 
-		if (gameInProgress) {
+		if (roomLocked) {
 			buttonsDisabled = true;
 			text = "Game is Running, can't join";
 		} else {

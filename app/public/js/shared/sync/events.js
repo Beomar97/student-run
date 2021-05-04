@@ -6,6 +6,7 @@ var events = {
 	ROOM_STATE_UPDATE: "roomStateUpdate",
 	LOAD_GAME: "loadGame",
 	GAME_START: "gameStart",
+	GAME_STOP: "gameStop",
 	GAME_STATE_UPDATE: "gameStateUpdate",
 	PLAYER_READY: "playerReady",
 	PLAYER_ID_ALLOCATION: "playerIdAllocation",

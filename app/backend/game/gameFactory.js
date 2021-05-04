@@ -71,6 +71,11 @@ class GameFactory {
 		return this;
 	}
 
+	inRoom(room) {
+		this.room = room;
+		return this;
+	}
+
 	create() {
 		this._validate();
 
@@ -81,6 +86,7 @@ class GameFactory {
 		);
 		let finishLineWatcher = new FinishLineWatcher(
 			playerDetailsPublisher,
+			this.room,
 			gameState,
 			this.finishLineOffset
 		);
@@ -139,6 +145,7 @@ class GameFactory {
 			!this.config.maxEntriesEventQueue ||
 			!this.config.allowedEventMaxAge ||
 			!this.syncController ||
+			!this.room ||
 			!this.gameObjects ||
 			!this.physics;
 

@@ -1,32 +1,32 @@
 const gameobjectType = require("../../public/js/shared/game/gameObjectTypes");
 const logger = require("../logger");
+const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 
 class FinishLineWatcher {
-	constructor(playerDetailsPublisher, gameState, offset) {
-		this.gameObjects = gameState;
+	constructor(playerDetailsPublisher, room, gameState, offset) {
+		this.gameState = gameState;
+		this.room = room;
 		this.playerDetailsPublisher = playerDetailsPublisher;
 		this.offset = offset;
 		this.finishLinePosition = this._getFinishLinePosition(
 			gameState.gameObjects
 		);
+		this.filterByPlayer = (gameObject) => {
+			return gameObject.type === gameObjectTypes.PLAYER;
+		};
 	}
 
 	checkFinishLine(gameState) {
-		let pendingChanges = false;
+		gameState.forEachGameObject((player) => {
+			if (!player.done && this._playerHasCrossedFinishLine(player)) {
+				this._markPlayerAsDone(player);
+				this.playerDetailsPublisher.publish(this.gameState);
 
-		gameState.gameObjects.forEach((gameObject) => {
-			if (gameObject.type === gameobjectType.PLAYER) {
-				let player = gameObject;
-				if (!player.done && this._playerHasCrossedFinishLine(player)) {
-					this._markPlayerAsDone(player);
-					pendingChanges = true;
+				if (this._isGameDone(gameState)) {
+					this.room.stopGame();
 				}
 			}
-		});
-
-		if (pendingChanges === true) {
-			this.playerDetailsPublisher.publish(this.gameObjects);
-		}
+		}, this.filterByPlayer);
 	}
 
 	_markPlayerAsDone(player) {
@@ -39,6 +39,15 @@ class FinishLineWatcher {
 			id: player.id,
 			doneAt: player.doneAt.toString(),
 		});
+	}
+
+	_isGameDone(gameState) {
+		gameState.forEachGameObject((player) => {
+			if (!player.done) {
+				return false;
+			}
+		}, this.filterByPlayer);
+		return true;
 	}
 
 	_playerHasCrossedFinishLine(player) {

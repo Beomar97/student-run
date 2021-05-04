@@ -26,4 +26,13 @@ describe("Test the Room class", () => {
 		testee.initializeGame();
 		expect(syncController.emit).toHaveBeenCalled();
 	});
+
+	test("If game can be stoped", () => {
+		let syncController = new SyncController();
+		let testee = new Room(syncController);
+
+		testee.initializeGame();
+		testee.stopGame();
+		expect(testee.roomLocked).toBe(false);
+	});
 });

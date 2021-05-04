@@ -11,6 +11,7 @@ class RoomStatePublisher {
 			waitingPlayers: this._stringifyPlayers(
 				Array.from(room.waitingPlayers.values()) //TODO publish not all player information
 			),
+			roomLocked: room.roomLocked,
 		});
 	}
 
