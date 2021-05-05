@@ -42,12 +42,13 @@ class FinishLineWatcher {
 	}
 
 	_isGameDone(gameState) {
+		let gameDone = true;
 		gameState.forEachGameObject((player) => {
 			if (!player.done) {
-				return false;
+				gameDone = false;
 			}
 		}, this.filterByPlayer);
-		return true;
+		return gameDone;
 	}
 
 	_playerHasCrossedFinishLine(player) {
