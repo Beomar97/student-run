@@ -58,6 +58,10 @@ function preload() {
 	this.load.image("stone", "assets/world/stone.png");
 	this.load.image("rope_railing", "assets/world/rope_railing.png");
 	this.load.image("wood_railing", "assets/world/wood_railing.png");
+
+	this.load.audio("level_audio", "assets/audio/level_audio.mp3");
+	this.load.audio("done_audio", "assets/audio/done_audio.mp3");
+	this.load.audio("jump_audio", "assets/audio/done_audio.mp3");
 }
 
 function create() {
@@ -150,6 +154,10 @@ function create() {
 	// Input & Output
 	this.cursors = this.input.keyboard.createCursorKeys();
 	this.cameras.main.startFollow(this.myPhaserPlayer, true, 0.9, 0.9);
+	this.sound.play("level_audio", {
+		volume: 0.1,
+		loop: true,
+	});
 
 	this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
 }
@@ -158,6 +166,11 @@ function update() {
 	if (this.running) {
 		if (this.gameState.getGameObject(this.myPlayerId).done) {
 			this.myPhaserPlayer.anims.play("turn", true);
+			this.sound.pauseAll();
+			this.sound.play("done_audio", {
+				volume: 0.1,
+				loop: false,
+			});
 			this.running = false;
 			$("#student-run").remove();
 		}
