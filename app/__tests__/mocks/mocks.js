@@ -1,3 +1,9 @@
+class Vector2 {
+	scale() {
+		return { x: 1, y: 1 };
+	}
+}
+
 mocks = {
 	matter: () => {
 		return {
@@ -59,26 +65,34 @@ mocks = {
 			phaser.matter.add.gameObject.mockClear();
 		},
 	},
-	phaser: {
-		add: {
-			rectangle: jest.fn((x, y, width, height, color) => {
-				return {};
-			}),
-			sprite: jest.fn((x, y, texture) => {
-				return {};
-			}),
-		},
-		matter: {
+	phaser: (distanceTwoPoints) => {
+		return {
 			add: {
 				rectangle: jest.fn((x, y, width, height, color) => {
 					return {};
 				}),
-				circle: jest.fn((x, y, radius) => {
+				sprite: jest.fn((x, y, texture) => {
 					return {};
 				}),
-				gameObject: jest.fn((phaserObject, matterObject) => {}),
 			},
-		},
+			matter: {
+				add: {
+					rectangle: jest.fn((x, y, width, height, color) => {
+						return {};
+					}),
+					circle: jest.fn((x, y, radius) => {
+						return {};
+					}),
+					gameObject: jest.fn((phaserObject, matterObject) => {}),
+				},
+			},
+			math: {
+				Distance: {
+					BetweenPoints: (x, y) => distanceTwoPoints,
+				},
+				Vector2: Vector2,
+			},
+		};
 	},
 	localStorage: {
 		getItem: jest.fn(),

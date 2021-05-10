@@ -11,6 +11,8 @@ const PhysicsUpdater = require("./shared/physics/physicsUpdater");
 const UpdateLock = require("./sync/updateLock");
 const MoveAction = require("./shared/game/moveAction");
 const GameViewController = require("./view/gameViewController");
+const Timeline = require("./shared/game/timeline");
+const Interpolator = require("./sync/interpolator");
 
 let config = {
 	type: Phaser.AUTO,
@@ -26,6 +28,13 @@ let config = {
 			autoUpdate: false,
 		},
 		msPerTic: 1000 / 40,
+	},
+	interpolation: {
+		maxDiff: 15,
+		distanceDiffThreshold: 2,
+		interpolationMaxStep: 3,
+		ticDiffThreshold: 2,
+		ticsPerSnapshot: 4, // should be in sync with game state publish
 	},
 	scene: {
 		preload: preload,
@@ -121,10 +130,20 @@ function create() {
 	this.updateLock = new UpdateLock(this.myPlayerId);
 	this.clientSync = new ClientSync(io());
 	this.gameViewController = new GameViewController();
+	this.timeline = new Timeline(
+		this.gameState,
+		config.interpolation.maxDiff,
+		config.interpolation.ticsPerSnapshot
+	);
 	this.updateHandler = new UpdateHandler(
 		this.clientSync,
-		this.matter,
 		this.gameState,
+		new Interpolator(
+			this.matter,
+			this.timeline,
+			Phaser.Math,
+			config.interpolation
+		),
 		this.updateLock,
 		this.myPlayerId,
 		this.gameViewController
@@ -140,6 +159,7 @@ function create() {
 
 	let moveAction = new MoveAction(this.matter.body);
 	let updatePhysics = (delta) => {
+		this.timeline.mayCreateSnapshot();
 		moveAction.run(this.gameState);
 		this.matter.world.step(delta);
 	};

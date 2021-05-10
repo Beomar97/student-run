@@ -10,6 +10,9 @@ const { JSDOM } = require("jsdom");
 const dom = new JSDOM();
 document = dom.window.document;
 window = dom.window;
+const Interpolator = require("../../../../public/js/sync/interpolator");
+
+jest.mock("../../../../public/js/sync/interpolator");
 
 let socket = mocks.socket();
 let matter = mocks.matter();
@@ -23,7 +26,7 @@ beforeEach(() => {
 
 describe("Test the UpdateHandler class", () => {
 	test("if init method calls socket.", () => {
-		let testee = new UpdateHandler(socket, {}, {});
+		let testee = new UpdateHandler(socket, {}, {}, {}, 0);
 
 		testee.init();
 
@@ -42,39 +45,32 @@ describe("Test the UpdateHandler class", () => {
 
 	test("if _updateGameState method updates gameObjects.", () => {
 		let gameState = new GameState();
+		gameState.tic = 23;
 		let object = { id: 0, innerObject: { thisIsInnerObject: true } };
 		gameState.addAll([object]);
 		let gameObjectUpdate = {
 			id: 0,
-			position: {
-				x: 12,
-				y: 13,
-			},
-			velocity: {
-				x: 14,
-				y: 15,
-			},
 		};
 		let update = {
-			tic: 0,
+			tic: 20,
 			gameObjects: [gameObjectUpdate],
 		};
+		let interpolator = new Interpolator();
 		let testee = new UpdateHandler(
 			socket,
-			matter,
 			gameState,
-			mocks.updateLock(false)
+			interpolator,
+			mocks.updateLock(false),
+			0
 		);
 
 		testee._updateGameState(update, testee);
 
-		expect(matter.body.setPosition).lastCalledWith(
-			object.innerObject,
-			gameObjectUpdate.position
-		);
-		expect(matter.body.setVelocity).lastCalledWith(
-			object.innerObject,
-			gameObjectUpdate.velocity
+		expect(interpolator.interpolate).lastCalledWith(
+			object,
+			gameObjectUpdate,
+			gameState.tic,
+			update.tic
 		);
 	});
 
@@ -91,16 +87,16 @@ describe("Test the UpdateHandler class", () => {
 		};
 		let testee = new UpdateHandler(
 			socket,
-			matter,
 			gameState,
-			{},
+			new Interpolator(),
+			mocks.updateLock(false),
 			0,
 			new GameViewController()
 		);
 
 		testee._updatePlayer([update], testee);
-		expect(gameState.gameObjects.get(0).done).toBe(true);
-		expect(gameState.gameObjects.get(0).doneAt).toBe(date);
+		expect(player.done).toBe(true);
+		expect(player.doneAt).toBe(date);
 	});
 
 	test("if _applyMovementChange changes player.", () => {
@@ -118,7 +114,13 @@ describe("Test the UpdateHandler class", () => {
 			tic: 858,
 			direction: direction,
 		};
-		let testee = new UpdateHandler(socket, matter, gameState);
+		let testee = new UpdateHandler(
+			socket,
+			gameState,
+			new Interpolator(),
+			mocks.updateLock(false),
+			1
+		);
 
 		testee._applyMovementChange(update, testee);
 		expect(gameState.gameObjects.get(id).direction).toBe(direction);

@@ -1,10 +1,8 @@
-const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
-const logger = require("../logger");
+const gameObjectTypes = require("./gameObjectTypes");
 
 class Timeline {
-	constructor(gameState, physics, maxSnapshots, ticsPerSnapshot) {
+	constructor(gameState, maxSnapshots, ticsPerSnapshot) {
 		this.gameState = gameState;
-		this.physics = physics;
 		this.maxSnapshots = maxSnapshots;
 		this.ticsPerSnapshot = ticsPerSnapshot;
 		this.snapshots = new Map();
@@ -67,42 +65,24 @@ class Timeline {
 		return snapshot;
 	}
 
-	applySnapshotBeforeTic(tic) {
-		let snapshot = this.snapshots.get(
-			Math.floor(tic / this.ticsPerSnapshot) * this.ticsPerSnapshot
-		);
-		if (!snapshot) {
-			logger.warn({
-				message: "no snapshot available.",
-				givenTic: tic,
-				ticOfOldestSnapshot: this.snapshotKeysOrdered[0],
-			});
-		}
-
-		this.gameState.tic = snapshot.tic;
-		this.gameState.lastTicTime = snapshot.lastTicTime;
-		snapshot.gameObjects.forEach((gameObjectSnapshot) => {
-			this._applySnapshot(
-				this.gameState.getGameObject(gameObjectSnapshot.id),
-				gameObjectSnapshot
-			);
-		});
-
-		//TODO when items are added: remove created objects, and create removed objects
+	getSnapshot(tic) {
+		return this.snapshots.get(tic);
 	}
 
-	_applySnapshot(gameObject, snapshot) {
-		let innerObject = gameObject.innerObject;
-		this.physics.setPosition(innerObject, snapshot.innerObject.position);
-		this.physics.setVelocity(innerObject, snapshot.innerObject.velocity);
-
-		if (snapshot.innerObject.force.x || snapshot.innerObject.force.y) {
-			logger.error("Did not expect force.");
+	getGameObjectAtTic(tic, gameObjectId) {
+		let snapshot = this.getSnapshot(tic);
+		if (snapshot) {
+			return snapshot.gameObjects.find(
+				(gameObject) => gameObject.id === gameObjectId
+			);
 		}
+		return null;
+	}
 
-		if (gameObject.type === gameObjectTypes.PLAYER) {
-			gameObject.setDirection(snapshot.direction);
-		}
+	getSnapshotBeforeTic(tic) {
+		return this.snapshots.get(
+			Math.floor(tic / this.ticsPerSnapshot) * this.ticsPerSnapshot
+		);
 	}
 }
 

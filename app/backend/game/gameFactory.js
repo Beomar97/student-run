@@ -7,7 +7,7 @@ const GameState = require("../../public/js/shared/game/gameState");
 const PlayerDetailsPublisher = require("../sync/playerDetailsPublisher");
 const MoveAction = require("../../public/js/shared/game/moveAction");
 const EventQueue = require("./eventQueue");
-const Timeline = require("./timeline");
+const Timeline = require("../../public/js/shared/game/timeline");
 const GameUpdate = require("./gameUpdate");
 const Replay = require("./replay");
 const PhysicsUpdater = require("../../public/js/shared/physics/physicsUpdater");
@@ -97,7 +97,6 @@ class GameFactory {
 		);
 		let timeline = new Timeline(
 			gameState,
-			this.physics,
 			this.config.maxSnapshots,
 			this.config.ticsPerSnapshot
 		);
@@ -115,6 +114,7 @@ class GameFactory {
 		);
 		let replay = new Replay(
 			gameState,
+			this.physics,
 			eventQueue,
 			timeline,
 			physicsUpdater
