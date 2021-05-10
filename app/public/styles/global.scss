@@ -1,15 +1,20 @@
 @charset "utf-8";
 
+// Import fonts
+@import url("https://fonts.googleapis.com/css2?family=Anton&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
-$family-sans-serif: "Roboto", sans-serif;
 
+// Set Sass variables for Bulma
+$family-sans-serif: "Roboto", sans-serif;
 $danger: #ee0202;
 
+// Phaser Canvas
 canvas {
 	display: block;
 	margin: auto;
 }
 
+// Video-Background
 .video-container {
 	position: relative;
 }
@@ -25,6 +30,21 @@ canvas {
 .video-container .video-caption {
 	z-index: 1;
 	position: relative;
+}
+
+// Text over Image
+.level-preview-image {
+	position: relative;
+	text-align: center;
+	color: white;
+}
+
+.level-preview-image-overlay {
+	font-size: xx-large;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
 
 @import "../../node_modules/bulma/bulma.sass";

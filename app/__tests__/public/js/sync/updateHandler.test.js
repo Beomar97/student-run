@@ -4,17 +4,17 @@ const events = require("../../../../public/js/shared/sync/events");
 const UpdateHandler = require("../../../../public/js/sync/updateHandler");
 const mocks = require("../../../mocks/mocks");
 const gameObjectTypes = require("../../../../public/js/shared/game/gameObjectTypes");
-const TableGenerator = require("../../../../public/js/helper/tableGenerator");
+const GameViewController = require("../../../../public/js/view/gameViewController");
 const { JSDOM } = require("jsdom");
-const dom = new JSDOM();
 
+const dom = new JSDOM();
 document = dom.window.document;
 window = dom.window;
 
 let socket = mocks.socket();
 let matter = mocks.matter();
 
-jest.mock("../../../../public/js/helper/tableGenerator");
+jest.mock("../../../../public/js/view/gameViewController");
 
 beforeEach(() => {
 	mocks.util.resetSocketMock(socket);
@@ -95,7 +95,7 @@ describe("Test the UpdateHandler class", () => {
 			gameState,
 			{},
 			0,
-			new TableGenerator()
+			new GameViewController()
 		);
 
 		testee._updatePlayer([update], testee);

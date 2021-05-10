@@ -10,9 +10,9 @@ const events = require("./shared/sync/events");
 const PhysicsUpdater = require("./shared/physics/physicsUpdater");
 const UpdateLock = require("./sync/updateLock");
 const MoveAction = require("./shared/game/moveAction");
-const TableGenerator = require("./helper/tableGenerator");
+const GameViewController = require("./view/gameViewController");
 
-var config = {
+let config = {
 	type: Phaser.AUTO,
 	parent: "student-run",
 	width: 1000,
@@ -120,14 +120,14 @@ function create() {
 
 	this.updateLock = new UpdateLock(this.myPlayerId);
 	this.clientSync = new ClientSync(io());
-	this.tableGenerator = new TableGenerator();
+	this.gameViewController = new GameViewController();
 	this.updateHandler = new UpdateHandler(
 		this.clientSync,
 		this.matter,
 		this.gameState,
 		this.updateLock,
 		this.myPlayerId,
-		this.tableGenerator
+		this.gameViewController
 	);
 	this.updateHandler.init();
 

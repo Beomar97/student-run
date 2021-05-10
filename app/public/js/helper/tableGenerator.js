@@ -25,7 +25,7 @@ class TableGenerator {
 			tbody.appendChild(tbodyTr);
 		}
 		table.appendChild(tbody);
-		table.className = "table";
+		table.classList.add("table", "is-fullwidth");
 
 		container.appendChild(table);
 	}

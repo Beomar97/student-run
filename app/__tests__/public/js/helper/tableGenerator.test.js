@@ -14,7 +14,7 @@ describe("Test the TableGenerator class", () => {
 			{ id: 1, name: "maria" },
 		];
 		let expectedTable =
-			'<div id="players"><table class="table"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>0</td><td>hans</td></tr><tr><td>1</td><td>maria</td></tr></tbody></table></div>';
+			'<div id="players"><table class="table is-fullwidth"><thead><tr><th>id</th><th>name</th></tr></thead><tbody><tr><td>0</td><td>hans</td></tr><tr><td>1</td><td>maria</td></tr></tbody></table></div>';
 
 		let testee = new TableGenerator();
 		testee.generate(

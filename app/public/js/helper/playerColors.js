@@ -1,4 +1,4 @@
-var playerColors = [
+let playerColors = [
 	0xf54242,
 	0xf5e042,
 	0x75f542,

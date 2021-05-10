@@ -3,12 +3,12 @@ const { io } = require("socket.io-client");
 const events = require("./shared/sync/events");
 const ClientSync = require("./sync/clientSync");
 const RoomUpdateHandler = require("./sync/roomUpdateHandler");
-const TableGenerator = require("./helper/tableGenerator");
+const JoinViewController = require("./view/joinViewController");
 
 let clientSync = new ClientSync(io());
-let tableGenerator = new TableGenerator();
+let joinViewController = new JoinViewController();
 
-let roomUpdateHandler = new RoomUpdateHandler(clientSync, tableGenerator);
+let roomUpdateHandler = new RoomUpdateHandler(clientSync, joinViewController);
 roomUpdateHandler.init();
 
 $("#joinGame").on("click", function (event) {

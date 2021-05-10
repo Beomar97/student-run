@@ -1,14 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<title>Join</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>StudentRun - Join</title>
+		<link rel="icon" type="image/png" href="assets/icon.png" />
+		<link rel="stylesheet" href="build/global.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+			integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+			crossorigin="anonymous"
+		/>
 	</head>
-	<body>
-		<p id="gameStatus"></p>
-		<button id="joinGame">Join Game</button>
-		<button id="startGame">Start Game</button>
-		<div id="players"></div>
+	<body class="has-navbar-fixed-top">
+		<nav
+			class="navbar is-fixed-top"
+			role="navigation"
+			aria-label="main navigation"
+		>
+			<div class="navbar-brand">
+				<a class="navbar-item" href="index.html">
+					<img src="assets/logo.png" alt="studentrun-logo" />
+				</a>
+
+				<a
+					role="button"
+					class="navbar-burger"
+					aria-label="menu"
+					aria-expanded="false"
+					data-target="navbarBasicExample"
+				>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+
+			<div id="navbarBasicExample" class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="index.html"> Home </a>
+
+					<a class="navbar-item"> Game </a>
+
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link"> More </a>
+
+						<div class="navbar-dropdown">
+							<a class="navbar-item"> About </a>
+							<a class="navbar-item"> Contact </a>
+							<a class="navbar-item" href="credits.html">
+								Credits
+							</a>
+							<hr class="navbar-divider" />
+							<a
+								class="navbar-item"
+								href="https://github.zhaw.ch/PathFinder/StudentRun/issues"
+							>
+								Report an issue
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="navbar-end">
+					<div class="navbar-item">
+						<div class="field is-grouped">
+							<p class="control">
+								<a href="join.html">
+									<button class="button is-danger">
+										<span class="icon is-small">
+											<i
+												class="fas fa-gamepad"
+												aria-hidden="true"
+											></i>
+										</span>
+										<span class="is-uppercase">Play</span>
+									</button>
+								</a>
+							</p>
+							<p class="control">
+								<a
+									href="https://github.zhaw.ch/PathFinder/StudentRun"
+								>
+									<button class="button is-light">
+										<span class="icon is-small">
+											<i
+												class="fab fa-github"
+												aria-hidden="true"
+											></i>
+										</span>
+									</button>
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="columns">
+			<div class="column is-three-fifths is-offset-one-fifth">
+				<h1 class="title">Game Lobby</h1>
+				<article class="message">
+					<div class="message-header">
+						<p>Game Status:</p>
+					</div>
+					<div id="gameStatus" class="message-body">
+						<!-- Game Status will be displayed inside this div -->
+					</div>
+				</article>
+				<div class="buttons">
+					<button id="joinGame" class="button is-success">
+						Join Game
+					</button>
+					<button id="startGame" class="button is-info">
+						Start Game
+					</button>
+				</div>
+				<div class="columns">
+					<div class="column is-two-thirds">
+						<div id="numberOfPlayers" class="subtitle"></div>
+						<div id="players" class="block">
+							<!-- List of joined players will be displayed inside this div -->
+						</div>
+					</div>
+					<div class="column is-one-third">
+						<h1 class="title">🏁 Race</h1>
+						<h1 class="subtitle mb-0">
+							Get to the finish line first to win!
+						</h1>
+						<div class="level-preview-image">
+							<figure class="image is-3by1">
+								<img
+									src="assets/icon-green-hills.png"
+									alt="Preview of level Green Hills"
+								/>
+							</figure>
+							<div class="level-preview-image-overlay">
+								<p class="title">Green Hills</p>
+							</div>
+						</div>
+						<p>Race on Green Hills</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script src="build/join-bundle.js"></script>
 	</body>
 </html>

@@ -1,5 +1,4 @@
 const events = require("../shared/sync/events");
-const TableGenerator = require("../helper/tableGenerator");
 
 class UpdateHandler {
 	constructor(
@@ -8,14 +7,15 @@ class UpdateHandler {
 		gameState,
 		updateLock,
 		myPlayerId,
-		tableGenerator
+		gameViewController
 	) {
 		this.clientSync = clientSync;
 		this.matter = matter;
 		this.gameState = gameState;
 		this.updateLock = updateLock;
 		this.myPlayerId = myPlayerId;
-		this.tableGenerator = tableGenerator;
+		this.gameViewController = gameViewController;
+		this.finished = false;
 	}
 
 	init() {
@@ -68,13 +68,20 @@ class UpdateHandler {
 			let localPlayer = this.gameState.getGameObject(serverPlayer.id);
 			localPlayer.done = serverPlayer.done;
 			localPlayer.doneAt = serverPlayer.doneAt;
+
+			if (localPlayer.done && localPlayer.id === this.myPlayerId) {
+				this.finished = true;
+			}
 		});
 
-		this.tableGenerator.generate(
-			["id", "name", "done", "doneAt"],
-			players,
-			document.getElementById("scoreBoard")
-		);
+		if (this.finished) {
+			this.gameViewController.displayScoreBoard(players);
+			this.gameViewController.displayButtons();
+		}
+
+		if (players.every((player) => player.done === true)) {
+			this.gameViewController.enablePlayAgainButton();
+		}
 	}
 }
 
