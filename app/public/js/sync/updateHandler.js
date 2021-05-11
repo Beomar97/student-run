@@ -3,15 +3,15 @@ const events = require("../shared/sync/events");
 class UpdateHandler {
 	constructor(
 		clientSync,
-		matter,
 		gameState,
+		interpolator,
 		updateLock,
 		myPlayerId,
 		gameViewController
 	) {
 		this.clientSync = clientSync;
-		this.matter = matter;
 		this.gameState = gameState;
+		this.interpolator = interpolator;
 		this.updateLock = updateLock;
 		this.myPlayerId = myPlayerId;
 		this.gameViewController = gameViewController;
@@ -41,35 +41,31 @@ class UpdateHandler {
 	}
 
 	_updateGameState(gameStateUpdate) {
-		gameStateUpdate.gameObjects.forEach((serverGameObject) => {
+		gameStateUpdate.gameObjects.forEach((gameObjectUpdate) => {
 			if (
 				!this.updateLock.isLocked(
-					serverGameObject.id,
-					gameStateUpdate.tic
+					gameObjectUpdate.id,
+					gameStateUpdate.tic,
+					this.gameState.tic - gameStateUpdate.tic
 				)
 			) {
-				let gameObject = this.gameState.getGameObject(
-					serverGameObject.id
-				);
-				this.matter.body.setPosition(
-					gameObject.innerObject,
-					serverGameObject.position
-				);
-				this.matter.body.setVelocity(
-					gameObject.innerObject,
-					serverGameObject.velocity
+				this.interpolator.interpolate(
+					this.gameState.getGameObject(gameObjectUpdate.id),
+					gameObjectUpdate,
+					this.gameState.tic,
+					gameStateUpdate.tic
 				);
 			}
 		});
 	}
 
 	_updatePlayer(players) {
-		players.forEach((serverPlayer) => {
-			let localPlayer = this.gameState.getGameObject(serverPlayer.id);
-			localPlayer.done = serverPlayer.done;
-			localPlayer.doneAt = serverPlayer.doneAt;
+		players.forEach((playerUpdate) => {
+			let localPlayer = this.gameState.getGameObject(playerUpdate.id);
+			localPlayer.done = playerUpdate.done;
+			localPlayer.doneAt = playerUpdate.doneAt;
 
-			if (localPlayer.done && localPlayer.id === this.myPlayerId) {
+			if (localPlayer.done) {
 				this.finished = true;
 			}
 		});

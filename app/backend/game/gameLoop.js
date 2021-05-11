@@ -62,8 +62,8 @@ class GameLoop {
 
 	_replayUpdatePublish(delta) {
 		this.replay.mayRevertAndReplay();
-		this.gameUpdate.apply(delta);
 		this.gameStatePublisher.publish(this.gameState);
+		this.gameUpdate.apply(delta);
 	}
 
 	stop() {

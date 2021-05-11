@@ -22,6 +22,7 @@ class GameStatePublisher {
 					id: gameObject.id,
 					position: gameObject.innerObject.position,
 					velocity: gameObject.innerObject.velocity,
+					direction: gameObject.direction,
 				});
 			}, this.publishFilter);
 			this.syncController.emit(events.GAME_STATE_UPDATE, {

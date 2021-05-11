@@ -8,8 +8,11 @@ class UpdateLock {
 		this.lockedAtTic = tic;
 	}
 
-	isLocked(objectId, tic) {
-		return objectId === this.objectId && this.lockedAtTic > tic;
+	isLocked(objectId, tic, ticDiff) {
+		return (
+			objectId === this.objectId &&
+			this.lockedAtTic + ticDiff * 1.5 >= tic
+		);
 	}
 }
 
