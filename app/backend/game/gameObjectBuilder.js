@@ -1,9 +1,7 @@
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const physicalConstant = require("../../public/js/shared/physics/physicalConstant");
-const {
-	GameObject,
-	Player,
-} = require("../../public/js/shared/game/gameObject");
+const { GameObject } = require("../../public/js/shared/game/gameObject");
+const Player = require("../../public/js/shared/game/player");
 
 class GameObjectBuilder {
 	constructor(physics) {
@@ -125,6 +123,7 @@ class GameObjectBuilder {
 				physicalConstant.PLAYER_SIZE,
 				{
 					frictionAir: physicalConstant.FRICTION_AIR,
+					inertia: Infinity,
 				}
 			);
 

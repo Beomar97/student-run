@@ -3,7 +3,7 @@ const Physics = require("../../../backend/physics/physics");
 const EventQueue = require("../../../backend/game/eventQueue");
 const GameState = require("../../../public/js/shared/game/gameState");
 const ClientEventHandler = require("../../../backend/sync/clientEventHandler");
-const { Player } = require("../../../public/js/shared/game/gameObject");
+const Player = require("../../../public/js/shared/game/player");
 
 jest.mock("../../../backend/sync/syncController");
 jest.mock("../../../backend/physics/physics");
@@ -53,11 +53,26 @@ describe("Test the ClientEventHandler class", () => {
 		let movementChangeEvent = {
 			id: player.id,
 			tic: 49,
-			direction: { x: 1, y: 1 },
+			direction: 1,
 		};
 
 		testee._applyMovementChange(movementChangeEvent);
+		expect(player.direction.x).toEqual(movementChangeEvent.direction);
+	});
 
-		expect(player.direction).toStrictEqual(movementChangeEvent.direction);
+	test("if _applyJump method sets direction correctly.", () => {
+		let gameState = new GameState();
+		let physics = new Physics();
+		let testee = new ClientEventHandler({}, gameState, physics);
+		let player = new Player(1, "", {}, 0.01);
+		gameState.addAll([player]);
+		let playerJumpEvent = {
+			id: player.id,
+			tic: 49,
+			directionY: 1,
+		};
+
+		testee._applyJump(playerJumpEvent);
+		expect(player.direction.y).toEqual(playerJumpEvent.directionY);
 	});
 });

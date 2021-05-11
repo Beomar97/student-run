@@ -1,5 +1,5 @@
 const GameState = require("../../../../public/js/shared/game/gameState");
-const { Player } = require("../../../../public/js/shared/game/gameObject");
+const Player = require("../../../../public/js/shared/game/player");
 const events = require("../../../../public/js/shared/sync/events");
 const UpdateHandler = require("../../../../public/js/sync/updateHandler");
 const mocks = require("../../../mocks/mocks");
@@ -101,10 +101,7 @@ describe("Test the UpdateHandler class", () => {
 
 	test("if _applyMovementChange changes player.", () => {
 		let id = 0;
-		let direction = {
-			x: 1,
-			y: 0,
-		};
+		let directionX = 1;
 		let player = new Player(id, gameObjectTypes.PLAYER, {});
 		let gameState = new GameState();
 		gameState.addAll([player]);
@@ -112,7 +109,7 @@ describe("Test the UpdateHandler class", () => {
 		let update = {
 			id: id,
 			tic: 858,
-			direction: direction,
+			direction: directionX,
 		};
 		let testee = new UpdateHandler(
 			socket,
@@ -123,6 +120,9 @@ describe("Test the UpdateHandler class", () => {
 		);
 
 		testee._applyMovementChange(update, testee);
-		expect(gameState.gameObjects.get(id).direction).toBe(direction);
+		expect(gameState.gameObjects.get(id).direction).toEqual({
+			x: directionX,
+			y: 0,
+		});
 	});
 });

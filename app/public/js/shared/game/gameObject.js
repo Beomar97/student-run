@@ -19,6 +19,16 @@ class MovingGameObject extends GameObject {
 		this.moving = direction.x !== 0 || direction.y !== 0;
 	}
 
+	setDirectionX(xDirection) {
+		this.direction.x = xDirection;
+		this.moving = this.direction.x !== 0 || this.direction.y !== 0;
+	}
+
+	setDirectionY(yDirection) {
+		this.direction.y = yDirection;
+		this.moving = this.direction.x !== 0 || this.direction.y !== 0;
+	}
+
 	isMovingLeft() {
 		return this.direction.x < 0;
 	}
@@ -32,13 +42,4 @@ class MovingGameObject extends GameObject {
 	}
 }
 
-class Player extends MovingGameObject {
-	constructor(id, type, innerObject, baseForce, name) {
-		super(id, type, innerObject, baseForce);
-		this.done = false;
-		this.doneAt = null;
-		this.name = name;
-	}
-}
-
-module.exports = { GameObject, MovingGameObject, Player };
+module.exports = { GameObject, MovingGameObject };

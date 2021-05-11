@@ -3,7 +3,7 @@ const Replay = require("../../../backend/game/replay");
 const GameState = require("../../../public/js/shared/game/gameState");
 const PhysicsUpdater = require("../../../public/js/shared/physics/physicsUpdater");
 const Physics = require("../../../backend/physics/physics");
-const { Player } = require("../../../public/js/shared/game/gameObject");
+const Player = require("../../../public/js/shared/game/player");
 const EventQueue = require("../../../backend/game/eventQueue");
 const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
 

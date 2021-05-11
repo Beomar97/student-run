@@ -12,6 +12,7 @@ var events = {
 	PLAYER_ID_ALLOCATION: "playerIdAllocation",
 	PLAYER_DETAILS_UPDATE: "playerStateUpdate",
 	MOVEMENT_CHANGE_EVENT: "movementChangeEvent",
+	PLAYER_JUMP: "playerJump",
 };
 
 module.exports = events;

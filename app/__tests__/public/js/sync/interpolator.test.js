@@ -1,6 +1,6 @@
 const Interpolator = require("../../../../public/js/sync/interpolator");
-const { Player } = require("../../../../public/js/shared/game/gameObject");
 const mocks = require("../../../mocks/mocks");
+const Player = require("../../../../public/js/shared/game/player");
 const gameObjectTypes = require("../../../../public/js/shared/game/gameObjectTypes");
 
 let matter = mocks.matter();

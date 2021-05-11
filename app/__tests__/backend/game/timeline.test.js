@@ -1,5 +1,5 @@
 const GameState = require("../../../public/js/shared/game/gameState");
-const { Player } = require("../../../public/js/shared/game/gameObject");
+const Player = require("../../../public/js/shared/game/player");
 const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
 const Timeline = require("../../../public/js/shared/game/timeline");
 

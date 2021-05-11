@@ -41,7 +41,7 @@
 			"shape": "rectangle",
 			"texture": "dirt",
 			"x": 2000,
-			"y": 950,
+			"y": 940,
 			"width": 6000,
 			"height": 500,
 			"isStatic": true

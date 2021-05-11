@@ -1,10 +1,8 @@
 const FinishLineWatcher = require("../../../backend/rules/finishLineWatcher");
 const PlayerDetailsPublisher = require("../../../backend/sync/playerDetailsPublisher");
 const GameState = require("../../../public/js/shared/game/gameState");
-const {
-	GameObject,
-	Player,
-} = require("../../../public/js/shared/game/gameObject");
+const { GameObject } = require("../../../public/js/shared/game/gameObject");
+const Player = require("../../../public/js/shared/game/player");
 const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
 const Room = require("../../../backend/game/room");
 

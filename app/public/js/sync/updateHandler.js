@@ -27,16 +27,22 @@ class UpdateHandler {
 		});
 		this.clientSync.on(
 			events.MOVEMENT_CHANGE_EVENT,
-			(movementChangeEvent) => {
-				this._applyMovementChange(movementChangeEvent);
-			}
+			this._applyMovementChange.bind(this)
 		);
+		this.clientSync.on(events.PLAYER_JUMP, this._applyJump.bind(this));
 	}
 
 	_applyMovementChange(movementChangeEvent) {
 		if (movementChangeEvent.id !== this.myPlayerId) {
 			let player = this.gameState.getGameObject(movementChangeEvent.id);
-			player.setDirection(movementChangeEvent.direction);
+			player.setDirectionX(movementChangeEvent.direction);
+		}
+	}
+
+	_applyJump(playerJumpEvent) {
+		if (playerJumpEvent.id !== this.myPlayerId) {
+			let player = this.gameState.getGameObject(playerJumpEvent.id);
+			player.setDirectionY(1);
 		}
 	}
 

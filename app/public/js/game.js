@@ -179,6 +179,38 @@ function create() {
 		loop: true,
 	});
 
+	this.myPlayer = this.gameState.getGameObject(this.myPlayerId);
+	this.matter.world.on(
+		"collisionstart",
+		(event, gameObjectA, gameObjectB) => {
+			if (
+				this.myPlayer.innerObject.id === gameObjectA.id &&
+				gameObjectB.isGroundElement
+			) {
+				this.myPlayer.isTouchingGround = true;
+			}
+			if (
+				gameObjectA.isGroundElement &&
+				this.myPlayer.innerObject.id === gameObjectB.id
+			) {
+				this.myPlayer.isTouchingGround = true;
+			}
+		}
+	);
+	this.matter.world.on("collisionend", (event, gameObjectA, gameObjectB) => {
+		if (
+			this.myPlayer.innerObject.id === gameObjectA.id &&
+			gameObjectB.isGroundElement
+		) {
+			this.myPlayer.isTouchingGround = false;
+		}
+		if (
+			gameObjectA.isGroundElement &&
+			this.myPlayer.innerObject.id === gameObjectB.id
+		) {
+			this.myPlayer.isTouchingGround = false;
+		}
+	});
 	this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
 }
 
@@ -195,30 +227,36 @@ function update() {
 			$("#student-run").remove();
 		}
 
-		let steeringDirection = { x: 0, y: 0 };
+		let steeringDirection = 0;
 		if (this.cursors.left.isDown) {
-			steeringDirection.x = -1;
+			steeringDirection = -1;
 			this.myPhaserPlayer.anims.play("left", true);
 		} else if (this.cursors.right.isDown) {
-			steeringDirection.x = 1;
+			steeringDirection = 1;
 			this.myPhaserPlayer.anims.play("right", true);
 		} else {
 			this.myPhaserPlayer.anims.play("turn", true);
 		}
 
-		if (this.cursors.up.isDown) {
-			steeringDirection.y = -1;
+		let player = this.gameState.getGameObject(this.myPlayerId);
+		let playerDirection = player.direction;
+
+		if (
+			this.myPlayer.isTouchingGround &&
+			this.cursors.up.isDown &&
+			playerDirection.y === 0
+		) {
+			player.setDirectionY(1);
+
+			this.clientSync.emit(events.PLAYER_JUMP, {
+				id: this.myPlayerId,
+				tic: this.gameState.tic,
+			});
+			this.updateLock.lock(this.gameState.tic);
 		}
 
-		let playerDirection = this.gameState.getGameObject(this.myPlayerId)
-			.direction;
-		if (
-			playerDirection.x !== steeringDirection.x ||
-			playerDirection.y !== steeringDirection.y
-		) {
-			this.gameState
-				.getGameObject(this.myPlayerId)
-				.setDirection(steeringDirection);
+		if (playerDirection.x !== steeringDirection) {
+			player.setDirectionX(steeringDirection);
 			this.clientSync.emit(events.MOVEMENT_CHANGE_EVENT, {
 				id: this.myPlayerId,
 				tic: this.gameState.tic,

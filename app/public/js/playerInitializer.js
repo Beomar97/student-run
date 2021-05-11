@@ -1,4 +1,4 @@
-const { Player } = require("./shared/game/gameObject");
+const Player = require("./shared/game/player");
 const gameObjectTypes = require("./shared/game/gameObjectTypes");
 const physicalConstant = require("./shared/physics/physicalConstant");
 const playerColors = require("./helper/playerColors");
@@ -18,6 +18,7 @@ class PlayerInitializer {
 			this.phaserPlayerCollection.set(player.id, phaserPlayer);
 
 			let matterPlayer = this._createMatterPlayer();
+			matterPlayer.isPlayer = true;
 			this.matterPlayerCollection.set(player.id, matterPlayer);
 
 			this.game.matter.add.gameObject(phaserPlayer, matterPlayer);
@@ -54,6 +55,7 @@ class PlayerInitializer {
 			physicalConstant.PLAYER_SIZE,
 			{
 				frictionAir: physicalConstant.FRICTION_AIR,
+				inertia: Infinity,
 			}
 		);
 	}

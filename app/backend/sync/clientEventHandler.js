@@ -16,6 +16,11 @@ class ClientEventHandler {
 				events.MOVEMENT_CHANGE_EVENT,
 				this._handleMoveChangeEvent.bind(this)
 			);
+
+			serverSync.on(
+				events.PLAYER_JUMP,
+				this._handlePlayerJumpEvent.bind(this)
+			);
 		});
 	}
 
@@ -39,9 +44,27 @@ class ClientEventHandler {
 		);
 	}
 
+	_handlePlayerJumpEvent(playerJumpEvent) {
+		this._logEvent("player jump event", playerJumpEvent);
+
+		this.syncController.emit(events.PLAYER_JUMP, playerJumpEvent);
+
+		this.eventQueue.enqueue(
+			this._evaluateEventTic(playerJumpEvent.tic),
+			(() => {
+				this._applyJump(playerJumpEvent);
+			}).bind(this)
+		);
+	}
+
 	_applyMovementChange(movementChangeEvent) {
 		let player = this.gameState.getGameObject(movementChangeEvent.id);
-		player.setDirection(movementChangeEvent.direction);
+		player.setDirectionX(movementChangeEvent.direction);
+	}
+
+	_applyJump(playerJumpEvent) {
+		let player = this.gameState.getGameObject(playerJumpEvent.id);
+		player.setDirectionY(1);
 	}
 
 	_evaluateEventTic(eventTic) {

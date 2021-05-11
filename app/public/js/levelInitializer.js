@@ -63,6 +63,7 @@ class LevelInitializer {
 						isStatic: Boolean(objectDescription.isStatic),
 					}
 				);
+				matterObject.isGroundElement = true;
 			} else if (
 				objectDescription.type ===
 				gameObjectTypes.STATIC_OBSTACLE_TILESPRITE
@@ -85,6 +86,7 @@ class LevelInitializer {
 						isStatic: Boolean(objectDescription.isStatic),
 					}
 				);
+				matterObject.isGroundElement = true;
 			} else if (objectDescription.shape === gameObjectShapes.RECTANGLE) {
 				phaserObject = this.game.add.rectangle(
 					objectDescription.x,
@@ -102,6 +104,7 @@ class LevelInitializer {
 						isStatic: Boolean(objectDescription.isStatic),
 					}
 				);
+				matterObject.isGroundElement = true;
 			} else if (objectDescription.shape === gameObjectShapes.CIRCLE) {
 				phaserObject = this.game.add.sprite(
 					objectDescription.x,
