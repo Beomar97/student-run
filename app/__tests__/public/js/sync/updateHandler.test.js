@@ -79,11 +79,11 @@ describe("Test the UpdateHandler class", () => {
 		let gameState = new GameState();
 		gameState.addAll([player]);
 
-		let date = 1618844289;
+		let timeToFinish = 2000;
 		let update = {
 			id: 0,
 			done: true,
-			doneAt: date,
+			timeToFinish: timeToFinish,
 		};
 		let testee = new UpdateHandler(
 			socket,
@@ -96,7 +96,7 @@ describe("Test the UpdateHandler class", () => {
 
 		testee._updatePlayer([update], testee);
 		expect(player.done).toBe(true);
-		expect(player.doneAt).toBe(date);
+		expect(player.timeToFinish).toBe(timeToFinish);
 	});
 
 	test("if _applyMovementChange changes player.", () => {

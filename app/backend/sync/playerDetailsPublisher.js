@@ -16,7 +16,7 @@ class PlayerDetailsPublisher {
 					id: player.id,
 					name: player.name,
 					done: player.done,
-					doneAt: player.doneAt,
+					timeToFinish: player.timeToFinish,
 				});
 			}
 		});

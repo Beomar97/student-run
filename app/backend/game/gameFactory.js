@@ -15,7 +15,7 @@ const ItemAction = require("../../public/js/shared/game/itemAction");
 
 class GameFactory {
 	constructor() {
-		this.config = {};
+		this.config = { countdown: 1000 };
 		this.syncController = null;
 		this.gameObjects = null;
 		this.physics = null;
@@ -125,7 +125,8 @@ class GameFactory {
 			gameStatePublisher,
 			gameUpdate,
 			replay,
-			this.config.milisPerTic
+			this.config.milisPerTic,
+			this.config.countdown
 		);
 		let clientEventHandler = new ClientEventHandler(
 			this.syncController,

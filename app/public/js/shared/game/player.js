@@ -5,7 +5,7 @@ class Player extends MovingGameObject {
 	constructor(id, innerObject, baseForce, name) {
 		super(id, gameObjectTypes.PLAYER, innerObject, baseForce);
 		this.done = false;
-		this.doneAt = null;
+		this.timeToFinish = 0;
 		this.name = name;
 		this.isTouchingGround = false;
 		this.innerObject.player = true;

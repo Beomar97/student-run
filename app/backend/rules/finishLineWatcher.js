@@ -31,13 +31,13 @@ class FinishLineWatcher {
 
 	_markPlayerAsDone(player) {
 		player.done = true;
-		player.doneAt = Date.now();
+		player.timeToFinish = Date.now() - this.room.getStartTime();
 
 		logger.log({
 			level: "debug",
 			message: "Player crossed finish line",
 			id: player.id,
-			doneAt: player.doneAt.toString(),
+			timeToFinish: player.timeToFinish,
 		});
 	}
 

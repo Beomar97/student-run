@@ -70,6 +70,14 @@ class Room {
 		this.roomStatePublisher.publishRoomUpdate(this);
 	}
 
+	getStartTime() {
+		if (this.game.gameLoop.running) {
+			return this.game.gameLoop.runAt;
+		}
+
+		return null;
+	}
+
 	_generateGameObjects(physics) {
 		let gameObjectCollection = [];
 

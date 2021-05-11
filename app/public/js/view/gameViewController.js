@@ -8,7 +8,7 @@ class GameViewController {
 
 	displayScoreBoard(players) {
 		this.tableGenerator.generate(
-			["id", "name", "done", "doneAt"],
+			["id", "name", "done", "timeToFinish"],
 			players,
 			document.getElementById("scoreBoard")
 		);

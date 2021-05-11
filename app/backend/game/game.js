@@ -9,7 +9,7 @@ class Game {
 
 	start() {
 		this.clientEventHandler.init();
-		let startTime = Date.now() + 1000; //TODO move to GameFactory
+		let startTime = Date.now();
 		this.syncController.emit(events.GAME_START, startTime);
 		this.gameLoop.start(startTime);
 	}

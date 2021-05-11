@@ -7,13 +7,16 @@ class GameLoop {
 		gameStatePublisher,
 		gameUpdate,
 		replay,
-		milisPerTic
+		milisPerTic,
+		countdown
 	) {
 		this.gameState = gameState;
 		this.gameStatePublisher = gameStatePublisher;
 		this.gameUpdate = gameUpdate;
 		this.replay = replay;
 		this.milisPerTic = milisPerTic;
+		this.countdown = countdown;
+		this.runAt = null;
 		this.running = false;
 		this.setTimeoutOffset = 16;
 		this.physicsUpdater = new PhysicsUpdater(
@@ -26,7 +29,8 @@ class GameLoop {
 
 	start(startTime) {
 		if (startTime) {
-			this.gameState.lastTicTime = startTime;
+			this.runAt = startTime + this.countdown;
+			this.gameState.lastTicTime = this.runAt;
 		} else {
 			this.gameState.lastTicTime = Date.now() - this.milisPerTic;
 		}

@@ -35,4 +35,20 @@ describe("Test the Room class", () => {
 		testee.stopGame();
 		expect(testee.roomLocked).toBe(false);
 	});
+
+	test("If game has start time after starting it", () => {
+		let syncController = new SyncController();
+		let testee = new Room(syncController);
+		testee.initializeGame();
+		testee.game.start();
+		expect(testee.getStartTime()).toBeTruthy();
+		testee.game.stop();
+	});
+
+	test("If game has no start time before starting it", () => {
+		let syncController = new SyncController();
+		let testee = new Room(syncController);
+		testee.initializeGame();
+		expect(testee.getStartTime()).toBeFalsy();
+	});
 });

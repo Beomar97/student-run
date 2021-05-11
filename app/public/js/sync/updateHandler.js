@@ -83,7 +83,7 @@ class UpdateHandler {
 		players.forEach((playerUpdate) => {
 			let localPlayer = this.gameState.getGameObject(playerUpdate.id);
 			localPlayer.done = playerUpdate.done;
-			localPlayer.doneAt = playerUpdate.doneAt;
+			localPlayer.timeToFinish = playerUpdate.timeToFinish;
 
 			if (localPlayer.done) {
 				this.finished = true;

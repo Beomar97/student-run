@@ -17,6 +17,7 @@ describe("Test the PlayerDetailsPublisher class", () => {
 		let gameState = new GameState();
 		let id = 1;
 		let player = new Player(id, { position: {} });
+		player.timeToFinish = 10;
 		gameState.addAll([player]);
 		let testee = new PlayerDetailsPublisher(syncController);
 
@@ -28,7 +29,7 @@ describe("Test the PlayerDetailsPublisher class", () => {
 				{
 					id: 1,
 					done: false,
-					doneAt: null,
+					timeToFinish: 10,
 				},
 			]
 		);
