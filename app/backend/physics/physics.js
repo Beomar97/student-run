@@ -25,6 +25,10 @@ class Physics {
 		this.matter.Body.setVelocity(object, position, velocity);
 	}
 
+	removeObject(object) {
+		this.matter.World.remove(this.engine.world, object);
+	}
+
 	update(time) {
 		this.matter.Engine.update(this.engine, time);
 	}

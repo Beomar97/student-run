@@ -16,7 +16,7 @@ describe("Test the PlayerDetailsPublisher class", () => {
 		let syncController = new SyncController();
 		let gameState = new GameState();
 		let id = 1;
-		let player = new Player(id, gameObjectTypes.PLAYER, { position: {} });
+		let player = new Player(id, { position: {} });
 		gameState.addAll([player]);
 		let testee = new PlayerDetailsPublisher(syncController);
 

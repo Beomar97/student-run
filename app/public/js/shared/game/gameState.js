@@ -23,6 +23,21 @@ class GameState {
 	getGameObject(id) {
 		return this.gameObjects.get(id);
 	}
+
+	getGameObjectByInnerObjectId(id) {
+		let foundGameObject = null;
+		this.forEachGameObject(
+			(gameObject) => {
+				foundGameObject = gameObject;
+			},
+			(gameObject) => gameObject.innerObject.id === id
+		);
+		return foundGameObject;
+	}
+
+	removeGameObject(id) {
+		this.gameObjects.delete(id);
+	}
 }
 
 module.exports = GameState;

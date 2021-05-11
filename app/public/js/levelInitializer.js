@@ -1,3 +1,4 @@
+const BoostItem = require("./shared/game/boostItem");
 const { GameObject } = require("./shared/game/gameObject");
 const gameObjectShapes = require("./shared/game/gameObjectShapes");
 const gameObjectTypes = require("./shared/game/gameObjectTypes");
@@ -119,13 +120,23 @@ class LevelInitializer {
 			}
 			if (phaserObject && matterObject) {
 				this.game.matter.add.gameObject(phaserObject, matterObject);
-				gameObjectCollection.push(
-					new GameObject(
+
+				let gameObject = null;
+				if (objectDescription.type === gameObjectTypes.BOOST_ITEM) {
+					matterObject.collectableItem = true;
+					gameObject = new BoostItem(
+						objectDescription.id,
+						matterObject
+					);
+				} else {
+					gameObject = new GameObject(
 						objectDescription.id,
 						objectDescription,
 						matterObject
-					)
-				);
+					);
+				}
+
+				gameObjectCollection.push(gameObject);
 			} else {
 				throw new Error("Couldn't initialize all game objects.");
 			}

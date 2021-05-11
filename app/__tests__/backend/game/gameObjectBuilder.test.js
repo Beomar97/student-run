@@ -1,5 +1,6 @@
 const Matter = require("matter-js");
 const GameObjectBuilder = require("../../../backend/game/gameObjectBuilder");
+const gameObjectShapes = require("../../../public/js/shared/game/gameObjectShapes");
 const Physics = require("../../../backend/physics/physics");
 
 describe("Test the GameObjectBuilder class", () => {
@@ -27,7 +28,8 @@ describe("Test the GameObjectBuilder class", () => {
 			.withHeight(height)
 			.withIsStatic(isStatic)
 			.withCollisionCategory(collision)
-			.createRectangle();
+			.withShape(gameObjectShapes.RECTANGLE)
+			.create();
 
 		expect(rectangleGameObject.id).toBe(id);
 		expect(rectangleGameObject.type).toBe(type);
@@ -52,7 +54,8 @@ describe("Test the GameObjectBuilder class", () => {
 			.withY(y)
 			.withRadius(radius)
 			.withIsStatic(isStatic)
-			.createCircle();
+			.withShape(gameObjectShapes.CIRCLE)
+			.create();
 
 		expect(circleGameObject.id).toBe(id);
 		expect(circleGameObject.type).toBe(type);
@@ -76,8 +79,8 @@ describe("Test the GameObjectBuilder class", () => {
 			.withY(y)
 			.withIsStatic(isStatic);
 
-		expect(() => testee.createRectangle()).toThrow(
-			"Cannot create rectangle game object. Values are missing"
+		expect(() => testee.create()).toThrow(
+			"Cannot create game object. Values are missing."
 		);
 	});
 
@@ -87,9 +90,9 @@ describe("Test the GameObjectBuilder class", () => {
 		let isStatic = true;
 
 		let testee = new GameObjectBuilder(physics);
-		testee.withWidth(width).withIsStatic(isStatic);
+		testee.withWidth(width).withIsStatic(isStatic).withShape(gameObjectShapes.RECTANGLE);
 
-		expect(() => testee.createRectangle()).toThrow(
+		expect(() => testee.create()).toThrow(
 			"Cannot create game object. Values are missing"
 		);
 	});
@@ -108,9 +111,9 @@ describe("Test the GameObjectBuilder class", () => {
 			.withGameObjectType(type)
 			.withX(x)
 			.withY(y)
-			.withIsStatic(isStatic);
+			.withIsStatic(isStatic).withShape(gameObjectShapes.CIRCLE);
 
-		expect(() => testee.createCircle()).toThrow(
+		expect(() => testee.create()).toThrow(
 			"Cannot create circle game object. Values are missing."
 		);
 	});

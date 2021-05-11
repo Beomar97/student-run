@@ -8,7 +8,6 @@ function createGameStateWithPlayer() {
 	gameState.lastTicTime = 0;
 	let player = new Player(
 		0,
-		gameObjectTypes.PLAYER,
 		{
 			position: { x: 23, y: 24 },
 			velocity: { x: 10, y: 20 },

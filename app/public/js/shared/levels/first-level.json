@@ -243,6 +243,17 @@
 			"width": 150,
 			"height": 40,
 			"isStatic": true
+		},
+		{
+			"id": 100,
+			"type": "boostItem",
+			"shape": "circle",
+			"fillColor": "0xfbd000",
+			"x": 500,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "star"
 		}
 	],
 	"decorations": [

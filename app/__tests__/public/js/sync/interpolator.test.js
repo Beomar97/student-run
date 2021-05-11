@@ -37,14 +37,12 @@ describe("Test the Interpolator class", () => {
 
 		let gameObjectThen = new Player(
 			0,
-			gameObjectTypes.PLAYER,
 			createInnerGameObject(4),
 			0,
 			""
 		);
 		let gameObjectNow = new Player(
 			0,
-			gameObjectTypes.PLAYER,
 			createInnerGameObject(15),
 			0,
 			""

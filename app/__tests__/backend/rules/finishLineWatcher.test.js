@@ -20,7 +20,7 @@ describe("Test Finish Line Watcher", () => {
 		let positionNotDone = { x: 0, y: 1 };
 		let positionDone = { x: finishLinePosition, y: 0 };
 
-		let player = new Player(0, gameObjectTypes.PLAYER, {
+		let player = new Player(0, {
 			position: positionNotDone,
 		});
 		let finishLine = new GameObject(1, gameObjectTypes.FINISH_LINE, {
@@ -44,7 +44,7 @@ describe("Test Finish Line Watcher", () => {
 		let positionNotDone = { x: 0, y: 0 };
 		let positionDone = { x: finishLinePosition, y: 0 };
 
-		let player = new Player(0, gameObjectTypes.PLAYER, {
+		let player = new Player(0, {
 			position: positionNotDone,
 		});
 		let finishLine = new GameObject(1, gameObjectTypes.FINISH_LINE, {
@@ -69,7 +69,7 @@ describe("Test Finish Line Watcher", () => {
 		let finishLinePosition = 1000;
 		let positionDone = { x: finishLinePosition, y: 0 };
 
-		let player = new Player(0, gameObjectTypes.PLAYER, {
+		let player = new Player(0, {
 			position: positionDone,
 		});
 		let finishLine = new GameObject(1, gameObjectTypes.FINISH_LINE, {
@@ -95,7 +95,7 @@ describe("Test Finish Line Watcher", () => {
 	test("if throws error without finish line.", () => {
 		let position = { x: 200, y: 0 };
 
-		let player = new Player(0, gameObjectTypes.PLAYER, {
+		let player = new Player(0, {
 			position: position,
 		});
 

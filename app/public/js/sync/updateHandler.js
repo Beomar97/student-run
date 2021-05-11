@@ -29,6 +29,10 @@ class UpdateHandler {
 			events.MOVEMENT_CHANGE_EVENT,
 			this._applyMovementChange.bind(this)
 		);
+		this.clientSync.on(
+			events.PLAYER_COLLECTED_ITEM,
+			this._applyItemEffect.bind(this)
+		);
 		this.clientSync.on(events.PLAYER_JUMP, this._applyJump.bind(this));
 	}
 
@@ -43,6 +47,16 @@ class UpdateHandler {
 		if (playerJumpEvent.id !== this.myPlayerId) {
 			let player = this.gameState.getGameObject(playerJumpEvent.id);
 			player.setDirectionY(1);
+		}
+	}
+
+	_applyItemEffect(itemEvent) {
+		if (itemEvent.playerId !== this.myPlayerId) {
+			let player = this.gameState.getGameObject(itemEvent.playerId);
+			let item = this.gameState.getGameObject(itemEvent.itemId);
+			player.item = item;
+			item.innerObject.gameObject.destroy();
+			this.gameState.removeGameObject(item.id);
 		}
 	}
 

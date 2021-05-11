@@ -18,10 +18,27 @@ class ClientEventHandler {
 			);
 
 			serverSync.on(
+				events.PLAYER_COLLECTED_ITEM,
+				this._handleItemEvent.bind(this)
+			);
+			serverSync.on(
 				events.PLAYER_JUMP,
 				this._handlePlayerJumpEvent.bind(this)
 			);
 		});
+	}
+
+	_handleItemEvent(itemEvent) {
+		this._logEvent("item event", itemEvent, "Player: " + itemEvent.playerId);
+
+		this.syncController.emit(events.PLAYER_COLLECTED_ITEM, itemEvent);
+
+		this.eventQueue.enqueue(
+			this._evaluateEventTic(itemEvent.tic),
+			(() => {
+				this._applyItemEffect(itemEvent);
+			}).bind(this)
+		);
 	}
 
 	_handleMoveChangeEvent(movementChangeEvent) {
@@ -65,6 +82,14 @@ class ClientEventHandler {
 	_applyJump(playerJumpEvent) {
 		let player = this.gameState.getGameObject(playerJumpEvent.id);
 		player.setDirectionY(1);
+	}
+
+	_applyItemEffect(itemEvent) {
+		let player = this.gameState.getGameObject(itemEvent.playerId);
+		let item = this.gameState.getGameObject(itemEvent.itemId);
+		player.item = item;
+		this.gameState.removeGameObject(item.id);
+		this.physics.removeObject(item.innerObject);
 	}
 
 	_evaluateEventTic(eventTic) {

@@ -13,6 +13,7 @@ var events = {
 	PLAYER_DETAILS_UPDATE: "playerStateUpdate",
 	MOVEMENT_CHANGE_EVENT: "movementChangeEvent",
 	PLAYER_JUMP: "playerJump",
+	PLAYER_COLLECTED_ITEM: "playerCollectedItem",
 };
 
 module.exports = events;

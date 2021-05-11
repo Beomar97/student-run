@@ -16,7 +16,6 @@ describe("Test the MoveAction class", () => {
 		gameState.lastTicTime = 0;
 		let player = new Player(
 			0,
-			gameObjectTypes.PLAYER,
 			{
 				position: { x: 23, y: 24 },
 				velocity: { x: 10, y: 20 },
@@ -46,7 +45,6 @@ describe("Test the MoveAction class", () => {
 		gameState.lastTicTime = 0;
 		let player = new Player(
 			0,
-			gameObjectTypes.PLAYER,
 			{
 				position: { x: 23, y: 24 },
 				velocity: { x: 0, y: 0 },

@@ -1,15 +1,14 @@
 const { MovingGameObject } = require("./gameObject");
-const matter = require("matter-js");
-const PhysicalConstant = require("../physics/physicalConstant");
+const gameObjectTypes = require("./gameObjectTypes");
 
 class Player extends MovingGameObject {
-	constructor(id, type, innerObject, baseForce, name) {
-		super(id, type, innerObject, baseForce);
+	constructor(id, innerObject, baseForce, name) {
+		super(id, gameObjectTypes.PLAYER, innerObject, baseForce);
 		this.done = false;
 		this.doneAt = null;
 		this.name = name;
 		this.isTouchingGround = false;
-		this.Vector = matter.Vector;
+		this.innerObject.player = true;
 	}
 }
 module.exports = Player;

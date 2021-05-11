@@ -16,7 +16,7 @@
 		},
 		{
 			"id": 1001,
-			"type": "collectableItem",
+			"type": "boostItem",
 			"shape": "circle",
 			"fillColor": "0xfbd000",
 			"x": 150,

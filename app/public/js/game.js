@@ -13,6 +13,7 @@ const MoveAction = require("./shared/game/moveAction");
 const GameViewController = require("./view/gameViewController");
 const Timeline = require("./shared/game/timeline");
 const Interpolator = require("./sync/interpolator");
+const ItemAction = require("./shared/game/itemAction");
 
 let config = {
 	type: Phaser.AUTO,
@@ -158,9 +159,11 @@ function create() {
 	});
 
 	let moveAction = new MoveAction(this.matter.body);
+	let itemAction = new ItemAction(this.matter.body);
 	let updatePhysics = (delta) => {
 		this.timeline.mayCreateSnapshot();
 		moveAction.run(this.gameState);
+		itemAction.run(this.gameState);
 		this.matter.world.step(delta);
 	};
 
@@ -211,6 +214,41 @@ function create() {
 			this.myPlayer.isTouchingGround = false;
 		}
 	});
+	
+	this.matter.world.on("collisionstart", function (event, bodyA, bodyB) {
+		let itemInnerObject;
+		let playerInnerObject;
+		if (bodyA.collectableItem) {
+			itemInnerObject = bodyA;
+		} else if (bodyA.player) {
+			playerInnerObject = bodyB;
+		}
+		if (bodyB.collectableItem) {
+			itemInnerObject = bodyB
+		} else if (bodyB.player) {
+			playerInnerObject = bodyB;
+		}
+		if (playerInnerObject && itemInnerObject) {
+			let player = this.gameState.getGameObjectByInnerObjectId(
+				playerInnerObject.id
+			);
+			let item = this.gameState.getGameObjectByInnerObjectId(
+				itemInnerObject.id
+			);
+			
+			if (this.myPlayerId === player.id) {
+				player.item = item;
+				this.gameState.removeGameObject(item.id);
+				this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
+					playerId: player.id,
+					itemId: item.id,
+					tic: this.gameState.tic,
+				});
+				itemInnerObject.gameObject.destroy();
+			}
+		}
+	}.bind(this));
+
 	this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
 }
 

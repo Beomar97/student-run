@@ -1,15 +1,20 @@
+const BoostItem = require("../../public/js/shared/game/boostItem");
+const { GameObject } = require("../../public/js/shared/game/gameObject");
+const gameObjectShapes = require("../../public/js/shared/game/gameObjectShapes");
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const physicalConstant = require("../../public/js/shared/physics/physicalConstant");
-const { GameObject } = require("../../public/js/shared/game/gameObject");
 const Player = require("../../public/js/shared/game/player");
 
 class GameObjectBuilder {
 	constructor(physics) {
-		this.properties = {};
-		this.properties.collisionFilter = {
-			category: 1,
-			mask: -1,
+		this.properties = {
+			collisionFilter: {
+				category: 1,
+				mask: -1,
+			},
+			frictionAir: 0,
 		};
+
 		this.physics = physics;
 	}
 
@@ -61,16 +66,71 @@ class GameObjectBuilder {
 		return this;
 	}
 
+	withShape(shape) {
+		this.properties.shape = shape;
+		return this;
+	}
+
 	withName(name) {
 		this.properties.name = name;
 		return this;
 	}
 
-	createRectangle() {
-		this._validateBase();
-		this._validateRectangle();
+	withFrictionAir(frictionAir) {
+		this.properties.frictionAir = frictionAir;
+		return this;
+	}
 
-		let innerObject = this.physics
+	create() {
+		this._validateBase();
+		let innerObject = this.createInnerObjectOfShape();
+		let gameObject = this.encapsulate(innerObject);
+		return gameObject;
+	}
+
+	createInnerObjectOfShape() {
+		let innerObject = null;
+		switch (this.properties.shape) {
+			case gameObjectShapes.RECTANGLE:
+				this._validateRectangle();
+				innerObject = this._createRectangle();
+				break;
+			case gameObjectShapes.CIRCLE:
+				this._validateCircle();
+				innerObject = this._createCircle();
+				break;
+			default:
+				throw new Error("Unknown shape: " + this.properties.shape);
+		}
+		return innerObject;
+	}
+
+	encapsulate(innerObject) {
+		let gameObject = null;
+		switch (this.properties.gameObjectType) {
+			case gameObjectTypes.PLAYER:
+				gameObject = new Player(
+					this.properties.id,
+					innerObject,
+					physicalConstant.BASE_FORCE,
+					this.properties.name
+				);
+				break;
+			case gameObjectTypes.BOOST_ITEM:
+				gameObject = new BoostItem(this.properties.id, innerObject);
+				break;
+			default:
+				gameObject = new GameObject(
+					this.properties.id,
+					this.properties.gameObjectType,
+					innerObject
+				);
+		}
+		return gameObject;
+	}
+
+	_createRectangle() {
+		return this.physics
 			.getMatter()
 			.Bodies.rectangle(
 				this.properties.x,
@@ -79,22 +139,14 @@ class GameObjectBuilder {
 				this.properties.height,
 				{
 					isStatic: this.properties.isStatic,
+					frictionAir: this.properties.frictionAir,
 					collisionFilter: this.properties.collisionFilter,
 				}
 			);
-
-		return new GameObject(
-			this.properties.id,
-			this.properties.gameObjectType,
-			innerObject
-		);
 	}
 
-	createCircle() {
-		this._validateBase();
-		this._validateCircle();
-
-		let innerObject = this.physics
+	_createCircle() {
+		return this.physics
 			.getMatter()
 			.Bodies.circle(
 				this.properties.x,
@@ -102,47 +154,32 @@ class GameObjectBuilder {
 				this.properties.radius,
 				{
 					isStatic: this.properties.isStatic,
+					frictionAir: this.properties.frictionAir,
+					collisionFilter: this.properties.collisionFilter,
 				}
 			);
-
-		return new GameObject(
-			this.properties.id,
-			this.properties.gameObjectType,
-			innerObject
-		);
 	}
 
 	createPlayer() {
 		this._validatePlayer();
-
-		let innerObject = this.physics
-			.getMatter()
-			.Bodies.circle(
-				physicalConstant.PLAYER_SPAWN_X,
-				physicalConstant.PLAYER_SPAWN_Y,
-				physicalConstant.PLAYER_SIZE,
-				{
-					frictionAir: physicalConstant.FRICTION_AIR,
-					inertia: Infinity,
-				}
-			);
-
-		return new Player(
-			this.properties.id,
-			gameObjectTypes.PLAYER,
-			innerObject,
-			physicalConstant.BASE_FORCE,
-			this.properties.name
-		);
+		this.properties.x = physicalConstant.PLAYER_SPAWN_X;
+		this.properties.y = physicalConstant.PLAYER_SPAWN_Y;
+		this.properties.radius = physicalConstant.PLAYER_SIZE;
+		this.properties.frictionAir = physicalConstant.FRICTION_AIR;
+		this.properties.shape = gameObjectShapes.CIRCLE;
+		this.properties.gameObjectType = gameObjectTypes.PLAYER;
+		this.properties.isStatic = false;
+		return this.create();
 	}
 
 	_validateBase() {
 		let isNotValid =
-			this.properties.x == null ||
-			this.properties.y == null ||
-			this.properties.gameObjectType == null ||
-			this.properties.id == null ||
-			this.physics == null;
+			this.properties.x === undefined ||
+			this.properties.y === undefined ||
+			this.properties.isStatic === undefined ||
+			this.properties.gameObjectType === undefined ||
+			this.properties.id === undefined ||
+			this.properties.shape === undefined;
 
 		if (isNotValid) {
 			throw new Error("Cannot create game object. Values are missing.");

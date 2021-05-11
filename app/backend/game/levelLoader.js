@@ -4,42 +4,36 @@ const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 
 class LevelLoader {
 	deserializeGameObject(objectDescription, physics) {
-		if (objectDescription.type === gameObjectTypes.FINISH_LINE) {
-			let uniqueCollisionCategory = physics
-				.getMatter()
-				.Body.nextCategory();
-			return new GameObjectBuilder(physics)
-				.withId(objectDescription.id)
-				.withGameObjectType(objectDescription.type)
-				.withX(objectDescription.x)
-				.withY(objectDescription.y)
-				.withWidth(objectDescription.width)
-				.withHeight(objectDescription.height)
-				.withIsStatic(objectDescription.isStatic)
-				.withCollisionCategory(uniqueCollisionCategory)
-				.createRectangle();
-		} else if (objectDescription.shape === gameObjectShapes.RECTANGLE) {
-			return new GameObjectBuilder(physics)
-				.withId(objectDescription.id)
-				.withGameObjectType(objectDescription.type)
-				.withX(objectDescription.x)
-				.withY(objectDescription.y)
-				.withWidth(objectDescription.width)
-				.withHeight(objectDescription.height)
-				.withIsStatic(objectDescription.isStatic)
-				.createRectangle();
-		} else if (objectDescription.shape === gameObjectShapes.CIRCLE) {
-			return new GameObjectBuilder(physics)
-				.withId(objectDescription.id)
-				.withGameObjectType(objectDescription.type)
-				.withX(objectDescription.x)
-				.withY(objectDescription.y)
-				.withRadius(objectDescription.radius)
-				.withIsStatic(objectDescription.isStatic)
-				.createCircle();
+		let gameObjectBuilder = new GameObjectBuilder(physics)
+			.withShape(objectDescription.shape)
+			.withId(objectDescription.id)
+			.withGameObjectType(objectDescription.type)
+			.withX(objectDescription.x)
+			.withY(objectDescription.y)
+			.withIsStatic(objectDescription.isStatic);
+
+		switch (objectDescription.shape) {
+			case gameObjectShapes.RECTANGLE:
+				gameObjectBuilder
+					.withWidth(objectDescription.width)
+					.withHeight(objectDescription.height);
+				if (objectDescription.type === gameObjectTypes.FINISH_LINE) {
+					let uniqueCollisionCategory = physics
+						.getMatter()
+						.Body.nextCategory();
+					gameObjectBuilder.withCollisionCategory(
+						uniqueCollisionCategory
+					);
+				}
+				break;
+			case gameObjectShapes.CIRCLE:
+				gameObjectBuilder.withRadius(objectDescription.radius);
+				break;
+			default:
+				throw new Error("Couldn't create all game objects.");
 		}
 
-		throw new Error("Couldn't create all game objects.");
+		return gameObjectBuilder.create();
 	}
 }
 

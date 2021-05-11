@@ -30,7 +30,6 @@ class Room {
 		//TODO why use game obejct here
 		let player = new Player(
 			playerId,
-			gameObjectTypes.PLAYER,
 			{},
 			0.005,
 			playerName

@@ -11,6 +11,7 @@ const Timeline = require("../../public/js/shared/game/timeline");
 const GameUpdate = require("./gameUpdate");
 const Replay = require("./replay");
 const PhysicsUpdater = require("../../public/js/shared/physics/physicsUpdater");
+const ItemAction = require("../../public/js/shared/game/itemAction");
 
 class GameFactory {
 	constructor() {
@@ -154,18 +155,22 @@ class GameFactory {
 		}
 	}
 
-	_createActions(finishLineWatchdog) {
+	_createActions(finishLineWatcher) {
 		let self = this;
 		let actions = [];
 		let moveAction = new MoveAction(this.physics);
 		actions.push((gameState, milisPerTic) => {
 			moveAction.run(gameState);
 		});
+		let itemAction = new ItemAction(this.physics);
+		actions.push((gameState, milisPerTic) => {
+			itemAction.run(gameState);
+		});
 		actions.push((gameState, milisPerTic) => {
 			self.physics.update(milisPerTic);
 		});
 		actions.push((gameState) => {
-			finishLineWatchdog.checkFinishLine(gameState);
+			finishLineWatcher.checkFinishLine(gameState);
 		});
 		return actions;
 	}

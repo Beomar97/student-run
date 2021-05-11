@@ -18,14 +18,12 @@ class PlayerInitializer {
 			this.phaserPlayerCollection.set(player.id, phaserPlayer);
 
 			let matterPlayer = this._createMatterPlayer();
-			matterPlayer.isPlayer = true;
 			this.matterPlayerCollection.set(player.id, matterPlayer);
 
 			this.game.matter.add.gameObject(phaserPlayer, matterPlayer);
 
 			let newPlayer = new Player(
 				player.id,
-				gameObjectTypes.PLAYER,
 				matterPlayer,
 				physicalConstant.BASE_FORCE
 			);

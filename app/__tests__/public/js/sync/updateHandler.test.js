@@ -75,7 +75,7 @@ describe("Test the UpdateHandler class", () => {
 	});
 
 	test("if _updatePlayer updates player.", () => {
-		let player = new Player(0, gameObjectTypes.PLAYER, {});
+		let player = new Player(0, {});
 		let gameState = new GameState();
 		gameState.addAll([player]);
 
@@ -102,7 +102,7 @@ describe("Test the UpdateHandler class", () => {
 	test("if _applyMovementChange changes player.", () => {
 		let id = 0;
 		let directionX = 1;
-		let player = new Player(id, gameObjectTypes.PLAYER, {});
+		let player = new Player(id, {});
 		let gameState = new GameState();
 		gameState.addAll([player]);
 

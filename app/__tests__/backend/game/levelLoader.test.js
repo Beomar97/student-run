@@ -20,7 +20,7 @@ describe("Test the LevelHolder class", () => {
 		let demoLevelObjects = testee.getLevelObjectsById(0, physics);
 
 		expect(demoLevelObjects[0].type).toBe(gameObjectTypes.STATIC_OBSTACLE);
-		expect(demoLevelObjects[1].type).toBe(gameObjectTypes.COLLECTABLE_ITEM);
+		expect(demoLevelObjects[1].type).toBe(gameObjectTypes.BOOST_ITEM);
 	});
 
 	test("if LevelHolder generates correct shapes", () => {
