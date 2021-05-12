@@ -85,7 +85,7 @@ class UpdateHandler {
 			localPlayer.done = playerUpdate.done;
 			localPlayer.timeToFinish = playerUpdate.timeToFinish;
 
-			if (localPlayer.done) {
+			if (localPlayer.id === this.myPlayerId && localPlayer.done) {
 				this.finished = true;
 			}
 		});
