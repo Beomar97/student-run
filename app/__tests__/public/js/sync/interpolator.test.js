@@ -24,7 +24,8 @@ describe("Test the Interpolator class", () => {
 	test("if interpolate method interpolates position correctly.", () => {
 		let interpolationConfig = {
 			maxDiff: 15,
-			distanceDiffThreshold: 2,
+			lowerDistanceDiffThreshold: 2,
+			upperDistanceDiffThreshold: 50,
 			interpolationMaxStep: 3,
 			ticDiffThreshold: 1,
 		};
@@ -35,18 +36,8 @@ describe("Test the Interpolator class", () => {
 		gameObjectUpdate.id = 0;
 		gameObjectUpdate.direction = { x: 0, y: 0 };
 
-		let gameObjectThen = new Player(
-			0,
-			createInnerGameObject(4),
-			0,
-			""
-		);
-		let gameObjectNow = new Player(
-			0,
-			createInnerGameObject(15),
-			0,
-			""
-		);
+		let gameObjectThen = new Player(0, createInnerGameObject(4), 0, "");
+		let gameObjectNow = new Player(0, createInnerGameObject(15), 0, "");
 		let timeline = { getGameObjectAtTic: (tic) => gameObjectThen };
 
 		let testee = new Interpolator(

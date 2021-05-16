@@ -32,16 +32,16 @@ describe("Test the GameLoop class", () => {
 			milisPerTic
 		);
 
-		testee.start();
+		testee.start(Date.now());
 		gameState.lastTicTime -= milisPerTic;
 		jest.runOnlyPendingTimers();
 
 		expect(replay.mayRevertAndReplay).toHaveBeenCalled();
 		expect(gameUpdate.apply).lastCalledWith(milisPerTic);
 		expect(gameStatePublisher.publish).lastCalledWith(gameState);
-		expect(replay.mayRevertAndReplay).toHaveBeenCalledTimes(2);
-		expect(gameUpdate.apply).toHaveBeenCalledTimes(2);
-		expect(gameStatePublisher.publish).toHaveBeenCalledTimes(2);
+		expect(replay.mayRevertAndReplay).toHaveBeenCalledTimes(1);
+		expect(gameUpdate.apply).toHaveBeenCalledTimes(1);
+		expect(gameStatePublisher.publish).toHaveBeenCalledTimes(1);
 	});
 
 	test("if stop method stops loop.", () => {
@@ -60,13 +60,37 @@ describe("Test the GameLoop class", () => {
 			milisPerTic
 		);
 
-		testee.start();
+		testee.start(Date.now());
 		testee.stop();
 		jest.runAllTimers();
 
-		// when gameLoop starts the actions get called once right away
-		expect(replay.mayRevertAndReplay).toHaveBeenCalledTimes(1);
-		expect(gameUpdate.apply).toHaveBeenCalledTimes(1);
-		expect(gameStatePublisher.publish).toHaveBeenCalledTimes(1);
+		expect(replay.mayRevertAndReplay).toHaveBeenCalledTimes(0);
+		expect(gameUpdate.apply).toHaveBeenCalledTimes(0);
+		expect(gameStatePublisher.publish).toHaveBeenCalledTimes(0);
+	});
+
+	test("if gameState has startTime after starting loop", () => {
+		jest.useFakeTimers();
+
+		let gameState = new GameState();
+		let gameStatePublisher = new GameStatePublisher();
+		let gameUpdate = new GameUpdate();
+		let replay = new Replay();
+		let milisPerTic = 1000 / 40;
+		let testee = new GameLoop(
+			gameState,
+			gameStatePublisher,
+			gameUpdate,
+			replay,
+			milisPerTic
+		);
+
+		let startTime = Date.now();
+		testee.start(startTime);
+		expect(gameState.startTime).toEqual(startTime);
+		testee.stop();
+		expect(gameState.startTime).toBeFalsy();
+
+		jest.runAllTimers();
 	});
 });

@@ -31,7 +31,7 @@ class FinishLineWatcher {
 
 	_markPlayerAsDone(player) {
 		player.done = true;
-		player.timeToFinish = Date.now() - this.room.getStartTime();
+		player.timeToFinish = Date.now() - this.gameState.startTime;
 
 		logger.log({
 			level: "debug",

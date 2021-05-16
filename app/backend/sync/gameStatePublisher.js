@@ -6,11 +6,7 @@ class GameStatePublisher {
 		this.syncController = syncController;
 		this.ticsPerPublish = ticsPerPublish;
 		this.publishFilter = (gameObject) => {
-			return (
-				gameObject.type !== gameObjectTypes.STATIC_OBSTACLE &&
-				gameObject.type !== gameObjectTypes.STATIC_OBSTACLE_SPRITE &&
-				gameObject.type !== gameObjectTypes.STATIC_OBSTACLE_TILESPRITE
-			);
+			return gameObject.type === gameObjectTypes.PLAYER;
 		};
 	}
 

@@ -28,12 +28,7 @@ class Room {
 		let playerName = newPlayer.name;
 
 		//TODO why use game obejct here
-		let player = new Player(
-			playerId,
-			{},
-			0.005,
-			playerName
-		);
+		let player = new Player(playerId, {}, 0.005, playerName);
 		player.ready = false;
 		this.waitingPlayers.set(playerId, player);
 
@@ -56,6 +51,7 @@ class Room {
 			.withPhysics(physics)
 			.withGameObjects(this._generateGameObjects(physics))
 			.withFinishLineOffset(50)
+			.withCountdown(1000)
 			.create();
 
 		this.roomStatePublisher.loadGame();
@@ -68,14 +64,6 @@ class Room {
 		id.sequence = 0;
 		this.roomLocked = false;
 		this.roomStatePublisher.publishRoomUpdate(this);
-	}
-
-	getStartTime() {
-		if (this.game.gameLoop.running) {
-			return this.game.gameLoop.runAt;
-		}
-
-		return null;
 	}
 
 	_generateGameObjects(physics) {
