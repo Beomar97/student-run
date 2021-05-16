@@ -1,7 +1,7 @@
-const BoostItem = require("./shared/game/boostItem");
-const { GameObject } = require("./shared/game/gameObject");
-const gameObjectShapes = require("./shared/game/gameObjectShapes");
-const gameObjectTypes = require("./shared/game/gameObjectTypes");
+const BoostItem = require("../shared/game/boostItem");
+const { GameObject } = require("../shared/game/gameObject");
+const gameObjectShapes = require("../shared/game/gameObjectShapes");
+const gameObjectTypes = require("../shared/game/gameObjectTypes");
 
 class LevelInitializer {
 	constructor(game) {
