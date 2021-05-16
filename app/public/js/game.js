@@ -32,7 +32,8 @@ let config = {
 	},
 	interpolation: {
 		maxDiff: 15,
-		distanceDiffThreshold: 2,
+		lowerDistanceDiffThreshold: 2,
+		upperDistanceDiffThreshold: 50,
 		interpolationMaxStep: 3,
 		ticDiffThreshold: 2,
 		ticsPerSnapshot: 4, // should be in sync with game state publish
@@ -242,12 +243,13 @@ function create() {
 				if (this.myPlayerId === player.id) {
 					player.item = item;
 					this.gameState.removeGameObject(item.id);
+					itemInnerObject.gameObject.destroy();
 					this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
 						playerId: player.id,
 						itemId: item.id,
 						tic: this.gameState.tic,
 					});
-					itemInnerObject.gameObject.destroy();
+					this.updateLock.lock(this.gameState.tic);
 				}
 			}
 		}.bind(this)
