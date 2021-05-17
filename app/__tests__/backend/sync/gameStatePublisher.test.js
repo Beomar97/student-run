@@ -3,6 +3,7 @@ const GameState = require("../../../public/js/shared/game/gameState");
 const { GameObject } = require("../../../public/js/shared/game/gameObject");
 const GameStatePublisher = require("../../../backend/sync/gameStatePublisher");
 const events = require("../../../public/js/shared/sync/events");
+const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes");
 
 jest.mock("../../../backend/sync/syncController");
 
@@ -18,7 +19,7 @@ describe("Test the GameStatePublisher class", () => {
 		let id = 1;
 		let position = { x: 1, y: 1 };
 		let velocity = { x: 1, y: 1 };
-		let gameObject = new GameObject(id, "", {
+		let gameObject = new GameObject(id, gameObjectTypes.PLAYER, {
 			position: position,
 			velocity: velocity,
 		});

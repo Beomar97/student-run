@@ -3,6 +3,7 @@ class GameState {
 		this.gameObjects = new Map();
 		this.tic = 0;
 		this.lastTicTime = null;
+		this.startTime = null;
 	}
 
 	addAll(gameObjects) {

@@ -15,11 +15,10 @@ const ItemAction = require("../../public/js/shared/game/itemAction");
 
 class GameFactory {
 	constructor() {
-		this.config = { countdown: 1000 };
+		this.config = { countdown: 0 };
 		this.syncController = null;
 		this.gameObjects = null;
 		this.physics = null;
-		this.finishLineOffset = null;
 	}
 
 	withMilisPerTic(milisPerTic) {
@@ -68,12 +67,17 @@ class GameFactory {
 	}
 
 	withFinishLineOffset(offset) {
-		this.finishLineOffset = offset;
+		this.config.finishLineOffset = offset;
 		return this;
 	}
 
 	inRoom(room) {
 		this.room = room;
+		return this;
+	}
+
+	withCountdown(countdown) {
+		this.config.countdown = countdown;
 		return this;
 	}
 
@@ -89,7 +93,7 @@ class GameFactory {
 			playerDetailsPublisher,
 			this.room,
 			gameState,
-			this.finishLineOffset
+			this.config.finishLineOffset
 		);
 		let actions = this._createActions(finishLineWatcher);
 		let gameStatePublisher = new GameStatePublisher(
@@ -125,8 +129,7 @@ class GameFactory {
 			gameStatePublisher,
 			gameUpdate,
 			replay,
-			this.config.milisPerTic,
-			this.config.countdown
+			this.config.milisPerTic
 		);
 		let clientEventHandler = new ClientEventHandler(
 			this.syncController,
@@ -135,7 +138,12 @@ class GameFactory {
 			eventQueue,
 			this.config.allowedEventMaxAge
 		);
-		return new Game(gameLoop, clientEventHandler, this.syncController);
+		return new Game(
+			gameLoop,
+			clientEventHandler,
+			this.syncController,
+			this.config.countdown
+		);
 	}
 
 	_validate() {

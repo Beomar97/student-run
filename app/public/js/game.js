@@ -32,7 +32,8 @@ let config = {
 	},
 	interpolation: {
 		maxDiff: 15,
-		distanceDiffThreshold: 2,
+		lowerDistanceDiffThreshold: 2,
+		upperDistanceDiffThreshold: 50,
 		interpolationMaxStep: 3,
 		ticDiffThreshold: 2,
 		ticsPerSnapshot: 4, // should be in sync with game state publish
@@ -154,6 +155,7 @@ function create() {
 	this.running = false;
 	this.clientSync.on(events.GAME_START, (startTime) => {
 		this.gameState.lastTicTime = startTime;
+		this.gameState.startTime = startTime;
 		this.running = true;
 		console.log("start game at: " + startTime + ", now: " + Date.now());
 	});
@@ -214,40 +216,44 @@ function create() {
 			this.myPlayer.isTouchingGround = false;
 		}
 	});
-	
-	this.matter.world.on("collisionstart", function (event, bodyA, bodyB) {
-		let itemInnerObject;
-		let playerInnerObject;
-		if (bodyA.collectableItem) {
-			itemInnerObject = bodyA;
-		} else if (bodyA.player) {
-			playerInnerObject = bodyB;
-		}
-		if (bodyB.collectableItem) {
-			itemInnerObject = bodyB
-		} else if (bodyB.player) {
-			playerInnerObject = bodyB;
-		}
-		if (playerInnerObject && itemInnerObject) {
-			let player = this.gameState.getGameObjectByInnerObjectId(
-				playerInnerObject.id
-			);
-			let item = this.gameState.getGameObjectByInnerObjectId(
-				itemInnerObject.id
-			);
-			
-			if (this.myPlayerId === player.id) {
-				player.item = item;
-				this.gameState.removeGameObject(item.id);
-				this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
-					playerId: player.id,
-					itemId: item.id,
-					tic: this.gameState.tic,
-				});
-				itemInnerObject.gameObject.destroy();
+
+	this.matter.world.on(
+		"collisionstart",
+		function (event, bodyA, bodyB) {
+			let itemInnerObject;
+			let playerInnerObject;
+			if (bodyA.collectableItem) {
+				itemInnerObject = bodyA;
+			} else if (bodyA.player) {
+				playerInnerObject = bodyB;
 			}
-		}
-	}.bind(this));
+			if (bodyB.collectableItem) {
+				itemInnerObject = bodyB;
+			} else if (bodyB.player) {
+				playerInnerObject = bodyB;
+			}
+			if (playerInnerObject && itemInnerObject) {
+				let player = this.gameState.getGameObjectByInnerObjectId(
+					playerInnerObject.id
+				);
+				let item = this.gameState.getGameObjectByInnerObjectId(
+					itemInnerObject.id
+				);
+
+				if (this.myPlayerId === player.id) {
+					player.item = item;
+					this.gameState.removeGameObject(item.id);
+					itemInnerObject.gameObject.destroy();
+					this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
+						playerId: player.id,
+						itemId: item.id,
+						tic: this.gameState.tic,
+					});
+					this.updateLock.lock(this.gameState.tic);
+				}
+			}
+		}.bind(this)
+	);
 
 	this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
 }
