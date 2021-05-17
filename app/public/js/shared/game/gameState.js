@@ -1,16 +1,17 @@
 class GameState {
 	constructor() {
 		this.gameObjects = new Map();
+		this.innerObjectIdMap = new Map();
 		this.tic = 0;
 		this.lastTicTime = null;
 		this.startTime = null;
 	}
 
 	addAll(gameObjects) {
-		let self = this;
-		gameObjects.forEach((gameObject) =>
-			self.gameObjects.set(gameObject.id, gameObject)
-		);
+		gameObjects.forEach((gameObject) => {
+			this.gameObjects.set(gameObject.id, gameObject);
+			this.innerObjectIdMap.set(gameObject.innerObject.id, gameObject.id);
+		});
 	}
 
 	forEachGameObject(consume, filter) {
@@ -26,17 +27,12 @@ class GameState {
 	}
 
 	getGameObjectByInnerObjectId(id) {
-		let foundGameObject = null;
-		this.forEachGameObject(
-			(gameObject) => {
-				foundGameObject = gameObject;
-			},
-			(gameObject) => gameObject.innerObject.id === id
-		);
-		return foundGameObject;
+		return this.gameObjects.get(this.innerObjectIdMap.get(id));
 	}
 
 	removeGameObject(id) {
+		let gameObject = this.gameObjects.get(id);
+		this.innerObjectIdMap.delete(gameObject.innerObject.id);
 		this.gameObjects.delete(id);
 	}
 }

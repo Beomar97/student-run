@@ -1,7 +1,6 @@
-const Player = require("./shared/game/player");
-const gameObjectTypes = require("./shared/game/gameObjectTypes");
-const physicalConstant = require("./shared/physics/physicalConstant");
-const playerColors = require("./helper/playerColors");
+const Player = require("../shared/game/player");
+const physicalConstant = require("../shared/physics/physicalConstant");
+const playerColors = require("../helper/playerColors");
 
 class PlayerInitializer {
 	constructor(game) {

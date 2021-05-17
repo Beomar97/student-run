@@ -1,6 +1,6 @@
-const mocks = require("../../mocks/mocks");
-const PlayerInitializer = require("../../../public/js/playerInitializer");
-const playerColors = require("../../../public/js/helper/playerColors");
+const mocks = require("../../../mocks/mocks");
+const playerColors = require("../../../../public/js/helper/playerColors");
+const PlayerInitializer = require("../../../../public/js/game/playerInitializer");
 
 let phaser = mocks.phaser();
 
