@@ -30,7 +30,9 @@ describe("Test the GameFactory class", () => {
 		let physics = new Physics();
 		let gameObjectId = 1;
 		let gameObjects = [
-			new GameObject(gameObjectId, gameObjectTypes.FINISH_LINE),
+			new GameObject(gameObjectId, gameObjectTypes.FINISH_LINE, {
+				id: 0,
+			}),
 		];
 
 		let testee = new GameFactory();

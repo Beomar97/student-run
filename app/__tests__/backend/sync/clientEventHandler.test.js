@@ -10,15 +10,12 @@ const Matter = require("matter-js");
 jest.mock("../../../backend/sync/syncController");
 jest.mock("../../../backend/physics/physics");
 jest.mock("../../../backend/game/eventQueue");
-jest.mock("../../../public/js/shared/game/player");
-jest.mock("../../../public/js/shared/game/boostItem");
 jest.mock("../../../backend/logger");
 
 beforeEach(() => {
 	SyncController.mockClear();
 	Physics.mockClear();
 	EventQueue.mockClear();
-	Player.mockClear();
 });
 
 describe("Test the ClientEventHandler class", () => {
@@ -54,9 +51,7 @@ describe("Test the ClientEventHandler class", () => {
 		let gameState = new GameState();
 		let physics = new Physics();
 		let testee = new ClientEventHandler({}, gameState, physics);
-		let player = new Player();
-		player.id = 1;
-		player.direction = {};
+		let player = new Player(1, { id: 1 }, 0.05, "name");
 		gameState.addAll([player]);
 		let movementChangeEvent = {
 			id: player.id,
@@ -65,15 +60,14 @@ describe("Test the ClientEventHandler class", () => {
 		};
 
 		testee._applyMovementChange(movementChangeEvent);
-		expect(player.setDirectionX).toHaveBeenCalledTimes(1);
+		expect(player.direction).toEqual({ x: 1, y: 0 });
 	});
 
 	test("if _applyJump method sets direction correctly.", () => {
 		let gameState = new GameState();
 		let physics = new Physics();
 		let testee = new ClientEventHandler({}, gameState, physics);
-		let player = new Player(1, {}, 0.01);
-		player.direction = {};
+		let player = new Player(1, { id: 1 }, 0.05, "name");
 		gameState.addAll([player]);
 		let playerJumpEvent = {
 			id: player.id,
@@ -82,7 +76,7 @@ describe("Test the ClientEventHandler class", () => {
 		};
 
 		testee._applyJump(playerJumpEvent);
-		expect(player.setDirectionY).toHaveBeenCalledTimes(1);
+		expect(player.direction).toEqual({ x: 0, y: 1 });
 	});
 
 	test("if _handleItemEvent method calls eventQueue.", () => {
@@ -106,19 +100,12 @@ describe("Test the ClientEventHandler class", () => {
 	});
 
 	test("if _applyItemEffect method applys the item on the correct player", () => {
-		let boostItem = new BoostItem();
-		boostItem.id = 23;
+		let boostItem = new BoostItem(23, { id: 23 });
 		let physics = new Physics(Matter);
 		let gameState = new GameState();
-		let player0 = new Player();
-		player0.id = 0;
-		let player1 = new Player();
-		player1.id = 1;
-		let players = [];
-		players.push(player0);
-		players.push(player1);
-		gameState.addAll(players);
-		gameState.addAll([boostItem]);
+		let player0 = new Player(0, { id: 0 }, 0.05, "name");
+		let player1 = new Player(1, { id: 1 }, 0.05, "name");
+		gameState.addAll([boostItem, player0, player1]);
 		let syncController = new SyncController();
 		let eventQueue = new EventQueue();
 		let boostItemEvent = { playerId: 1, itemId: 23, tic: 49 };
@@ -129,7 +116,9 @@ describe("Test the ClientEventHandler class", () => {
 			eventQueue,
 			50
 		);
+
 		testee._applyItemEffect(boostItemEvent);
+
 		expect(player1.item).toEqual(boostItem);
 	});
 });

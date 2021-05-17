@@ -15,13 +15,23 @@ const Timeline = require("../shared/game/timeline");
 const Interpolator = require("../sync/interpolator");
 const ItemAction = require("../shared/game/itemAction");
 const gameObjectTypes = require("../shared/game/gameObjectTypes");
+const {
+	CollisionDetector,
+	gameObjectMatchers,
+} = require("./collisionDetector");
+const Animator = require("./animator");
 
 class GameScene extends Phaser.Scene {
 	constructor(config) {
 		super(config);
+		this.running = false;
+		this.gameState = null;
+		this.myPlayerId = null;
+		this.clientSync = null;
+		this.physicsUpdater = null;
+		this.updateLock = null;
+		this.animator = null;
 	}
-
-	init(data) {}
 
 	preload() {
 		this.load.image("background", "assets/sky.png");
@@ -52,21 +62,20 @@ class GameScene extends Phaser.Scene {
 	}
 
 	create(data) {
-		this.running = false;
-
 		this._initWorld();
-		this._initAnimation();
 		this._initSync();
 		this._initPhysics();
 		this._initIO();
 
+		this._listenForGameStartEvent();
 		this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
 	}
 
 	update(time, delta) {
 		if (this.running) {
-			if (this.gameState.getGameObject(this.myPlayerId).done) {
-				this.myPhaserPlayer.anims.play("turn", true);
+			let player = this.gameState.getGameObject(this.myPlayerId);
+			if (player.done) {
+				player.innerObject.gameObject.anims.play("turn", true);
 				this.sound.pauseAll();
 				this.sound.play("done_audio", {
 					volume: 0.1,
@@ -76,45 +85,9 @@ class GameScene extends Phaser.Scene {
 				$("#student-run").remove();
 			}
 
-			let steeringDirection = 0;
-			if (this.cursors.left.isDown) {
-				steeringDirection = -1;
-				this.myPhaserPlayer.anims.play("left", true);
-			} else if (this.cursors.right.isDown) {
-				steeringDirection = 1;
-				this.myPhaserPlayer.anims.play("right", true);
-			} else {
-				this.myPhaserPlayer.anims.play("turn", true);
-			}
-
-			let player = this.gameState.getGameObject(this.myPlayerId);
-			let playerDirection = player.direction;
-
-			if (
-				player.isTouchingGround &&
-				this.cursors.up.isDown &&
-				playerDirection.y === 0
-			) {
-				player.setDirectionY(1);
-
-				this.clientSync.emit(events.PLAYER_JUMP, {
-					id: this.myPlayerId,
-					tic: this.gameState.tic,
-				});
-				this.updateLock.lock(this.gameState.tic);
-			}
-
-			if (playerDirection.x !== steeringDirection) {
-				player.setDirectionX(steeringDirection);
-				this.clientSync.emit(events.MOVEMENT_CHANGE_EVENT, {
-					id: this.myPlayerId,
-					tic: this.gameState.tic,
-					direction: steeringDirection,
-				});
-				this.updateLock.lock(this.gameState.tic);
-			}
-
+			this._processUserInput();
 			this.physicsUpdater.update(Date.now());
+			this.animator.animate(this.gameState);
 		}
 	}
 
@@ -147,41 +120,10 @@ class GameScene extends Phaser.Scene {
 			playerData
 		);
 		this.myPlayerId = parseInt(localStorage.getItem("playerId"));
-		this.myPhaserPlayer = playerInitializer.getPhaserPlayerById(
-			this.myPlayerId
-		);
 
+		// GameState
 		this.gameState = new GameState();
 		this.gameState.addAll(gameObjectCollection.concat(loadedPlayers));
-		this.cameras.main.startFollow(this.myPhaserPlayer, true, 0.9, 0.9);
-	}
-
-	_initAnimation() {
-		this.anims.create({
-			key: "left",
-			frames: this.anims.generateFrameNumbers("player", {
-				start: 0,
-				end: 3,
-			}),
-			frameRate: 10,
-			repeat: -1,
-		});
-
-		this.anims.create({
-			key: "turn",
-			frames: [{ key: "player", frame: 4 }],
-			frameRate: 20,
-		});
-
-		this.anims.create({
-			key: "right",
-			frames: this.anims.generateFrameNumbers("player", {
-				start: 5,
-				end: 8,
-			}),
-			frameRate: 10,
-			repeat: -1,
-		});
 	}
 
 	_initSync() {
@@ -193,27 +135,21 @@ class GameScene extends Phaser.Scene {
 			this.game.config.customConfig.interpolation.maxDiff,
 			this.game.config.customConfig.interpolation.ticsPerSnapshot
 		);
+		let interpolator = new Interpolator(
+			this.matter,
+			this.timeline,
+			Phaser.Math,
+			this.game.config.customConfig.interpolation
+		);
 		let updateHandler = new UpdateHandler(
 			this.clientSync,
 			this.gameState,
-			new Interpolator(
-				this.matter,
-				this.timeline,
-				Phaser.Math,
-				this.game.config.customConfig.interpolation
-			),
+			interpolator,
 			this.updateLock,
 			this.myPlayerId,
 			gameViewController
 		);
 		updateHandler.init();
-
-		this.clientSync.on(events.GAME_START, (startTime) => {
-			this.gameState.lastTicTime = startTime;
-			this.gameState.startTime = startTime;
-			this.running = true;
-			console.log("start game at: " + startTime + ", now: " + Date.now());
-		});
 	}
 
 	_initPhysics() {
@@ -233,79 +169,51 @@ class GameScene extends Phaser.Scene {
 			{ log: (messageJson) => console.log(JSON.stringify(messageJson)) }
 		);
 
-		let myPlayer = this.gameState.getGameObject(this.myPlayerId);
-		this.matter.world.on(
-			"collisionstart",
-			(event, gameObjectA, gameObjectB) => {
-				if (
-					myPlayer.innerObject.id === gameObjectA.id &&
-					gameObjectB.isGroundElement
-				) {
-					myPlayer.isTouchingGround = true;
-				}
-				if (
-					gameObjectA.isGroundElement &&
-					myPlayer.innerObject.id === gameObjectB.id
-				) {
-					myPlayer.isTouchingGround = true;
-				}
-			}
-		);
-		this.matter.world.on(
-			"collisionend",
-			(event, gameObjectA, gameObjectB) => {
-				if (
-					myPlayer.innerObject.id === gameObjectA.id &&
-					gameObjectB.isGroundElement
-				) {
-					myPlayer.isTouchingGround = false;
-				}
-				if (
-					gameObjectA.isGroundElement &&
-					myPlayer.innerObject.id === gameObjectB.id
-				) {
-					myPlayer.isTouchingGround = false;
-				}
-			}
+		let collisionDetector = new CollisionDetector(
+			this.gameState,
+			this.matter.world
 		);
 
-		this.matter.world.on(
-			"collisionstart",
-			function (event, bodyA, bodyB) {
-				let itemInnerObject;
-				let playerInnerObject;
-				if (bodyA.collectableItem) {
-					itemInnerObject = bodyA;
-				} else if (bodyA.player) {
-					playerInnerObject = bodyB;
-				}
-				if (bodyB.collectableItem) {
-					itemInnerObject = bodyB;
-				} else if (bodyB.player) {
-					playerInnerObject = bodyB;
-				}
-				if (playerInnerObject && itemInnerObject) {
-					let player = this.gameState.getGameObjectByInnerObjectId(
-						playerInnerObject.id
-					);
-					let item = this.gameState.getGameObjectByInnerObjectId(
-						itemInnerObject.id
-					);
+		let myPlayerMatcher = gameObjectMatchers.byId(this.myPlayerId);
+		let staticObstacleMatcher = gameObjectMatchers.byTypes([
+			gameObjectTypes.STATIC_OBSTACLE,
+			gameObjectTypes.STATIC_OBSTACLE_SPRITE,
+			gameObjectTypes.STATIC_OBSTACLE_TILESPRITE,
+		]);
 
-					if (this.myPlayerId === player.id) {
-						player.item = item;
-						this.gameState.removeGameObject(item.id);
-						itemInnerObject.gameObject.destroy();
-						this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
-							playerId: player.id,
-							itemId: item.id,
-							tic: this.gameState.tic,
-						});
-						this.updateLock.lock(this.gameState.tic);
-					}
-				}
-			}.bind(this)
+		collisionDetector.onCollisionStart(
+			(player, staticObstacle) => {
+				player.isTouchingGround = true;
+			},
+			myPlayerMatcher,
+			staticObstacleMatcher
 		);
+
+		collisionDetector.onCollisionEnd(
+			(player, staticObstacle) => {
+				player.isTouchingGround = false;
+			},
+			myPlayerMatcher,
+			staticObstacleMatcher
+		);
+
+		collisionDetector.onCollisionStart(
+			this._handleItemCollisionEvent.bind(this),
+			myPlayerMatcher,
+			gameObjectMatchers.byTypes([gameObjectTypes.BOOST_ITEM])
+		);
+	}
+
+	_handleItemCollisionEvent(player, item) {
+		player.item = item;
+		this.gameState.removeGameObject(item.id);
+		item.innerObject.gameObject.destroy();
+		this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
+			playerId: player.id,
+			itemId: item.id,
+			tic: this.gameState.tic,
+		});
+		this.updateLock.lock(this.gameState.tic);
 	}
 
 	_initIO() {
@@ -314,6 +222,61 @@ class GameScene extends Phaser.Scene {
 			volume: 0.1,
 			loop: true,
 		});
+		this.cameras.main.startFollow(
+			this.gameState.getGameObject(this.myPlayerId).innerObject
+				.gameObject,
+			true,
+			0.9,
+			0.9
+		);
+		this.animator = new Animator();
+		this.animator.init(this.anims, "player");
+	}
+
+	_listenForGameStartEvent() {
+		this.clientSync.on(events.GAME_START, (startTime) => {
+			this.gameState.lastTicTime = startTime;
+			this.gameState.startTime = startTime;
+			this.running = true;
+			console.log("start game at: " + startTime + ", now: " + Date.now());
+		});
+	}
+
+	_processUserInput() {
+		let player = this.gameState.getGameObject(this.myPlayerId);
+
+		let steeringDirection = 0;
+		if (this.cursors.left.isDown) {
+			steeringDirection = -1;
+		} else if (this.cursors.right.isDown) {
+			steeringDirection = 1;
+		}
+
+		let playerDirection = player.direction;
+
+		if (playerDirection.x !== steeringDirection) {
+			player.setDirectionX(steeringDirection);
+			this.clientSync.emit(events.MOVEMENT_CHANGE_EVENT, {
+				id: this.myPlayerId,
+				tic: this.gameState.tic,
+				direction: steeringDirection,
+			});
+			this.updateLock.lock(this.gameState.tic);
+		}
+
+		if (
+			player.isTouchingGround &&
+			this.cursors.up.isDown &&
+			playerDirection.y === 0
+		) {
+			player.setDirectionY(1);
+
+			this.clientSync.emit(events.PLAYER_JUMP, {
+				id: this.myPlayerId,
+				tic: this.gameState.tic,
+			});
+			this.updateLock.lock(this.gameState.tic);
+		}
 	}
 }
 

@@ -9,7 +9,6 @@ let config = {
 	physics: {
 		default: "matter",
 		matter: {
-			debug: true,
 			gravity: { x: 0, y: 1, scale: 0.001 },
 			autoUpdate: false,
 		},

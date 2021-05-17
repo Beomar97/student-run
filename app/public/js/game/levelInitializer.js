@@ -131,7 +131,7 @@ class LevelInitializer {
 				} else {
 					gameObject = new GameObject(
 						objectDescription.id,
-						objectDescription,
+						objectDescription.type,
 						matterObject
 					);
 				}
