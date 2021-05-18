@@ -84,8 +84,7 @@ class GameObjectBuilder {
 	create() {
 		this._validateBase();
 		let innerObject = this.createInnerObjectOfShape();
-		let gameObject = this.encapsulate(innerObject);
-		return gameObject;
+		return this.encapsulate(innerObject);
 	}
 
 	createInnerObjectOfShape() {

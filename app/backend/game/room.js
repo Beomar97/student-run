@@ -24,15 +24,14 @@ class Room {
 	}
 
 	addPlayer(socketId, newPlayer) {
-		let playerId = id.next();
-		let playerName = newPlayer.name;
+		let player = {
+			id: id.next(),
+			name: newPlayer.name,
+			ready: false,
+		};
+		this.waitingPlayers.set(player.id, player);
 
-		//TODO why use game obejct here
-		let player = new Player(playerId, {}, 0.005, playerName);
-		player.ready = false;
-		this.waitingPlayers.set(playerId, player);
-
-		this.roomStatePublisher.publishPlayerId(socketId, playerId);
+		this.roomStatePublisher.publishPlayerId(socketId, player.id);
 		this.roomStatePublisher.publishRoomUpdate(this);
 	}
 

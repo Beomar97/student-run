@@ -8,27 +8,23 @@ class DbController {
 	}
 
 	wrapGameObject(gameObject) {
-		const gameObjectModel = this._createModel(gameObject.type, {
+		return this._createModel(gameObject.type, {
 			id: String,
 			type: String,
 		});
-
-		return gameObjectModel;
 	}
 
 	_createModel(name, schema) {
 		const mongooseSchema = new mongoose.Schema(schema);
-		const model = mongoose.model(name, mongooseSchema);
 
-		return model;
+		return mongoose.model(name, mongooseSchema);
 	}
 
 	createDocument(gameObject, model) {
-		const document = new model({
+		return new model({
 			id: gameObject.id,
 			type: gameObject.type,
 		});
-		return document;
 	}
 
 	saveDocument(document) {
