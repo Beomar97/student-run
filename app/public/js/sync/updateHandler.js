@@ -7,7 +7,8 @@ class UpdateHandler {
 		interpolator,
 		updateLock,
 		myPlayerId,
-		gameViewController
+		gameViewController,
+		jukebox
 	) {
 		this.clientSync = clientSync;
 		this.gameState = gameState;
@@ -15,6 +16,7 @@ class UpdateHandler {
 		this.updateLock = updateLock;
 		this.myPlayerId = myPlayerId;
 		this.gameViewController = gameViewController;
+		this.jukebox = jukebox;
 		this.finished = false;
 	}
 
@@ -87,6 +89,8 @@ class UpdateHandler {
 
 			if (localPlayer.id === this.myPlayerId && localPlayer.done) {
 				this.finished = true;
+				this.gameViewController.removePhaserWindow();
+				this.jukebox.playDone();
 			}
 		});
 

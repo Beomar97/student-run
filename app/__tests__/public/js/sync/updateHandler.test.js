@@ -5,6 +5,7 @@ const UpdateHandler = require("../../../../public/js/sync/updateHandler");
 const mocks = require("../../../mocks/mocks");
 const gameObjectTypes = require("../../../../public/js/shared/game/gameObjectTypes");
 const GameViewController = require("../../../../public/js/view/gameViewController");
+const Jukebox = require("../../../../public/js/game/jukebox");
 const { JSDOM } = require("jsdom");
 
 const dom = new JSDOM();
@@ -13,6 +14,7 @@ window = dom.window;
 const Interpolator = require("../../../../public/js/sync/interpolator");
 
 jest.mock("../../../../public/js/sync/interpolator");
+jest.mock("../../../../public/js/game/jukebox");
 
 let socket = mocks.socket();
 let matter = mocks.matter();
@@ -91,7 +93,8 @@ describe("Test the UpdateHandler class", () => {
 			new Interpolator(),
 			mocks.updateLock(false),
 			0,
-			new GameViewController()
+			new GameViewController(),
+			new Jukebox()
 		);
 
 		testee._updatePlayer([update], testee);

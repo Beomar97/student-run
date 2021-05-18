@@ -33,6 +33,10 @@ class GameViewController {
 	enablePlayAgainButton() {
 		$(":button").prop("disabled", false);
 	}
+
+	removePhaserWindow() {
+		$("#student-run").remove();
+	}
 }
 
 module.exports = GameViewController;

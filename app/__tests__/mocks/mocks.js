@@ -63,6 +63,8 @@ mocks = {
 			phaser.matter.add.rectangle.mockClear();
 			phaser.matter.add.circle.mockClear();
 			phaser.matter.add.gameObject.mockClear();
+			phaser.sound.play.mockClear();
+			phaser.sound.pauseAll.mockClear();
 		},
 	},
 	phaser: (distanceTwoPoints) => {
@@ -91,6 +93,10 @@ mocks = {
 					BetweenPoints: (x, y) => distanceTwoPoints,
 				},
 				Vector2: Vector2,
+			},
+			sound: {
+				play: jest.fn((sound, config) => {}),
+				pauseAll: jest.fn(() => {}),
 			},
 		};
 	},

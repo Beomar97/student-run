@@ -1,6 +1,5 @@
 const Phaser = require("phaser");
 const { io } = require("socket.io-client");
-const $ = require("jquery");
 const LevelInitializer = require("./levelInitializer");
 const ClientSync = require("../sync/clientSync");
 const UpdateHandler = require("../sync/updateHandler");
@@ -20,6 +19,7 @@ const {
 	gameObjectMatchers,
 } = require("./collisionDetector");
 const Animator = require("./animator");
+const Jukebox = require("./jukebox");
 
 class GameScene extends Phaser.Scene {
 	constructor(config) {
@@ -58,14 +58,13 @@ class GameScene extends Phaser.Scene {
 
 		this.load.audio("level_audio", "assets/audio/level_audio.mp3");
 		this.load.audio("done_audio", "assets/audio/done_audio.mp3");
-		this.load.audio("jump_audio", "assets/audio/done_audio.mp3");
 	}
 
 	create(data) {
 		this._initWorld();
+		this._initIO();
 		this._initSync();
 		this._initPhysics();
-		this._initIO();
 
 		this._listenForGameStartEvent();
 		this.clientSync.emit(events.PLAYER_READY, this.myPlayerId);
@@ -73,18 +72,6 @@ class GameScene extends Phaser.Scene {
 
 	update(time, delta) {
 		if (this.running) {
-			let player = this.gameState.getGameObject(this.myPlayerId);
-			if (player.done) {
-				player.innerObject.gameObject.anims.play("turn", true);
-				this.sound.pauseAll();
-				this.sound.play("done_audio", {
-					volume: 0.1,
-					loop: false,
-				});
-				this.running = false;
-				$("#student-run").remove();
-			}
-
 			this._processUserInput();
 			this.physicsUpdater.update(Date.now());
 			this.animator.animate(this.gameState);
@@ -147,7 +134,8 @@ class GameScene extends Phaser.Scene {
 			interpolator,
 			this.updateLock,
 			this.myPlayerId,
-			gameViewController
+			gameViewController,
+			this.jukebox
 		);
 		updateHandler.init();
 	}
@@ -218,10 +206,8 @@ class GameScene extends Phaser.Scene {
 
 	_initIO() {
 		this.cursors = this.input.keyboard.createCursorKeys();
-		this.sound.play("level_audio", {
-			volume: 0.1,
-			loop: true,
-		});
+		this.jukebox = new Jukebox(this.sound);
+		this.jukebox.playSoundTrack();
 		this.cameras.main.startFollow(
 			this.gameState.getGameObject(this.myPlayerId).innerObject
 				.gameObject,
