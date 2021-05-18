@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>StudentRun - Features</title>
+		<link rel="icon" type="image/png" href="assets/webpage/icon.png" />
+		<link rel="stylesheet" href="build/global.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+			integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+			crossorigin="anonymous"
+		/>
+	</head>
+	<body class="has-navbar-fixed-top">
+		<nav
+			class="navbar is-fixed-top"
+			role="navigation"
+			aria-label="main navigation"
+		>
+			<div class="navbar-brand">
+				<a class="navbar-item" href="index.html">
+					<img src="assets/webpage/logo.png" alt="studentrun-logo" />
+				</a>
+
+				<a
+					role="button"
+					class="navbar-burger"
+					aria-label="menu"
+					aria-expanded="false"
+					data-target="navbarBasicExample"
+				>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+					<span aria-hidden="true"></span>
+				</a>
+			</div>
+
+			<div id="navbarBasicExample" class="navbar-menu">
+				<div class="navbar-start">
+					<a class="navbar-item" href="index.html"> Home </a>
+
+					<a class="navbar-item" href="features.html"> Game </a>
+
+					<div class="navbar-item has-dropdown is-hoverable">
+						<a class="navbar-link"> More </a>
+
+						<div class="navbar-dropdown">
+							<a class="navbar-item"> About </a>
+							<a class="navbar-item" href="contact.html">
+								Contact
+							</a>
+							<a class="navbar-item" href="credits.html">
+								Credits
+							</a>
+							<hr class="navbar-divider" />
+							<a
+								class="navbar-item"
+								href="https://github.zhaw.ch/PathFinder/StudentRun/issues"
+							>
+								Report an issue
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="navbar-end">
+					<div class="navbar-item">
+						<div class="field is-grouped">
+							<p class="control">
+								<a href="join.html">
+									<button class="button is-danger">
+										<span class="icon is-small">
+											<i
+												class="fas fa-gamepad"
+												aria-hidden="true"
+											></i>
+										</span>
+										<span class="is-uppercase">Play</span>
+									</button>
+								</a>
+							</p>
+							<p class="control">
+								<a
+									href="https://github.zhaw.ch/PathFinder/StudentRun"
+								>
+									<button class="button is-light">
+										<span class="icon is-small">
+											<i
+												class="fab fa-github"
+												aria-hidden="true"
+											></i>
+										</span>
+									</button>
+								</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div class="columns">
+			<div class="column is-three-fifths is-offset-one-fifth">
+				<h1 class="title">About the Game</h1>
+				<div class="columns">
+					<div class="column">
+						<figure class="image">
+							<img
+								src="assets/webpage/cover.png"
+								alt="Levels in StudentRun"
+							/>
+						</figure>
+					</div>
+					<div class="column">
+						<p class="has-text-justified is-size-4">
+							StudentRun is a competitive multiplayer game where
+							you are able to compete against online opponents.
+							The goal is to reach the finish line in the least
+							amount of time as possible. Like other games in the
+							"Jump 'n' Run" genre, the players will have to
+							overcome obstacles and collect and use a wide range
+							of items to gain an advantage against their
+							opponents.
+						</p>
+					</div>
+				</div>
+				<div class="tile is-ancestor mt-4">
+					<div class="tile is-vertical is-8">
+						<div class="tile">
+							<div class="tile is-parent is-vertical">
+								<article
+									class="tile is-child notification is-primary"
+								>
+									<p class="title">
+										Over 5+ different levels
+									</p>
+									<p class="subtitle">
+										More than 5 playable levels to choose
+										from!
+									</p>
+									<figure class="image">
+										<img
+											src="assets/webpage/levels.png"
+											alt="Levels in StudentRun"
+										/>
+									</figure>
+								</article>
+								<article
+									class="tile is-child notification is-warning"
+								>
+									<p class="title">More than 10 characters</p>
+									<p class="subtitle">
+										Choose one of many possible characters
+										in StudentRun!
+									</p>
+									<figure class="image">
+										<img
+											src="assets/webpage/characters.png"
+											alt="Characters in StudentRun"
+										/>
+									</figure>
+								</article>
+							</div>
+							<div class="tile is-parent">
+								<article
+									class="tile is-child notification is-info"
+								>
+									<p class="title">Lots of fun items</p>
+									<p class="subtitle">
+										Win the upper hand by using one of the
+										many items scattered around the level!
+									</p>
+									<figure class="image">
+										<img
+											src="assets/webpage/items.png"
+											alt="Items in StudentRun"
+										/>
+									</figure>
+								</article>
+							</div>
+						</div>
+						<div class="tile is-parent">
+							<article
+								class="tile is-child notification is-danger"
+							>
+								<p class="title">Free to play</p>
+								<p class="subtitle">
+									The game is completely free to play!
+								</p>
+							</article>
+						</div>
+					</div>
+					<div class="tile is-parent">
+						<article class="tile is-child notification is-success">
+							<div class="content">
+								<p class="title">Up to 8 players</p>
+								<p class="subtitle">
+									Play the game with up to 7 of your friends,
+									for a total of 8 players!
+								</p>
+								<figure class="image">
+									<img
+										src="assets/webpage/lobby.png"
+										alt="Game Lobby in StudentRun"
+									/>
+								</figure>
+							</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer class="footer has-background-white">
+			<div class="content has-text-centered">
+				<p>Created with ❤️&nbsp; by PathFinder.</p>
+			</div>
+		</footer>
+	</body>
+</html>

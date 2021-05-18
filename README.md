@@ -5,7 +5,7 @@
 
 <p align="center">
   <a href="https://github.zhaw.ch/PathFinder/StudentRun">
-    <img src="app/public/assets/logo.png" alt="Logo" height="160">
+    <img src="app/public/assets/webpage/logo.png" alt="Logo" height="160">
   </a>
 
   <h3 align="center">StudentRun</h3>

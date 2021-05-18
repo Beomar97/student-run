@@ -28,5 +28,5 @@ let customConfig = {
 	},
 };
 
-var game = new Phaser.Game(config);
+let game = new Phaser.Game(config);
 game.config.customConfig = customConfig;
