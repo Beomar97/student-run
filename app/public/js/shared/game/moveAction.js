@@ -1,6 +1,5 @@
 const gameObjectTypes = require("./gameObjectTypes");
 const PhysicalConstant = require("../physics/physicalConstant");
-const playerColors = require("../../helper/playerColors");
 
 class MoveAction {
 	constructor(physics) {

@@ -8,16 +8,16 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="352"
-   height="48"
-   viewBox="0 0 93.133336 12.7"
+   width="1408"
+   height="128"
+   viewBox="0 0 372.53334 33.866667"
    version="1.1"
    id="svg12298"
    inkscape:version="1.0.2 (e86c8708, 2021-01-15)"
    sodipodi:docname="happy.svg"
    inkscape:export-filename="/Users/schule/Documents/05_PSIT/StudentRun/app/public/assets/sprites/happy.png"
-   inkscape:export-xdpi="256"
-   inkscape:export-ydpi="256">
+   inkscape:export-xdpi="96.000008"
+   inkscape:export-ydpi="96.000008">
   <defs
      id="defs12292">
     <linearGradient
@@ -3058,9 +3058,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="13.044442"
-     inkscape:cx="132.94928"
-     inkscape:cy="26.163169"
+     inkscape:zoom="2.9577761"
+     inkscape:cx="1392.2741"
+     inkscape:cy="95.765317"
      inkscape:document-units="mm"
      inkscape:current-layer="g14438-2"
      inkscape:document-rotation="0"
@@ -3073,24 +3073,14 @@
      inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
-       id="grid12314"
-       empspacing="1"
-       empcolor="#3fb1ff"
-       empopacity="0.25098039"
-       spacingx="8.4666668"
-       spacingy="12.7"
-       originx="0"
-       originy="0" />
-    <inkscape:grid
-       type="xygrid"
        id="grid12316"
        empspacing="1"
-       color="#c5c5c5"
+       color="#4ddcf6"
        opacity="0.1254902"
-       empcolor="#c5c5c5"
+       empcolor="#66f387"
        empopacity="0.25098039"
-       spacingx="0.26458334"
-       spacingy="0.26458334" />
+       spacingx="33.866667"
+       spacingy="33.866667" />
   </sodipodi:namedview>
   <metadata
      id="metadata12295">
@@ -3100,7 +3090,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -3119,10 +3109,10 @@
         <g
            style="opacity:0.635468"
            id="g16450"
-           transform="matrix(11.425769,0,0,11.425769,-3041.8618,-2185.6071)" />
+           transform="matrix(11.425769,0,0,11.425769,-3041.8618,-2302.9667)" />
         <g
            id="g25658"
-           transform="translate(234.30029)">
+           transform="matrix(4.1064415,0,0,4.1064415,2409.4236,748.15593)">
           <circle
              id="circle16452"
              style="display:inline;overflow:visible;visibility:visible;fill:url(#radialGradient25637);fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;marker:none;enable-background:accumulate"
@@ -3239,7 +3229,7 @@
         </g>
         <g
            id="g25678-1-1"
-           transform="translate(-1185.6267,-2.985199)"
+           transform="matrix(4.1064415,0,0,4.1064415,-3296.5041,735.89742)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-2-3"
@@ -3336,7 +3326,7 @@
         </g>
         <g
            id="g25678-1-9-7"
-           transform="matrix(-1,0,0,1,2747.3147,-2.9852029)"
+           transform="matrix(-4.1064415,0,0,4.1064415,12604.051,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-2-8-6"
@@ -3433,7 +3423,7 @@
         </g>
         <g
            id="g25678-00-5"
-           transform="translate(-481.46897,-2.9852029)"
+           transform="matrix(4.1064415,0,0,4.1064415,-479.8733,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-8-9"
@@ -3530,7 +3520,7 @@
         </g>
         <g
            id="g25678-00-5-9"
-           transform="matrix(-1,0,0,1,2043.157,-2.9852029)"
+           transform="matrix(-4.1064415,0,0,4.1064415,9787.4202,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-8-9-2"
@@ -3627,7 +3617,7 @@
         </g>
         <g
            id="g25678-00-5-9-2"
-           transform="matrix(-1,0,0,1,2512.5955,-2.9852029)"
+           transform="matrix(-4.1064415,0,0,4.1064415,11665.174,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-8-9-2-1"
@@ -3724,7 +3714,7 @@
         </g>
         <g
            id="g25678-00-3-7"
-           transform="translate(-716.1882,-2.9852029)"
+           transform="matrix(4.1064415,0,0,4.1064415,-1418.7502,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-8-8-4"
@@ -3821,7 +3811,7 @@
         </g>
         <g
            id="g25678-00-5-3"
-           transform="translate(-950.90744,-2.9852029)"
+           transform="matrix(4.1064415,0,0,4.1064415,-2357.6272,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-8-9-0"
@@ -3918,7 +3908,7 @@
         </g>
         <g
            id="g25678-00-3-7-4"
-           transform="matrix(-1,0,0,1,2277.8763,-2.9852029)"
+           transform="matrix(-4.1064415,0,0,4.1064415,10726.297,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-8-8-4-7"
@@ -4015,7 +4005,7 @@
         </g>
         <g
            id="g25678-1-9-7-5"
-           transform="matrix(-1,0,0,1,1808.4378,-2.9852029)"
+           transform="matrix(-4.1064415,0,0,4.1064415,8848.5433,735.89738)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-2-8-6-2"
@@ -4112,7 +4102,7 @@
         </g>
         <g
            id="g25678-1-1-7"
-           transform="translate(-246.74974,-2.985199)"
+           transform="matrix(4.1064415,0,0,4.1064415,459.00362,735.89742)"
            style="display:inline;enable-background:new">
           <circle
              id="circle16452-6-2-3-1"

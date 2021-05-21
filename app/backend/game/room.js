@@ -1,7 +1,6 @@
 const Matter = require("matter-js");
 const RoomStatePublisher = require("../sync/roomStatePublisher");
 const RoomEventHandler = require("../sync/roomEventHandler");
-const Player = require("../../public/js/shared/game/player");
 const Physics = require("../physics/physics");
 const id = require("../util/id");
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");

@@ -1,47 +1,40 @@
 const gameObjectTypes = require("../shared/game/gameObjectTypes");
+const Skins = require("./skins");
 
 class Animator {
 	constructor() {
 		this.playerFilter = (gameObject) =>
 			gameObject.type === gameObjectTypes.PLAYER;
+
 	}
-
-	init(anims, playerFrameName) {
-		anims.create({
-			key: "left",
-			frames: anims.generateFrameNumbers(playerFrameName, {
-				start: 0,
-				end: 3,
-			}),
-			frameRate: 10,
-			repeat: -1,
-		});
-
-		anims.create({
-			key: "turn",
-			frames: [{ key: playerFrameName, frame: 4 }],
-			frameRate: 20,
-		});
-
-		anims.create({
-			key: "right",
-			frames: anims.generateFrameNumbers(playerFrameName, {
-				start: 5,
-				end: 8,
-			}),
-			frameRate: 10,
-			repeat: -1,
-		});
+	
+	init(anims) {
+		Skins.getSkins().forEach((skin) => {
+			skin.anims.forEach((anim) => {
+				let frames;
+				if (typeof(anim.frames) === 'number') {
+					frames = [{ key: skin.name, frame: anim.frames }]
+				} else {
+					frames = anims.generateFrameNumbers(skin.name, anim.frames)
+				}
+				anims.create({
+					key: anim.name + skin.name,
+					frames: frames,
+					frameRate: 10,
+					repeat: -1,
+				});
+			})
+		})
 	}
 
 	animate(gameState) {
 		gameState.forEachGameObject((player) => {
 			if (player.direction.x === 1) {
-				player.innerObject.gameObject.anims.play("right", true);
+				player.innerObject.gameObject.anims.play("right" + player.skin.name, true);
 			} else if (player.direction.x === -1) {
-				player.innerObject.gameObject.anims.play("left", true);
+				player.innerObject.gameObject.anims.play("left" + player.skin.name, true);
 			} else {
-				player.innerObject.gameObject.anims.play("turn", true);
+				player.innerObject.gameObject.anims.play("turn" + player.skin.name, true);
 			}
 		}, this.playerFilter);
 	}

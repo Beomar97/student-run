@@ -1,6 +1,6 @@
 const Player = require("../shared/game/player");
 const physicalConstant = require("../shared/physics/physicalConstant");
-const playerColors = require("../helper/playerColors");
+const Skins = require("./skins");
 
 class PlayerInitializer {
 	constructor(game) {
@@ -27,6 +27,7 @@ class PlayerInitializer {
 				physicalConstant.BASE_FORCE
 			);
 
+			newPlayer.skin = player.skin
 			objectCollection.push(newPlayer);
 		});
 
@@ -34,13 +35,18 @@ class PlayerInitializer {
 	}
 
 	_createPhaserPlayer(player) {
+		let skins = new Skins();
+		player.skin = skins.getSkinById(player.id);
 		let phaserPlayer = this.game.add.sprite(
 			physicalConstant.PLAYER_SPAWN_X,
 			physicalConstant.PLAYER_SPAWN_Y,
-			"player"
+			player.skin.name,
 		);
 
-		phaserPlayer.tint = playerColors[player.id % playerColors.length];
+		console.error(phaserPlayer)
+		if (!(player.skin.name === "dude")) {
+			phaserPlayer.setScale(0.375);
+		}
 
 		return phaserPlayer;
 	}

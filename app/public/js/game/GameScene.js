@@ -20,6 +20,7 @@ const {
 } = require("./collisionDetector");
 const Animator = require("./animator");
 const Jukebox = require("./jukebox");
+const Skins = require("./skins");
 
 class GameScene extends Phaser.Scene {
 	constructor(config) {
@@ -41,11 +42,12 @@ class GameScene extends Phaser.Scene {
 			frameHeight: 128,
 		});
 		this.load.json("playerData", "players");
-		this.load.image("star", "assets/sprites/star.png");
-		this.load.spritesheet("player", "assets/sprites/dude.png", {
-			frameWidth: 32,
-			frameHeight: 48,
-		});
+		this.load.image("star", "assets/items/star.png");
+
+		Skins.getSkins().forEach((skin) => {
+			this.load.spritesheet(skin.name, skin.file, {frameWidth: skin.frameWidth, frameHeight: skin.frameHeight });
+		})
+
 		this.load.image("platform", "assets/world/platform.png");
 		this.load.image("platform2", "assets/world/platform2.png");
 		this.load.image("ground", "assets/world/ground.png");
@@ -106,6 +108,8 @@ class GameScene extends Phaser.Scene {
 		let loadedPlayers = playerInitializer.addJSONObjectsToPhaser(
 			playerData
 		);
+		this.animator = new Animator();
+		this.animator.init(this.anims);
 		this.myPlayerId = parseInt(localStorage.getItem("playerId"));
 
 		// GameState
@@ -215,8 +219,6 @@ class GameScene extends Phaser.Scene {
 			0.9,
 			0.9
 		);
-		this.animator = new Animator();
-		this.animator.init(this.anims, "player");
 	}
 
 	_listenForGameStartEvent() {
