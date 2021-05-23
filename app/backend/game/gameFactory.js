@@ -71,8 +71,8 @@ class GameFactory {
 		return this;
 	}
 
-	inRoom(room) {
-		this.room = room;
+	withGameDoneCallback(gameDoneCallback) {
+		this.gameDoneCallback = gameDoneCallback;
 		return this;
 	}
 
@@ -91,9 +91,9 @@ class GameFactory {
 		);
 		let finishLineWatcher = new FinishLineWatcher(
 			playerDetailsPublisher,
-			this.room,
 			gameState,
-			this.config.finishLineOffset
+			this.config.finishLineOffset,
+			this.gameDoneCallback
 		);
 		let actions = this._createActions(finishLineWatcher);
 		let gameStatePublisher = new GameStatePublisher(
@@ -155,7 +155,7 @@ class GameFactory {
 			!this.config.maxEntriesEventQueue ||
 			!this.config.allowedEventMaxAge ||
 			!this.syncController ||
-			!this.room ||
+			!this.gameDoneCallback ||
 			!this.gameObjects ||
 			!this.physics;
 

@@ -32,9 +32,9 @@ describe("Test Finish Line Watcher", () => {
 
 		let testee = new FinishLineWatcher(
 			new PlayerDetailsPublisher(),
-			new Room(),
 			gameState,
-			OFFSET
+			OFFSET,
+			() => {}
 		);
 		expect(testee.finishLinePosition).toBe(finishLinePosition - OFFSET);
 	});
@@ -56,9 +56,9 @@ describe("Test Finish Line Watcher", () => {
 
 		let testee = new FinishLineWatcher(
 			new PlayerDetailsPublisher(),
-			new Room(),
 			gameState,
-			OFFSET
+			OFFSET,
+			() => {}
 		);
 		testee.checkFinishLine(gameState);
 
@@ -83,9 +83,9 @@ describe("Test Finish Line Watcher", () => {
 
 		let testee = new FinishLineWatcher(
 			pdpMock,
-			new Room(),
 			gameState,
-			OFFSET
+			OFFSET,
+			() => {}
 		);
 		testee.checkFinishLine(gameState);
 
@@ -107,9 +107,9 @@ describe("Test Finish Line Watcher", () => {
 
 		let testee = new FinishLineWatcher(
 			pdpMock,
-			new Room(),
 			gameState,
-			OFFSET
+			OFFSET,
+			() => {}
 		);
 		testee._isGameDone(gameState);
 		expect(player.done).toBe(false);
@@ -128,9 +128,9 @@ describe("Test Finish Line Watcher", () => {
 		expect(() => {
 			new FinishLineWatcher(
 				new PlayerDetailsPublisher(),
-				new Room(),
 				gameState,
-				OFFSET
+				OFFSET,
+				() => {}
 			);
 		}).toThrow("Game has no finish line!");
 	});

@@ -21,6 +21,7 @@ const {
 const Animator = require("./animator");
 const Jukebox = require("./jukebox");
 const Skins = require("./skins");
+const eventHandlers = require("../shared/sync/eventHandlers");
 
 class GameScene extends Phaser.Scene {
 	constructor(config) {
@@ -201,14 +202,17 @@ class GameScene extends Phaser.Scene {
 	}
 
 	_handleItemCollisionEvent(player, item) {
-		player.item = item;
-		this.gameState.removeGameObject(item.id);
-		item.innerObject.gameObject.destroy();
-		this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, {
+		let itemEvent = {
 			playerId: player.id,
 			itemId: item.id,
 			tic: this.gameState.tic,
-		});
+		};
+		eventHandlers.handleItemEvent(
+			this.gameState,
+			itemEvent,
+			(innerObject) => innerObject.gameObject.destroy()
+		);
+		this.clientSync.emit(events.PLAYER_COLLECTED_ITEM, itemEvent);
 		this.updateLock.lock(this.gameState.tic);
 	}
 
@@ -247,12 +251,19 @@ class GameScene extends Phaser.Scene {
 		let playerDirection = player.direction;
 
 		if (playerDirection.x !== steeringDirection) {
-			player.setDirectionX(steeringDirection);
-			this.clientSync.emit(events.MOVEMENT_CHANGE_EVENT, {
+			let movementChangeEvent = {
 				id: this.myPlayerId,
 				tic: this.gameState.tic,
-				direction: steeringDirection,
-			});
+				directionX: steeringDirection,
+			};
+			eventHandlers.handleMovementChangeEvent(
+				this.gameState,
+				movementChangeEvent
+			);
+			this.clientSync.emit(
+				events.MOVEMENT_CHANGE_EVENT,
+				movementChangeEvent
+			);
 			this.updateLock.lock(this.gameState.tic);
 		}
 
@@ -261,12 +272,12 @@ class GameScene extends Phaser.Scene {
 			this.cursors.up.isDown &&
 			playerDirection.y === 0
 		) {
-			player.setDirectionY(1);
-
-			this.clientSync.emit(events.PLAYER_JUMP, {
+			let jumpEvent = {
 				id: this.myPlayerId,
 				tic: this.gameState.tic,
-			});
+			};
+			eventHandlers.handleJumpEvent(this.gameState, jumpEvent);
+			this.clientSync.emit(events.PLAYER_JUMP, jumpEvent);
 			this.updateLock.lock(this.gameState.tic);
 		}
 	}

@@ -37,7 +37,6 @@ class Room {
 		this.roomLocked = true;
 		let physics = new Physics(Matter);
 		this.game = new GameFactory()
-			.inRoom(this)
 			.withSyncController(this.syncController)
 			.withMilisPerTic(1000 / 40)
 			.withTicsPerPublish(4)
@@ -49,6 +48,7 @@ class Room {
 			.withGameObjects(this._generateGameObjects(physics))
 			.withFinishLineOffset(50)
 			.withCountdown(1000)
+			.withGameDoneCallback(this.stopGame.bind(this))
 			.create();
 
 		this.roomStatePublisher.loadGame();

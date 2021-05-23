@@ -109,10 +109,10 @@ describe("Test the UpdateHandler class", () => {
 		let gameState = new GameState();
 		gameState.addAll([player]);
 
-		let update = {
+		let event = {
 			id: id,
 			tic: 858,
-			direction: directionX,
+			directionX: directionX,
 		};
 		let testee = new UpdateHandler(
 			socket,
@@ -122,7 +122,7 @@ describe("Test the UpdateHandler class", () => {
 			1
 		);
 
-		testee._applyMovementChange(update, testee);
+		testee._applyMovementChange(event, testee);
 		expect(gameState.gameObjects.get(id).direction).toEqual({
 			x: directionX,
 			y: 0,

@@ -4,12 +4,10 @@ const gameObjectTypes = require("../../../public/js/shared/game/gameObjectTypes"
 const SyncController = require("../../../backend/sync/syncController");
 const FinishLineWatcher = require("../../../backend/rules/finishLineWatcher");
 const Physics = require("../../../backend/physics/physics");
-const Room = require("../../../backend/game/room");
 
 jest.mock("../../../backend/sync/syncController");
 jest.mock("../../../backend/physics/physics");
 jest.mock("../../../backend/rules/finishLineWatcher");
-jest.mock("../../../backend/game/room");
 
 beforeEach(() => {
 	SyncController.mockClear();
@@ -26,7 +24,6 @@ describe("Test the GameFactory class", () => {
 		let maxEntriesEventQueue = 80;
 		let allowedEventMaxAge = 70;
 		let syncController = new SyncController();
-		let room = new Room(syncController);
 		let physics = new Physics();
 		let gameObjectId = 1;
 		let gameObjects = [
@@ -44,9 +41,9 @@ describe("Test the GameFactory class", () => {
 			.withMaxEntriesEventQueue(maxEntriesEventQueue)
 			.withAllowedEventMaxAge(allowedEventMaxAge)
 			.withSyncController(syncController)
-			.inRoom(room)
 			.withPhysics(physics)
 			.withGameObjects(gameObjects)
+			.withGameDoneCallback(() => {})
 			.create();
 
 		expect(game.clientEventHandler.syncController).toBe(syncController);
