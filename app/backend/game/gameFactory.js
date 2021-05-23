@@ -103,7 +103,8 @@ class GameFactory {
 		let timeline = new Timeline(
 			gameState,
 			this.config.maxSnapshots,
-			this.config.ticsPerSnapshot
+			this.config.ticsPerSnapshot,
+			true
 		);
 		let eventQueue = new EventQueue(this.config.maxEntriesEventQueue);
 		let gameUpdate = new GameUpdate(
