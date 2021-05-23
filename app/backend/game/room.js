@@ -3,7 +3,6 @@ const RoomStatePublisher = require("../sync/roomStatePublisher");
 const RoomEventHandler = require("../sync/roomEventHandler");
 const Physics = require("../physics/physics");
 const id = require("../util/id");
-const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const GameFactory = require("./gameFactory");
 const LevelLoader = require("./levelLoader");
 const LevelHolder = require("./levelHolder");

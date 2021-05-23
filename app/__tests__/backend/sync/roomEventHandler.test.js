@@ -16,7 +16,9 @@ describe("Test the RoomEventHandler class", () => {
 		let testee = new RoomEventHandler(syncController, {});
 
 		testee.init();
-		expect(syncController.control).toHaveBeenCalled();
+		expect(syncController.control).toHaveBeenCalledWith(
+			expect.any(Function)
+		);
 	});
 
 	test("if _handlePlayerJoinedEvent calls addPlayer.", () => {
@@ -39,5 +41,14 @@ describe("Test the RoomEventHandler class", () => {
 		testee._handleInitializeGame();
 
 		expect(room.initializeGame).toHaveBeenCalled();
+	});
+
+	test("if _handlePlayerReadyEvent calls playerReady.", () => {
+		let syncController = new SyncController();
+		let room = new Room(syncController);
+		let testee = new RoomEventHandler(syncController, room);
+		testee._handlePlayerReadyEvent(0);
+
+		expect(room.playerReady).toHaveBeenCalled();
 	});
 });

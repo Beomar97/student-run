@@ -92,6 +92,29 @@ describe("Test Finish Line Watcher", () => {
 		expect(pdpMock.publish).toHaveBeenCalled();
 	});
 
+	test("if gameDone is set to false.", () => {
+		let finishLinePosition = 1000;
+		let positionDone = { x: finishLinePosition, y: 0 };
+		let player = new Player(0, {
+			position: positionDone,
+		});
+		let finishLine = new GameObject(1, gameObjectTypes.FINISH_LINE, {
+			position: positionDone,
+		});
+		let gameState = new GameState();
+		gameState.addAll([player, finishLine]);
+		let pdpMock = new PlayerDetailsPublisher();
+
+		let testee = new FinishLineWatcher(
+			pdpMock,
+			new Room(),
+			gameState,
+			OFFSET
+		);
+		testee._isGameDone(gameState);
+		expect(player.done).toBe(false);
+	});
+
 	test("if throws error without finish line.", () => {
 		let position = { x: 200, y: 0 };
 
