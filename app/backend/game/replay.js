@@ -1,3 +1,4 @@
+const { CollisionDetector } = require("../../public/js/game/collisionDetector");
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const logger = require("../logger");
 const GameObjectBuilder = require("./gameObjectBuilder");
