@@ -2,7 +2,7 @@ const MoveAction = require("../../../../../public/js/shared/game/moveAction");
 const Physics = require("../../../../../backend/physics/physics");
 const GameState = require("../../../../../public/js/shared/game/gameState");
 const Player = require("../../../../../public/js/shared/game/player");
-const gameObjectTypes = require("../../../../../public/js/shared/game/gameObjectTypes");
+const physicalConstant = require("../../../../../public/js/shared/physics/physicalConstant");
 
 jest.mock("../../../../../backend/physics/physics");
 
@@ -61,7 +61,7 @@ describe("Test the MoveAction class", () => {
 
 		expect(physics.setVelocity).lastCalledWith(player.innerObject, {
 			x: 0,
-			y: -100,
+			y: -physicalConstant.PLAYER_JUMP_DENSITY,
 		});
 	});
 });
