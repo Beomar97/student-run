@@ -17,7 +17,7 @@ $("#joinGame").on("click", function (event) {
 	let name = window.prompt("Your Name", "Mustermann");
 	if (name) {
 		clientSync.emit(events.PLAYER_JOINED, { name: name });
-		$("#joinGame").prop("disabled", true);
+		joinViewController.disableJoinButton();
 	}
 });
 

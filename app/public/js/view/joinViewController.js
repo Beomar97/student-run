@@ -4,6 +4,7 @@ const TableGenerator = require("../helper/tableGenerator");
 class JoinViewController {
 	constructor() {
 		this.tableGenerator = new TableGenerator();
+		this.playerHasJoined = false;
 	}
 
 	setGameStatus(gameIsRunning) {
@@ -21,7 +22,17 @@ class JoinViewController {
 		}
 
 		$("#gameStatus").text(text);
-		$(":button").prop("disabled", buttonsDisabled);
+		let buttonSelector = this.playerHasJoined ? "#startGame" : ":button";
+		this._setButtonStatus(buttonSelector, buttonsDisabled);
+	}
+
+	disableJoinButton() {
+		this._setButtonStatus("#joinGame", true);
+		this.playerHasJoined = true;
+	}
+
+	_setButtonStatus(selector, disable) {
+		$(selector).prop("disabled", disable).attr("disabled", disable);
 	}
 
 	displayNumberOfPlayers(numberOfPlayers) {
