@@ -17,6 +17,7 @@ class Game {
 
 	stop() {
 		this.gameLoop.stop();
+		this.clientEventHandler.disconnect();
 		this.syncController.emit(events.GAME_STOP);
 	}
 
