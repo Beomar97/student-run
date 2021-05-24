@@ -73,7 +73,9 @@ class Timeline {
 				width: gameObject.innerObject.metadata.width,
 				height: gameObject.innerObject.metadata.height,
 				isStatic: gameObject.innerObject.isStatic,
+				friction: gameObject.innerObject.friction,
 				frictionAir: gameObject.innerObject.frictionAir,
+				interia: gameObject.innerObject.interia,
 			};
 		}
 

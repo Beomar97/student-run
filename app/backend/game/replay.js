@@ -1,4 +1,3 @@
-const { CollisionDetector } = require("../../public/js/game/collisionDetector");
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const logger = require("../logger");
 const GameObjectBuilder = require("./gameObjectBuilder");
@@ -85,6 +84,8 @@ class Replay {
 			.withWidth(gameObjectSnapshot.metadata.width)
 			.withHeight(gameObjectSnapshot.metadata.height)
 			.withIsStatic(gameObjectSnapshot.metadata.isStatic)
+			.withFriction(gameObjectSnapshot.metadata.friction)
+			.withInteria(gameObjectSnapshot.metadata.interia)
 			.withFrictionAir(gameObjectSnapshot.metadata.frictionAir)
 			.create();
 	}

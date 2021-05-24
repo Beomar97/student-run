@@ -12,7 +12,6 @@ class GameObjectBuilder {
 				category: 1,
 				mask: -1,
 			},
-			frictionAir: 0,
 		};
 
 		this.physics = physics;
@@ -79,9 +78,17 @@ class GameObjectBuilder {
 	}
 
 	withFrictionAir(frictionAir) {
-		if (frictionAir || frictionAir === 0) {
-			this.properties.frictionAir = frictionAir;
-		}
+		this.properties.frictionAir = frictionAir;
+		return this;
+	}
+
+	withFriction(friction) {
+		this.properties.friction = friction;
+		return this;
+	}
+
+	withInteria(interia) {
+		this.properties.interia = interia;
 		return this;
 	}
 
@@ -98,6 +105,8 @@ class GameObjectBuilder {
 			.withCollisionCategory(gameObjectDescription.collisionCategory)
 			.withName(gameObjectDescription.name)
 			.withFrictionAir(gameObjectDescription.frictionAir)
+			.withFriction(gameObjectDescription.friction)
+			.withInteria(gameObjectDescription.interia)
 			.create();
 	}
 
@@ -156,11 +165,7 @@ class GameObjectBuilder {
 				this.properties.y,
 				this.properties.width,
 				this.properties.height,
-				{
-					isStatic: this.properties.isStatic,
-					frictionAir: this.properties.frictionAir,
-					collisionFilter: this.properties.collisionFilter,
-				}
+				this._getInnerObjectParams()
 			);
 		innerObject.metadata = {
 			shape: this.properties.shape,
@@ -177,11 +182,7 @@ class GameObjectBuilder {
 				this.properties.x,
 				this.properties.y,
 				this.properties.radius,
-				{
-					isStatic: this.properties.isStatic,
-					frictionAir: this.properties.frictionAir,
-					collisionFilter: this.properties.collisionFilter,
-				}
+				this._getInnerObjectParams()
 			);
 		innerObject.metadata = {
 			shape: this.properties.shape,
@@ -190,12 +191,35 @@ class GameObjectBuilder {
 		return innerObject;
 	}
 
+	_getInnerObjectParams() {
+		let innerObjectParams = {
+			isStatic: this.properties.isStatic,
+			collisionFilter: this.properties.collisionFilter,
+		};
+
+		if (this.properties.friction || this.properties.friction === 0) {
+			innerObjectParams.friction = this.properties.friction;
+		}
+
+		if (this.properties.frictionAir || this.properties.frictionAir === 0) {
+			innerObjectParams.frictionAir = this.properties.frictionAir;
+		}
+
+		if (this.properties.interia || this.properties.interia === 0) {
+			innerObjectParams.interia = this.properties.interia;
+		}
+
+		return innerObjectParams;
+	}
+
 	createPlayer() {
 		this._validatePlayer();
 		this.properties.x = physicalConstant.PLAYER_SPAWN_X;
 		this.properties.y = physicalConstant.PLAYER_SPAWN_Y;
 		this.properties.radius = physicalConstant.PLAYER_SIZE;
-		this.properties.frictionAir = physicalConstant.FRICTION_AIR;
+		this.properties.frictionAir = physicalConstant.PLAYER_FRICTION_AIR;
+		this.properties.friction = physicalConstant.PLAYER_FRICTION;
+		this.properties.interia = physicalConstant.PLAYER_INTERIA;
 		this.properties.shape = gameObjectShapes.CIRCLE;
 		this.properties.gameObjectType = gameObjectTypes.PLAYER;
 		this.properties.isStatic = false;
