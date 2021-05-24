@@ -44,7 +44,7 @@ class PlayerInitializer {
 		);
 
 		console.error(phaserPlayer)
-		if (!(player.skin.name === "dude")) {
+		if (player.skin.name !== "dude") {
 			phaserPlayer.setScale(0.375);
 		}
 

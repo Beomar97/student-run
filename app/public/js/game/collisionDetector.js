@@ -69,7 +69,7 @@ class CollisionDetector {
 	}
 }
 
-gameObjectMatchers = {
+let gameObjectMatchers = {
 	byId: (id) => {
 		return { matches: (gameObject) => gameObject.id === id };
 	},
