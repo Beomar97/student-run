@@ -56,7 +56,7 @@ describe("Test the ClientEventHandler class", () => {
 		let movementChangeEvent = {
 			id: player.id,
 			tic: 49,
-			direction: 1,
+			directionX: 1,
 		};
 
 		testee._applyMovementChange(movementChangeEvent);

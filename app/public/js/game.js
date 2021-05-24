@@ -24,7 +24,7 @@ let customConfig = {
 		lowerDistanceDiffThreshold: 2,
 		upperDistanceDiffThreshold: 50,
 		interpolationMaxStep: 3,
-		ticDiffThreshold: 2,
+		ticDiffThreshold: 1,
 		ticsPerSnapshot: 4, // should be in sync with game state publish
 	},
 };

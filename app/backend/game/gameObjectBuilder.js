@@ -59,10 +59,12 @@ class GameObjectBuilder {
 	}
 
 	withCollisionCategory(collisionCategory) {
-		this.properties.collisionFilter = {
-			collisionFilter: collisionCategory,
-			mask: 0,
-		};
+		if (collisionCategory || collisionCategory === 0) {
+			this.properties.collisionFilter = {
+				collisionFilter: collisionCategory,
+				mask: 0,
+			};
+		}
 		return this;
 	}
 
@@ -77,8 +79,26 @@ class GameObjectBuilder {
 	}
 
 	withFrictionAir(frictionAir) {
-		this.properties.frictionAir = frictionAir;
+		if (frictionAir || frictionAir === 0) {
+			this.properties.frictionAir = frictionAir;
+		}
 		return this;
+	}
+
+	createFromGameObjectDescription(gameObjectDescription) {
+		return this.withId(gameObjectDescription.id)
+			.withGameObjectType(gameObjectDescription.type)
+			.withShape(gameObjectDescription.shape)
+			.withX(gameObjectDescription.x)
+			.withY(gameObjectDescription.y)
+			.withIsStatic(gameObjectDescription.isStatic)
+			.withWidth(gameObjectDescription.width)
+			.withHeight(gameObjectDescription.height)
+			.withRadius(gameObjectDescription.radius)
+			.withCollisionCategory(gameObjectDescription.collisionCategory)
+			.withName(gameObjectDescription.name)
+			.withFrictionAir(gameObjectDescription.frictionAir)
+			.create();
 	}
 
 	create() {
@@ -129,7 +149,7 @@ class GameObjectBuilder {
 	}
 
 	_createRectangle() {
-		return this.physics
+		let innerObject = this.physics
 			.getMatter()
 			.Bodies.rectangle(
 				this.properties.x,
@@ -142,10 +162,16 @@ class GameObjectBuilder {
 					collisionFilter: this.properties.collisionFilter,
 				}
 			);
+		innerObject.metadata = {
+			shape: this.properties.shape,
+			width: this.properties.width,
+			height: this.properties.height,
+		};
+		return innerObject;
 	}
 
 	_createCircle() {
-		return this.physics
+		let innerObject = this.physics
 			.getMatter()
 			.Bodies.circle(
 				this.properties.x,
@@ -157,6 +183,11 @@ class GameObjectBuilder {
 					collisionFilter: this.properties.collisionFilter,
 				}
 			);
+		innerObject.metadata = {
+			shape: this.properties.shape,
+			radius: this.properties.radius,
+		};
+		return innerObject;
 	}
 
 	createPlayer() {

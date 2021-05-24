@@ -1,4 +1,5 @@
 const events = require("../../public/js/shared/sync/events");
+const eventHandlers = require("../../public/js/shared/sync/eventHandlers");
 const logger = require("../logger");
 
 class ClientEventHandler {
@@ -29,7 +30,11 @@ class ClientEventHandler {
 	}
 
 	_handleItemEvent(itemEvent) {
-		this._logEvent("item event", itemEvent, "Player: " + itemEvent.playerId);
+		this._logEvent(
+			"item event",
+			itemEvent,
+			"Player: " + itemEvent.playerId
+		);
 
 		this.syncController.emit(events.PLAYER_COLLECTED_ITEM, itemEvent);
 
@@ -75,21 +80,22 @@ class ClientEventHandler {
 	}
 
 	_applyMovementChange(movementChangeEvent) {
-		let player = this.gameState.getGameObject(movementChangeEvent.id);
-		player.setDirectionX(movementChangeEvent.direction);
+		eventHandlers.handleMovementChangeEvent(
+			this.gameState,
+			movementChangeEvent
+		);
 	}
 
 	_applyJump(playerJumpEvent) {
-		let player = this.gameState.getGameObject(playerJumpEvent.id);
-		player.setDirectionY(1);
+		eventHandlers.handleJumpEvent(this.gameState, playerJumpEvent);
 	}
 
 	_applyItemEffect(itemEvent) {
-		let player = this.gameState.getGameObject(itemEvent.playerId);
-		let item = this.gameState.getGameObject(itemEvent.itemId);
-		player.item = item;
-		this.gameState.removeGameObject(item.id);
-		this.physics.removeObject(item.innerObject);
+		eventHandlers.handleItemEvent(
+			this.gameState,
+			itemEvent,
+			this.physics.removeObject.bind(this.physics)
+		);
 	}
 
 	_evaluateEventTic(eventTic) {

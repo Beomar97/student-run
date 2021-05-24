@@ -1,5 +1,6 @@
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 const logger = require("../logger");
+const GameObjectBuilder = require("./gameObjectBuilder");
 
 class Replay {
 	constructor(gameState, physics, eventQueue, timeline, physicsUpdater) {
@@ -44,17 +45,59 @@ class Replay {
 
 		this.gameState.tic = snapshot.tic;
 		this.gameState.lastTicTime = snapshot.lastTicTime;
+		let updatedGameObjectIds = this._applySnapshot(snapshot);
+		this._deleteSuperfluousGameObjects(updatedGameObjectIds);
+	}
+
+	_applySnapshot(snapshot) {
+		let updatedGameObjectIds = new Set();
 		snapshot.gameObjects.forEach((gameObjectSnapshot) => {
-			this._applySnapshot(
+			let gameObject = this.gameState.getGameObject(
+				gameObjectSnapshot.id
+			);
+			if (!gameObject) {
+				gameObject = this._createGameObject(gameObjectSnapshot);
+				this.gameState.addAll([gameObject]);
+			}
+			this._applyGameObjectSnapshot(
 				this.gameState.getGameObject(gameObjectSnapshot.id),
 				gameObjectSnapshot
 			);
+			updatedGameObjectIds.add(gameObjectSnapshot.id);
 		});
-
-		//TODO when items are added: remove created objects, and create removed objects
+		return updatedGameObjectIds;
 	}
 
-	_applySnapshot(gameObject, snapshot) {
+	_createGameObject(gameObjectSnapshot) {
+		logger.debug({
+			message: "Creating new gameObject",
+			gameObjectSnapshot: gameObjectSnapshot,
+		});
+
+		return new GameObjectBuilder(this.physics)
+			.withId(gameObjectSnapshot.id)
+			.withGameObjectType(gameObjectSnapshot.type)
+			.withX(gameObjectSnapshot.innerObject.position.x)
+			.withY(gameObjectSnapshot.innerObject.position.y)
+			.withShape(gameObjectSnapshot.metadata.shape)
+			.withRadius(gameObjectSnapshot.metadata.radius)
+			.withWidth(gameObjectSnapshot.metadata.width)
+			.withHeight(gameObjectSnapshot.metadata.height)
+			.withIsStatic(gameObjectSnapshot.metadata.isStatic)
+			.withFrictionAir(gameObjectSnapshot.metadata.frictionAir)
+			.create();
+	}
+
+	_deleteSuperfluousGameObjects(updatedGameObjectIds) {
+		this.gameState.forEachGameObject((gameObject) => {
+			if (!updatedGameObjectIds.has(gameObject.id)) {
+				this.gameState.removeGameObject(gameObject.id);
+				this.physics.removeObject(gameObject.innerObject);
+			}
+		}, this.timeline.gameObjectFilter);
+	}
+
+	_applyGameObjectSnapshot(gameObject, snapshot) {
 		let innerObject = gameObject.innerObject;
 		this.physics.setPosition(innerObject, snapshot.innerObject.position);
 		this.physics.setVelocity(innerObject, snapshot.innerObject.velocity);

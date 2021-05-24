@@ -1,4 +1,4 @@
-var events = {
+let events = {
 	CONNECTION: "connection",
 	DISCONNECT: "disconnect",
 	PLAYER_JOINED: "playerJoined",

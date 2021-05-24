@@ -3,11 +3,11 @@ const logger = require("../logger");
 const gameObjectTypes = require("../../public/js/shared/game/gameObjectTypes");
 
 class FinishLineWatcher {
-	constructor(playerDetailsPublisher, room, gameState, offset) {
+	constructor(playerDetailsPublisher, gameState, offset, onGameDone) {
 		this.gameState = gameState;
-		this.room = room;
 		this.playerDetailsPublisher = playerDetailsPublisher;
 		this.offset = offset;
+		this.onGameDone = onGameDone;
 		this.finishLinePosition = this._getFinishLinePosition(
 			gameState.gameObjects
 		);
@@ -23,7 +23,7 @@ class FinishLineWatcher {
 				this.playerDetailsPublisher.publish(this.gameState);
 
 				if (this._isGameDone(gameState)) {
-					this.room.stopGame();
+					this.onGameDone();
 				}
 			}
 		}, this.filterByPlayer);

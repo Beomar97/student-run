@@ -1,10 +1,11 @@
 const gameObjectTypes = require("./gameObjectTypes");
 
 class Timeline {
-	constructor(gameState, maxSnapshots, ticsPerSnapshot) {
+	constructor(gameState, maxSnapshots, ticsPerSnapshot, copyMetadata) {
 		this.gameState = gameState;
 		this.maxSnapshots = maxSnapshots;
 		this.ticsPerSnapshot = ticsPerSnapshot;
+		this.copyMetadata = copyMetadata;
 		this.snapshots = new Map();
 		this.snapshotKeysOrdered = [];
 		this.gameObjectFilter = (gameObject) => {
@@ -44,6 +45,7 @@ class Timeline {
 		let innerObject = gameObject.innerObject;
 		let snapshot = {
 			id: gameObject.id,
+			type: gameObject.type,
 			innerObject: {
 				position: {
 					x: innerObject.position.x,
@@ -62,6 +64,19 @@ class Timeline {
 				y: gameObject.direction.y,
 			};
 		}
+
+		if (this.copyMetadata) {
+			// Note: collisionCategory gets not copied
+			snapshot.metadata = {
+				shape: gameObject.innerObject.metadata.shape,
+				radius: gameObject.innerObject.metadata.radius,
+				width: gameObject.innerObject.metadata.width,
+				height: gameObject.innerObject.metadata.height,
+				isStatic: gameObject.innerObject.isStatic,
+				frictionAir: gameObject.innerObject.frictionAir,
+			};
+		}
+
 		return snapshot;
 	}
 

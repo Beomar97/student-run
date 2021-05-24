@@ -6,19 +6,14 @@ const playerColors = require("../helper/playerColors");
 class PlayerInitializer {
 	constructor(game) {
 		this.game = game;
-		this.phaserPlayerCollection = new Map();
-		this.matterPlayerCollection = new Map();
 	}
 
-	addJSONObjectsToPhaser(playerData, skinsEnabled) {
-		let objectCollection = [];
+	addJSONObjectsToPhaser(playerData) {
+		let players = [];
 
 		playerData.forEach((player) => {
-			let phaserPlayer = this._createPhaserPlayer(player, skinsEnabled);
-			this.phaserPlayerCollection.set(player.id, phaserPlayer);
-
+			let phaserPlayer = this._createPhaserPlayer(player);
 			let matterPlayer = this._createMatterPlayer();
-			this.matterPlayerCollection.set(player.id, matterPlayer);
 
 			this.game.matter.add.gameObject(phaserPlayer, matterPlayer);
 
@@ -29,10 +24,10 @@ class PlayerInitializer {
 			);
 
 			newPlayer.skin = player.skin;
-			objectCollection.push(newPlayer);
+			players.push(newPlayer);
 		});
 
-		return objectCollection;
+		return players;
 	}
 
 	_createPhaserPlayer(player, skinsEnabled) {
@@ -69,10 +64,6 @@ class PlayerInitializer {
 				inertia: Infinity,
 			}
 		);
-	}
-
-	getPhaserPlayerById(id) {
-		return this.phaserPlayerCollection.get(id);
 	}
 }
 

@@ -1,4 +1,5 @@
 const events = require("../shared/sync/events");
+const eventHandlers = require("../shared/sync/eventHandlers");
 
 class UpdateHandler {
 	constructor(
@@ -40,25 +41,26 @@ class UpdateHandler {
 
 	_applyMovementChange(movementChangeEvent) {
 		if (movementChangeEvent.id !== this.myPlayerId) {
-			let player = this.gameState.getGameObject(movementChangeEvent.id);
-			player.setDirectionX(movementChangeEvent.direction);
+			eventHandlers.handleMovementChangeEvent(
+				this.gameState,
+				movementChangeEvent
+			);
 		}
 	}
 
 	_applyJump(playerJumpEvent) {
 		if (playerJumpEvent.id !== this.myPlayerId) {
-			let player = this.gameState.getGameObject(playerJumpEvent.id);
-			player.setDirectionY(1);
+			eventHandlers.handleJumpEvent(this.gameState, playerJumpEvent);
 		}
 	}
 
 	_applyItemEffect(itemEvent) {
 		if (itemEvent.playerId !== this.myPlayerId) {
-			let player = this.gameState.getGameObject(itemEvent.playerId);
-			let item = this.gameState.getGameObject(itemEvent.itemId);
-			player.item = item;
-			item.innerObject.gameObject.destroy();
-			this.gameState.removeGameObject(item.id);
+			eventHandlers.handleItemEvent(
+				this.gameState,
+				itemEvent,
+				(innerObject) => innerObject.gameObject.destroy()
+			);
 		}
 	}
 
