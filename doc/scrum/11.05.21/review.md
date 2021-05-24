@@ -1,6 +1,6 @@
 # Review Sprint 4
 
-## Actions aus Retro Sprint 4
+## Actions aus Retro Sprint 3
 
 - In Weekly wird Code durchgegangen und erklärt -> gemacht, Pair-Programming.
 
