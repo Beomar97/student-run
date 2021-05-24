@@ -6,7 +6,7 @@
 	"wordHeight": 1000,
 	"gameObjects": [
 		{
-			"id": 10000,
+			"id": 100,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -17,7 +17,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 10001,
+			"id": 101,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -28,7 +28,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 10002,
+			"id": 102,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -39,7 +39,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1000,
+			"id": 103,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -51,7 +51,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1001,
+			"id": 104,
 			"type": "finishLine",
 			"shape": "rectangle",
 			"texture": "flag",
@@ -63,7 +63,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1002,
+			"id": 105,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -75,7 +75,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1003,
+			"id": 106,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -87,7 +87,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1004,
+			"id": 107,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -99,7 +99,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1005,
+			"id": 108,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -111,7 +111,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1006,
+			"id": 107,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -123,7 +123,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1007,
+			"id": 108,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -135,7 +135,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1008,
+			"id": 109,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -147,7 +147,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1009,
+			"id": 110,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -159,7 +159,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1010,
+			"id": 111,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -171,7 +171,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 1011,
+			"id": 112,
 			"type": "staticObstacle",
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
@@ -183,7 +183,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 2001,
+			"id": 113,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -195,7 +195,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 2002,
+			"id": 113,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -207,7 +207,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 2003,
+			"id": 114,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -219,7 +219,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 2004,
+			"id": 115,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -231,7 +231,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 2005,
+			"id": 116,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -243,7 +243,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 3001,
+			"id": 117,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -255,7 +255,7 @@
 			"isStatic": true
 		},
 		{
-			"id": 3002,
+			"id": 118,
 			"type": "staticObstacle",
 			"textureStyle": "sprite",
 			"shape": "rectangle",
@@ -267,12 +267,84 @@
 			"isStatic": true
 		},
 		{
-			"id": 100,
+			"id": 1000,
 			"type": "boostItem",
 			"shape": "circle",
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
-			"x": 500,
+			"x": 800,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "star"
+		},
+		{
+			"id": 1001,
+			"type": "boostItem",
+			"shape": "circle",
+			"textureStyle": "sprite",
+			"fillColor": "0xfbd000",
+			"x": 1200,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "lightning"
+		},
+		{
+			"id": 1002,
+			"type": "boostItem",
+			"shape": "circle",
+			"textureStyle": "sprite",
+			"fillColor": "0xfbd000",
+			"x": 1800,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "battery"
+		},
+		{
+			"id": 1003,
+			"type": "boostItem",
+			"shape": "circle",
+			"textureStyle": "sprite",
+			"fillColor": "0xfbd000",
+			"x": 2970,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "star"
+		},
+		{
+			"id": 1004,
+			"type": "boostItem",
+			"shape": "circle",
+			"textureStyle": "sprite",
+			"fillColor": "0xfbd000",
+			"x": 3320,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "lightning"
+		},
+		{
+			"id": 1005,
+			"type": "boostItem",
+			"shape": "circle",
+			"textureStyle": "sprite",
+			"fillColor": "0xfbd000",
+			"x": 3815,
+			"y": 150,
+			"radius": 20,
+			"isStatic": false,
+			"texture": "battery"
+		},
+		{
+			"id": 1006,
+			"type": "boostItem",
+			"shape": "circle",
+			"textureStyle": "sprite",
+			"fillColor": "0xfbd000",
+			"x": 4600,
 			"y": 150,
 			"radius": 20,
 			"isStatic": false,
@@ -281,7 +353,7 @@
 	],
 	"decorations": [
 		{
-			"id": 101,
+			"id": 2000,
 			"type": "decoration",
 			"texture": "signpost",
 			"scale": 0.8,
@@ -289,7 +361,7 @@
 			"y": 505
 		},
 		{
-			"id": 102,
+			"id": 2001,
 			"type": "decoration",
 			"texture": "stone",
 			"scale": 0.3,
@@ -297,7 +369,7 @@
 			"y": 540
 		},
 		{
-			"id": 103,
+			"id": 2002,
 			"type": "decoration",
 			"texture": "tree",
 			"scale": 0.6,
@@ -305,7 +377,7 @@
 			"y": 410
 		},
 		{
-			"id": 104,
+			"id": 2003,
 			"type": "decoration",
 			"texture": "stone",
 			"scale": 0.4,
@@ -313,7 +385,7 @@
 			"y": 536
 		},
 		{
-			"id": 105,
+			"id": 2004,
 			"type": "decoration",
 			"texture": "rope_railing",
 			"scale": 0.25,
@@ -321,7 +393,7 @@
 			"y": 538
 		},
 		{
-			"id": 106,
+			"id": 2005,
 			"type": "decoration",
 			"texture": "rope_railing",
 			"scale": 0.25,
@@ -329,7 +401,7 @@
 			"y": 538
 		},
 		{
-			"id": 107,
+			"id": 2006,
 			"type": "decoration",
 			"texture": "signpost",
 			"scale": 0.8,
@@ -337,7 +409,7 @@
 			"y": 505
 		},
 		{
-			"id": 201,
+			"id": 2007,
 			"type": "decoration",
 			"texture": "tree",
 			"scale": 0.6,
@@ -345,7 +417,7 @@
 			"y": 190
 		},
 		{
-			"id": 202,
+			"id": 2008,
 			"type": "decoration",
 			"texture": "wood_railing",
 			"scale": 0.6,
@@ -353,7 +425,7 @@
 			"y": 302
 		},
 		{
-			"id": 301,
+			"id": 2009,
 			"type": "decoration",
 			"texture": "signpost",
 			"scale": 0.8,
@@ -361,7 +433,7 @@
 			"y": 110
 		},
 		{
-			"id": 302,
+			"id": 2010,
 			"type": "decoration",
 			"texture": "tree",
 			"scale": 0.4,

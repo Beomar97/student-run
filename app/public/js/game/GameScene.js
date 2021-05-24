@@ -44,6 +44,8 @@ class GameScene extends Phaser.Scene {
 		});
 		this.load.json("playerData", "players");
 		this.load.image("star", "assets/items/star.png");
+		this.load.image("battery", "assets/items/battery.png");
+		this.load.image("lightning", "assets/items/lightning.png");
 
 		Skins.getSkins().forEach((skin) => {
 			this.load.spritesheet(skin.name, skin.file, {
