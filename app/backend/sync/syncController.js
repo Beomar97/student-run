@@ -1,26 +1,29 @@
 const ServerSync = require("./serverSync");
 const events = require("../../public/js/shared/sync/events");
 const logger = require("../logger");
+const id = require("../util/id");
 
 class SyncController {
 	constructor(io) {
 		this.io = io;
 		this.currentServerSyncs = new Map();
+		this.onConnections = new Map();
 	}
 
-	control(onConnection) {
+	init() {
 		this.io.on(events.CONNECTION, (socket) => {
 			let serverSync = new ServerSync(socket);
 			this.currentServerSyncs.set(serverSync.getId(), serverSync);
 			this._removeServerSyncOnDisconnect(serverSync);
-			onConnection(serverSync);
+			this.onConnections.forEach((onConnection) =>
+				onConnection(serverSync)
+			);
 
 			logger.info({
 				message: "Connection established",
 				id: serverSync.getId(),
 			});
 		});
-		this.currentServerSyncs.forEach(onConnection);
 	}
 
 	_removeServerSyncOnDisconnect(serverSync) {
@@ -31,6 +34,15 @@ class SyncController {
 				id: serverSync.getId(),
 			});
 		});
+	}
+
+	control(onConnection, callerName) {
+		this.onConnections.set(callerName, onConnection);
+		this.currentServerSyncs.forEach(onConnection);
+	}
+
+	uncontrol(callerName) {
+		this.onConnections.delete(callerName);
 	}
 
 	emit(id, object) {

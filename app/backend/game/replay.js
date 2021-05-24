@@ -84,6 +84,8 @@ class Replay {
 			.withWidth(gameObjectSnapshot.metadata.width)
 			.withHeight(gameObjectSnapshot.metadata.height)
 			.withIsStatic(gameObjectSnapshot.metadata.isStatic)
+			.withFriction(gameObjectSnapshot.metadata.friction)
+			.withInteria(gameObjectSnapshot.metadata.interia)
 			.withFrictionAir(gameObjectSnapshot.metadata.frictionAir)
 			.create();
 	}

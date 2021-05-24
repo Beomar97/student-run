@@ -43,30 +43,6 @@ mocks = {
 	updateLock: (isLocked) => {
 		return { isLocked: (param1, param2) => isLocked };
 	},
-	util: {
-		resetMatterMock: (matter) => {
-			matter.Engine.create.mockClear();
-			matter.Engine.update.mockClear();
-			matter.engine.create.mockClear();
-			matter.engine.update.mockClear();
-			matter.Body.setPosition.mockClear();
-			matter.body.setPosition.mockClear();
-		},
-		resetSocketMock: (socket) => {
-			socket.on.mockClear();
-			socket.emit.mockClear();
-			socket.broadcast.emit.mockClear();
-		},
-		resetPhaserMock: (phaser) => {
-			phaser.add.rectangle.mockClear();
-			phaser.add.sprite.mockClear();
-			phaser.matter.add.rectangle.mockClear();
-			phaser.matter.add.circle.mockClear();
-			phaser.matter.add.gameObject.mockClear();
-			phaser.sound.play.mockClear();
-			phaser.sound.pauseAll.mockClear();
-		},
-	},
 	phaser: (distanceTwoPoints) => {
 		return {
 			add: {
@@ -74,6 +50,9 @@ mocks = {
 					return {};
 				}),
 				sprite: jest.fn((x, y, texture) => {
+					return {};
+				}),
+				tileSprite: jest.fn((x, y, width, height, texture) => {
 					return {};
 				}),
 			},
@@ -104,6 +83,31 @@ mocks = {
 		getItem: jest.fn(),
 		setItem: jest.fn(),
 		clear: jest.fn(),
+	},
+	util: {
+		resetMatterMock: (matter) => {
+			matter.Engine.create.mockClear();
+			matter.Engine.update.mockClear();
+			matter.engine.create.mockClear();
+			matter.engine.update.mockClear();
+			matter.Body.setPosition.mockClear();
+			matter.body.setPosition.mockClear();
+		},
+		resetSocketMock: (socket) => {
+			socket.on.mockClear();
+			socket.emit.mockClear();
+			socket.broadcast.emit.mockClear();
+		},
+		resetPhaserMock: (phaser) => {
+			phaser.add.rectangle.mockClear();
+			phaser.add.sprite.mockClear();
+			phaser.add.tileSprite.mockClear();
+			phaser.matter.add.rectangle.mockClear();
+			phaser.matter.add.circle.mockClear();
+			phaser.matter.add.gameObject.mockClear();
+			phaser.sound.play.mockClear();
+			phaser.sound.pauseAll.mockClear();
+		},
 	},
 };
 

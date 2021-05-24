@@ -19,7 +19,7 @@ class RoomEventHandler {
 			serverSync.on(events.PLAYER_READY, (playerId) => {
 				this._handlePlayerReadyEvent(playerId);
 			});
-		});
+		}, RoomEventHandler.name);
 	}
 
 	_handlePlayerJoinedEvent(socketId, newPlayer) {

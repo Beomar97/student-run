@@ -13,7 +13,17 @@ describe("Test the ServerSync class", () => {
 		let f = (socket) => {};
 		let testee = new SyncController(socket);
 
-		testee.control(f);
+		let callerName = "callerName";
+		testee.control(f, callerName);
+
+		expect(testee.onConnections.get(callerName)).toEqual(f);
+	});
+
+	test("if init method calls socket.", () => {
+		let f = (socket) => {};
+		let testee = new SyncController(socket);
+
+		testee.init();
 
 		expect(socket.on).lastCalledWith(
 			events.CONNECTION,

@@ -1,13 +1,8 @@
 const demoLevelJSON = require("../../../asset/levels/demo-level.json");
 const mocks = require("../../../mocks/mocks");
-const { GameObject } = require("../../../../public/js/shared/game/gameObject");
-const gameObjectShapes = require("../../../../public/js/shared/game/gameObjectShapes");
 const LevelInitializer = require("../../../../public/js/game/levelInitializer");
 
 let phaser = mocks.phaser();
-
-global.GameObject = GameObject;
-global.gameObjectShapes = gameObjectShapes;
 
 beforeEach(() => {
 	mocks.util.resetPhaserMock(phaser);
@@ -22,14 +17,14 @@ describe("Test the LevelLoader class", () => {
 		const platformY = 580;
 		const platformWidth = 1600;
 		const platformHeight = 20;
-		const platformColor = 0x00b300;
 		const platformIsStatic = true;
-		expect(phaser.add.rectangle).lastCalledWith(
+		const texture = "platform2";
+		expect(phaser.add.tileSprite).lastCalledWith(
 			platformX,
 			platformY,
 			platformWidth,
 			platformHeight,
-			platformColor
+			texture
 		);
 		expect(phaser.matter.add.rectangle).lastCalledWith(
 			platformX,

@@ -13,6 +13,7 @@ app.use(express.static(__dirname + "/../public"));
 
 const server = http.Server(app);
 const syncController = new SyncController(socketIo(server));
+syncController.init();
 
 roomManager.addRoom(new Room(syncController));
 

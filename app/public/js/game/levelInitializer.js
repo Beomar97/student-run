@@ -1,7 +1,7 @@
 const BoostItem = require("../shared/game/boostItem");
 const { GameObject } = require("../shared/game/gameObject");
-const gameObjectShapes = require("../shared/game/gameObjectShapes");
 const gameObjectTypes = require("../shared/game/gameObjectTypes");
+const textureStyles = require("../view/textureStyle");
 
 class LevelInitializer {
 	constructor(game) {
@@ -9,121 +9,35 @@ class LevelInitializer {
 	}
 
 	addJSONObjectsToPhaser(leveldata) {
-		let gameObjectCollection = [];
+		let gameObjects = this._createGameObjects(leveldata);
+		this._createDecorations(leveldata);
+		return gameObjects;
+	}
 
-		leveldata.gameObjects.forEach((objectDescription) => {
-			let phaserObject;
-			let matterObject;
-
-			if (objectDescription.type === gameObjectTypes.FINISH_LINE) {
-				phaserObject = this.game.add.sprite(
+	_createDecorations(leveldata) {
+		leveldata.decorations.forEach((objectDescription) => {
+			if (objectDescription.type === gameObjectTypes.DECORATION) {
+				let phaserObject = this.game.add.sprite(
 					objectDescription.x,
 					objectDescription.y,
 					objectDescription.texture
 				);
-				let uniqueCollisionCategory = this.game.matter.world.nextCategory();
-				matterObject = this.game.matter.add.rectangle(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.width,
-					objectDescription.height,
-					{
-						isStatic: Boolean(objectDescription.isStatic),
-						collisionFilter: {
-							group: uniqueCollisionCategory,
-							mask: 0,
-						},
-					}
-				);
-				this.game.anims.create({
-					key: "finishLineAnimation",
-					frames: this.game.anims.generateFrameNumbers(
-						objectDescription.texture
-					),
-					frameRate: 10,
-					repeat: -1,
-				});
-				phaserObject.anims.play("finishLineAnimation", true);
-			} else if (
-				objectDescription.type ===
-				gameObjectTypes.STATIC_OBSTACLE_SPRITE
-			) {
-				phaserObject = this.game.add.sprite(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.texture
-				);
-				phaserObject.displayWidth = objectDescription.width;
-				phaserObject.displayHeight = objectDescription.height;
-				matterObject = this.game.matter.add.rectangle(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.width,
-					objectDescription.height,
-					{
-						isStatic: Boolean(objectDescription.isStatic),
-					}
-				);
-				matterObject.isGroundElement = true;
-			} else if (
-				objectDescription.type ===
-				gameObjectTypes.STATIC_OBSTACLE_TILESPRITE
-			) {
-				phaserObject = this.game.add.tileSprite(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.width,
-					objectDescription.height,
-					objectDescription.texture
-				);
-				phaserObject.displayWidth = objectDescription.width;
-				phaserObject.displayHeight = objectDescription.height;
-				matterObject = this.game.matter.add.rectangle(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.width,
-					objectDescription.height,
-					{
-						isStatic: Boolean(objectDescription.isStatic),
-					}
-				);
-				matterObject.isGroundElement = true;
-			} else if (objectDescription.shape === gameObjectShapes.RECTANGLE) {
-				phaserObject = this.game.add.rectangle(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.width,
-					objectDescription.height,
-					parseInt(objectDescription.fillColor)
-				);
-				matterObject = this.game.matter.add.rectangle(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.width,
-					objectDescription.height,
-					{
-						isStatic: Boolean(objectDescription.isStatic),
-					}
-				);
-				matterObject.isGroundElement = true;
-			} else if (objectDescription.shape === gameObjectShapes.CIRCLE) {
-				phaserObject = this.game.add.sprite(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.texture
-				);
-				matterObject = this.game.matter.add.circle(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.radius
-				);
+				phaserObject.setScale(objectDescription.scale);
 			}
+		});
+	}
+
+	_createGameObjects(leveldata) {
+		let gameObjects = [];
+		leveldata.gameObjects.forEach((objectDescription) => {
+			let matterObject = this._createMatterObject(objectDescription);
+			let phaserObject = this._createPhaserObject(objectDescription);
+
 			if (phaserObject && matterObject) {
 				this.game.matter.add.gameObject(phaserObject, matterObject);
 
 				let gameObject = null;
 				if (objectDescription.type === gameObjectTypes.BOOST_ITEM) {
-					matterObject.collectableItem = true;
 					gameObject = new BoostItem(
 						objectDescription.id,
 						matterObject
@@ -136,24 +50,85 @@ class LevelInitializer {
 					);
 				}
 
-				gameObjectCollection.push(gameObject);
+				gameObjects.push(gameObject);
 			} else {
 				throw new Error("Couldn't initialize all game objects.");
 			}
 		});
+		return gameObjects;
+	}
 
-		leveldata.decorations.forEach((objectDescription) => {
-			if (objectDescription.type === gameObjectTypes.DECORATION) {
-				let phaserObject = this.game.add.sprite(
-					objectDescription.x,
-					objectDescription.y,
-					objectDescription.texture
-				);
-				phaserObject.setScale(objectDescription.scale);
-			}
-		});
+	_createPhaserObject(objectDescription) {
+		let phaserObject;
 
-		return gameObjectCollection;
+		if (objectDescription.textureStyle === textureStyles.SPRITE) {
+			phaserObject = this.game.add.sprite(
+				objectDescription.x,
+				objectDescription.y,
+				objectDescription.texture
+			);
+		} else if (
+			objectDescription.textureStyle == textureStyles.TILE_SPRITE
+		) {
+			phaserObject = this.game.add.tileSprite(
+				objectDescription.x,
+				objectDescription.y,
+				objectDescription.width,
+				objectDescription.height,
+				objectDescription.texture
+			);
+		} else {
+			throw new Error(
+				"textureStyle not defined. Object: " +
+					JSON.stringify(objectDescription)
+			);
+		}
+
+		if (objectDescription.width && objectDescription.height) {
+			phaserObject.displayWidth = objectDescription.width;
+			phaserObject.displayHeight = objectDescription.height;
+		}
+
+		return phaserObject;
+	}
+
+	_createMatterObject(objectDescription) {
+		let matterObject;
+
+		if (objectDescription.type === gameObjectTypes.FINISH_LINE) {
+			let uniqueCollisionCategory = this.game.matter.world.nextCategory();
+			matterObject = this.game.matter.add.rectangle(
+				objectDescription.x,
+				objectDescription.y,
+				objectDescription.width,
+				objectDescription.height,
+				{
+					isStatic: Boolean(objectDescription.isStatic),
+					collisionFilter: {
+						group: uniqueCollisionCategory,
+						mask: 0,
+					},
+				}
+			);
+		} else if (objectDescription.type === gameObjectTypes.STATIC_OBSTACLE) {
+			matterObject = this.game.matter.add.rectangle(
+				objectDescription.x,
+				objectDescription.y,
+				objectDescription.width,
+				objectDescription.height,
+				{
+					isStatic: Boolean(objectDescription.isStatic),
+				}
+			);
+		} else if (objectDescription.type === gameObjectTypes.BOOST_ITEM) {
+			matterObject = this.game.matter.add.circle(
+				objectDescription.x,
+				objectDescription.y,
+				objectDescription.radius
+			);
+		}
+
+		return matterObject;
 	}
 }
 

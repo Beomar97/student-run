@@ -113,17 +113,22 @@ class GameScene extends Phaser.Scene {
 			playerData,
 			this.game.config.customConfig.skinsEnabled
 		);
-		this.animator = new Animator();
-		this.animator.init(this.anims);
 		this.myPlayerId = parseInt(localStorage.getItem("playerId"));
 
 		// GameState
 		this.gameState = new GameState();
 		this.gameState.addAll(gameObjectCollection.concat(loadedPlayers));
+
+		this.animator = new Animator();
+		this.animator.init(this.anims);
+		this.animator.animateOnce(this.gameState);
 	}
 
 	_initSync() {
-		this.updateLock = new UpdateLock(this.myPlayerId);
+		this.updateLock = new UpdateLock(
+			this.myPlayerId,
+			this.game.config.customConfig.interpolation.ticsPerSnapshot + 1
+		);
 		this.clientSync = new ClientSync(io());
 		let gameViewController = new GameViewController();
 		this.timeline = new Timeline(
@@ -174,8 +179,6 @@ class GameScene extends Phaser.Scene {
 		let myPlayerMatcher = gameObjectMatchers.byId(this.myPlayerId);
 		let staticObstacleMatcher = gameObjectMatchers.byTypes([
 			gameObjectTypes.STATIC_OBSTACLE,
-			gameObjectTypes.STATIC_OBSTACLE_SPRITE,
-			gameObjectTypes.STATIC_OBSTACLE_TILESPRITE,
 		]);
 
 		collisionDetector.onCollisionStart(

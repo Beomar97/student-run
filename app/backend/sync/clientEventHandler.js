@@ -26,7 +26,11 @@ class ClientEventHandler {
 				events.PLAYER_JUMP,
 				this._handlePlayerJumpEvent.bind(this)
 			);
-		});
+		}, ClientEventHandler.name);
+	}
+
+	disconnect() {
+		this.syncController.uncontrol(ClientEventHandler.name);
 	}
 
 	_handleItemEvent(itemEvent) {

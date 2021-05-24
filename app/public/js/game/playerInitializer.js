@@ -60,8 +60,9 @@ class PlayerInitializer {
 			physicalConstant.PLAYER_SPAWN_Y,
 			physicalConstant.PLAYER_SIZE,
 			{
-				frictionAir: physicalConstant.FRICTION_AIR,
-				inertia: Infinity,
+				frictionAir: physicalConstant.PLAYER_FRICTION_AIR,
+				friction: physicalConstant.PLAYER_FRICTION,
+				inertia: physicalConstant.PLAYER_INTERIA,
 			}
 		);
 	}
