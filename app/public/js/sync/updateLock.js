@@ -1,7 +1,8 @@
 class UpdateLock {
-	constructor(objectId) {
+	constructor(objectId, lockOffset) {
 		this.objectId = objectId;
 		this.lockedAtTic = -1;
+		this.lockOffset = lockOffset;
 	}
 
 	lock(tic) {
@@ -11,7 +12,7 @@ class UpdateLock {
 	isLocked(objectId, tic, ticDiff) {
 		return (
 			objectId === this.objectId &&
-			this.lockedAtTic + ticDiff * 1.5 >= tic
+			this.lockedAtTic + ticDiff + this.lockOffset >= tic
 		);
 	}
 }

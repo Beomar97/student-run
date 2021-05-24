@@ -123,7 +123,10 @@ class GameScene extends Phaser.Scene {
 	}
 
 	_initSync() {
-		this.updateLock = new UpdateLock(this.myPlayerId);
+		this.updateLock = new UpdateLock(
+			this.myPlayerId,
+			this.game.config.customConfig.interpolation.ticsPerSnapshot + 1
+		);
 		this.clientSync = new ClientSync(io());
 		let gameViewController = new GameViewController();
 		this.timeline = new Timeline(
