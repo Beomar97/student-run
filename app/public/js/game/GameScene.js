@@ -45,8 +45,11 @@ class GameScene extends Phaser.Scene {
 		this.load.image("star", "assets/items/star.png");
 
 		Skins.getSkins().forEach((skin) => {
-			this.load.spritesheet(skin.name, skin.file, {frameWidth: skin.frameWidth, frameHeight: skin.frameHeight });
-		})
+			this.load.spritesheet(skin.name, skin.file, {
+				frameWidth: skin.frameWidth,
+				frameHeight: skin.frameHeight,
+			});
+		});
 
 		this.load.image("platform", "assets/world/platform.png");
 		this.load.image("platform2", "assets/world/platform2.png");
@@ -106,7 +109,8 @@ class GameScene extends Phaser.Scene {
 		let playerData = this.cache.json.get("playerData");
 		let playerInitializer = new PlayerInitializer(this);
 		let loadedPlayers = playerInitializer.addJSONObjectsToPhaser(
-			playerData
+			playerData,
+			this.game.config.customConfig.skinsEnabled
 		);
 		this.animator = new Animator();
 		this.animator.init(this.anims);

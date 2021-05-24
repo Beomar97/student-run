@@ -1,6 +1,7 @@
 const Player = require("../shared/game/player");
 const physicalConstant = require("../shared/physics/physicalConstant");
 const Skins = require("./skins");
+const playerColors = require("../helper/playerColors");
 
 class PlayerInitializer {
 	constructor(game) {
@@ -9,11 +10,11 @@ class PlayerInitializer {
 		this.matterPlayerCollection = new Map();
 	}
 
-	addJSONObjectsToPhaser(playerData) {
+	addJSONObjectsToPhaser(playerData, skinsEnabled) {
 		let objectCollection = [];
 
 		playerData.forEach((player) => {
-			let phaserPlayer = this._createPhaserPlayer(player);
+			let phaserPlayer = this._createPhaserPlayer(player, skinsEnabled);
 			this.phaserPlayerCollection.set(player.id, phaserPlayer);
 
 			let matterPlayer = this._createMatterPlayer();
@@ -27,23 +28,30 @@ class PlayerInitializer {
 				physicalConstant.BASE_FORCE
 			);
 
-			newPlayer.skin = player.skin
+			newPlayer.skin = player.skin;
 			objectCollection.push(newPlayer);
 		});
 
 		return objectCollection;
 	}
 
-	_createPhaserPlayer(player) {
+	_createPhaserPlayer(player, skinsEnabled) {
 		let skins = new Skins();
-		player.skin = skins.getSkinById(player.id);
+		if (skinsEnabled) {
+			player.skin = skins.getSkinById(player.id);
+		} else {
+			player.skin = skins.getSkinByName("dude");
+		}
 		let phaserPlayer = this.game.add.sprite(
 			physicalConstant.PLAYER_SPAWN_X,
 			physicalConstant.PLAYER_SPAWN_Y,
-			player.skin.name,
+			player.skin.name
 		);
 
-		console.error(phaserPlayer)
+		if (!skinsEnabled) {
+			phaserPlayer.tint = playerColors[player.id % playerColors.length];
+		}
+
 		if (player.skin.name !== "dude") {
 			phaserPlayer.setScale(0.375);
 		}

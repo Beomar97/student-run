@@ -18,6 +18,7 @@ let config = {
 };
 
 let customConfig = {
+	skinsEnabled: false,
 	interpolation: {
 		maxDiff: 15,
 		lowerDistanceDiffThreshold: 2,

@@ -7,17 +7,17 @@ const SKINS = [
 		anims: [
 			{
 				name: "left",
-				frames: { start: 0, end: 3}
+				frames: { start: 0, end: 3 },
 			},
 			{
 				name: "right",
-				frames: { start: 5, end: 8}
+				frames: { start: 5, end: 8 },
 			},
 			{
 				name: "turn",
-				frames: 4
-			}
-		]
+				frames: 4,
+			},
+		],
 	},
 	{
 		name: "snow",
@@ -27,18 +27,17 @@ const SKINS = [
 		anims: [
 			{
 				name: "left",
-				frames: { start: 0, end: 6}
+				frames: { start: 0, end: 6 },
 			},
 			{
 				name: "right",
-				frames: { start: 7, end: 14}
+				frames: { start: 7, end: 14 },
 			},
 			{
 				name: "turn",
-				frames: 7
-			}
-		]
-		
+				frames: 7,
+			},
+		],
 	},
 	{
 		name: "happy",
@@ -48,17 +47,17 @@ const SKINS = [
 		anims: [
 			{
 				name: "left",
-				frames: { start: 0, end: 4}
+				frames: { start: 0, end: 4 },
 			},
 			{
 				name: "right",
-				frames: { start: 6, end: 10}
+				frames: { start: 6, end: 10 },
 			},
 			{
 				name: "turn",
-				frames: 5
-			}
-		]
+				frames: 5,
+			},
+		],
 	},
 	{
 		name: "hat",
@@ -68,17 +67,17 @@ const SKINS = [
 		anims: [
 			{
 				name: "left",
-				frames: { start: 0, end: 1}
+				frames: { start: 0, end: 1 },
 			},
 			{
 				name: "right",
-				frames: { start: 1, end: 2}
+				frames: { start: 1, end: 2 },
 			},
 			{
 				name: "turn",
-				frames: 1
-			}
-		]
+				frames: 1,
+			},
+		],
 	},
 	{
 		name: "fish",
@@ -88,16 +87,17 @@ const SKINS = [
 		anims: [
 			{
 				name: "left",
-				frames: { start: 0, end: 1}
+				frames: { start: 0, end: 1 },
 			},
 			{
 				name: "right",
-				frames: { start: 3, end: 4}},
+				frames: { start: 3, end: 4 },
+			},
 			{
 				name: "turn",
-				frames: 2
-			}
-		]
+				frames: 2,
+			},
+		],
 	},
 	{
 		name: "vortex",
@@ -107,55 +107,63 @@ const SKINS = [
 		anims: [
 			{
 				name: "left",
-				frames: { start: 0, end: 3}
+				frames: { start: 0, end: 3 },
 			},
 			{
 				name: "right",
-				frames: { start: 3, end: 6}
+				frames: { start: 3, end: 6 },
 			},
 			{
 				name: "turn",
-				frames: 3
-			}
-		]
+				frames: 3,
+			},
+		],
 	},
 ];
 
 class Skins {
-    constructor() {
-        
+	constructor() {
 		this.shuffledSkins = this._shuffle(SKINS);
 		this.skinMap = new Map();
 		for (let i = 0; i < SKINS.length; i++) {
-			this.skinMap.set(i, SKINS[i])
+			this.skinMap.set(i, SKINS[i]);
 		}
-    }
+	}
 
-    static getSkins() {
-        return(SKINS)
-    }
+	static getSkins() {
+		return SKINS;
+	}
 
-    getSkinById(id) {
-        return(this.skinMap.get(id))
-    }
+	getSkinById(id) {
+		return this.skinMap.get(id);
+	}
 
-    _shuffle(array) {
-		var currentIndex = array.length, temporaryValue, randomIndex;
-	  
+	getSkinByName(name) {
+		for (let id = 0; id < SKINS.length; id++) {
+			if (this.skinMap.get(id).name === name) {
+				return this.skinMap.get(id);
+			}
+		}
+	}
+
+	_shuffle(array) {
+		var currentIndex = array.length,
+			temporaryValue,
+			randomIndex;
+
 		// While there remain elements to shuffle...
 		while (0 !== currentIndex) {
-	  
-		  // Pick a remaining element...
-		  randomIndex = Math.floor(Math.random() * currentIndex);
-		  currentIndex -= 1;
-	  
-		  // And swap it with the current element.
-		  temporaryValue = array[currentIndex];
-		  array[currentIndex] = array[randomIndex];
-		  array[randomIndex] = temporaryValue;
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// And swap it with the current element.
+			temporaryValue = array[currentIndex];
+			array[currentIndex] = array[randomIndex];
+			array[randomIndex] = temporaryValue;
 		}
-	  
+
 		return array;
-	  }
+	}
 }
 module.exports = Skins;
