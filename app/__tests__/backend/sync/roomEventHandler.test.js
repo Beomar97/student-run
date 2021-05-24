@@ -17,7 +17,8 @@ describe("Test the RoomEventHandler class", () => {
 
 		testee.init();
 		expect(syncController.control).toHaveBeenCalledWith(
-			expect.any(Function)
+			expect.any(Function),
+			RoomEventHandler.name
 		);
 	});
 
