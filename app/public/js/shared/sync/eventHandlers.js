@@ -10,9 +10,11 @@ let eventHandlers = {
 	handleItemEvent: (gameState, itemEvent, deleteInnerObject) => {
 		let player = gameState.getGameObject(itemEvent.playerId);
 		let item = gameState.getGameObject(itemEvent.itemId);
-		player.item = item;
-		deleteInnerObject(item.innerObject);
-		gameState.removeGameObject(item.id);
+		if (player && item) {
+			player.item = item;
+			deleteInnerObject(item.innerObject);
+			gameState.removeGameObject(item.id);
+		}
 	},
 };
 

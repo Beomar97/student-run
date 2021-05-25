@@ -1,3 +1,5 @@
+const gameObjectTypes = require("../shared/game/gameObjectTypes");
+
 class Interpolator {
 	constructor(matter, timeline, math, config) {
 		this.matter = matter;
@@ -89,6 +91,7 @@ class Interpolator {
 		let interpolationPercentage = 1 / oneOrTicDiff;
 
 		if (
+			gameObjectNow.type === gameObjectTypes.PLAYER &&
 			gameObjectNow.direction.x === gameObjectUpdate.direction.x &&
 			gameObjectNow.direction.y === gameObjectUpdate.direction.y
 		) {
