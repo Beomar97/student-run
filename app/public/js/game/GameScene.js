@@ -91,7 +91,7 @@ class GameScene extends Phaser.Scene {
 		this.matter.world.setBounds(
 			0,
 			0,
-			leveldata.wordWidth,
+			leveldata.worldWidth,
 			leveldata.worldHeight
 		);
 		let gameObjectCollection = [];

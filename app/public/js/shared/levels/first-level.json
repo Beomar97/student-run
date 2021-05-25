@@ -2,8 +2,8 @@
 	"id": 2,
 	"name": "First Level",
 	"backgroundUrl": "assets/sky.png",
-	"wordWidth": 5000,
-	"wordHeight": 1000,
+	"worldWidth": 5000,
+	"worldHeight": 2000,
 	"gameObjects": [
 		{
 			"id": 100,
@@ -11,9 +11,9 @@
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
 			"x": 2500,
-			"y": -30,
+			"y": -150,
 			"width": 5000,
-			"height": 60,
+			"height": 200,
 			"isStatic": true
 		},
 		{
@@ -22,7 +22,7 @@
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
 			"x": -30,
-			"y": 250,
+			"y": 450,
 			"width": 60,
 			"height": 625,
 			"isStatic": true
@@ -33,7 +33,7 @@
 			"textureStyle": "tileSprite",
 			"shape": "rectangle",
 			"x": 5000,
-			"y": 250,
+			"y": 450,
 			"width": 60,
 			"height": 625,
 			"isStatic": true
@@ -45,7 +45,7 @@
 			"shape": "rectangle",
 			"texture": "dirt",
 			"x": 2000,
-			"y": 940,
+			"y": 1140,
 			"width": 6000,
 			"height": 500,
 			"isStatic": true
@@ -57,7 +57,7 @@
 			"texture": "flag",
 			"textureStyle": "sprite",
 			"x": 4800,
-			"y": 300,
+			"y": 500,
 			"width": 80,
 			"height": 128,
 			"isStatic": true
@@ -69,7 +69,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": -100,
-			"y": 625,
+			"y": 825,
 			"width": 1800,
 			"height": 150,
 			"isStatic": true
@@ -81,7 +81,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 1250,
-			"y": 625,
+			"y": 825,
 			"width": 300,
 			"height": 150,
 			"isStatic": true
@@ -93,7 +93,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 2100,
-			"y": 625,
+			"y": 825,
 			"width": 800,
 			"height": 150,
 			"isStatic": true
@@ -105,7 +105,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 2875,
-			"y": 625,
+			"y": 825,
 			"width": 150,
 			"height": 150,
 			"isStatic": true
@@ -117,7 +117,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 3325,
-			"y": 625,
+			"y": 825,
 			"width": 150,
 			"height": 150,
 			"isStatic": true
@@ -129,7 +129,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 3900,
-			"y": 625,
+			"y": 825,
 			"width": 400,
 			"height": 150,
 			"isStatic": true
@@ -141,7 +141,7 @@
 			"shape": "rectangle",
 			"texture": "dirt",
 			"x": 5050,
-			"y": 625,
+			"y": 825,
 			"width": 1900,
 			"height": 150,
 			"isStatic": true
@@ -153,7 +153,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 4300,
-			"y": 500,
+			"y": 700,
 			"width": 400,
 			"height": 100,
 			"isStatic": true
@@ -165,7 +165,7 @@
 			"shape": "rectangle",
 			"texture": "dirt",
 			"x": 5250,
-			"y": 500,
+			"y": 700,
 			"width": 1500,
 			"height": 100,
 			"isStatic": true
@@ -177,7 +177,7 @@
 			"shape": "rectangle",
 			"texture": "ground",
 			"x": 5250,
-			"y": 400,
+			"y": 600,
 			"width": 1500,
 			"height": 100,
 			"isStatic": true
@@ -189,7 +189,7 @@
 			"shape": "rectangle",
 			"texture": "platform",
 			"x": 800,
-			"y": 350,
+			"y": 550,
 			"width": 300,
 			"height": 40,
 			"isStatic": true
@@ -201,7 +201,7 @@
 			"shape": "rectangle",
 			"texture": "platform",
 			"x": 1400,
-			"y": 350,
+			"y": 550,
 			"width": 300,
 			"height": 40,
 			"isStatic": true
@@ -213,7 +213,7 @@
 			"shape": "rectangle",
 			"texture": "platform",
 			"x": 2500,
-			"y": 350,
+			"y": 550,
 			"width": 200,
 			"height": 40,
 			"isStatic": true
@@ -225,7 +225,7 @@
 			"shape": "rectangle",
 			"texture": "platform",
 			"x": 2900,
-			"y": 350,
+			"y": 550,
 			"width": 400,
 			"height": 40,
 			"isStatic": true
@@ -237,7 +237,7 @@
 			"shape": "rectangle",
 			"texture": "platform",
 			"x": 3450,
-			"y": 350,
+			"y": 550,
 			"width": 200,
 			"height": 40,
 			"isStatic": true
@@ -249,7 +249,7 @@
 			"shape": "rectangle",
 			"texture": "platform2",
 			"x": 1800,
-			"y": 175,
+			"y": 375,
 			"width": 150,
 			"height": 40,
 			"isStatic": true
@@ -261,7 +261,7 @@
 			"shape": "rectangle",
 			"texture": "platform2",
 			"x": 3800,
-			"y": 175,
+			"y": 375,
 			"width": 150,
 			"height": 40,
 			"isStatic": true
@@ -273,7 +273,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 800,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "star"
@@ -285,7 +285,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 1200,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "lightning"
@@ -297,7 +297,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 1800,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "battery"
@@ -309,7 +309,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 2970,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "star"
@@ -321,7 +321,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 3320,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "lightning"
@@ -333,7 +333,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 3815,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "battery"
@@ -345,7 +345,7 @@
 			"textureStyle": "sprite",
 			"fillColor": "0xfbd000",
 			"x": 4600,
-			"y": 150,
+			"y": 350,
 			"radius": 20,
 			"isStatic": false,
 			"texture": "star"
@@ -358,7 +358,7 @@
 			"texture": "signpost",
 			"scale": 0.8,
 			"x": 400,
-			"y": 505
+			"y": 705
 		},
 		{
 			"id": 2001,
@@ -366,7 +366,7 @@
 			"texture": "stone",
 			"scale": 0.3,
 			"x": 1340,
-			"y": 540
+			"y": 740
 		},
 		{
 			"id": 2002,
@@ -374,7 +374,7 @@
 			"texture": "tree",
 			"scale": 0.6,
 			"x": 2150,
-			"y": 410
+			"y": 610
 		},
 		{
 			"id": 2003,
@@ -382,7 +382,7 @@
 			"texture": "stone",
 			"scale": 0.4,
 			"x": 2200,
-			"y": 536
+			"y": 736
 		},
 		{
 			"id": 2004,
@@ -390,7 +390,7 @@
 			"texture": "rope_railing",
 			"scale": 0.25,
 			"x": 2874,
-			"y": 538
+			"y": 738
 		},
 		{
 			"id": 2005,
@@ -398,7 +398,7 @@
 			"texture": "rope_railing",
 			"scale": 0.25,
 			"x": 3324,
-			"y": 538
+			"y": 738
 		},
 		{
 			"id": 2006,
@@ -406,7 +406,7 @@
 			"texture": "signpost",
 			"scale": 0.8,
 			"x": 3980,
-			"y": 505
+			"y": 705
 		},
 		{
 			"id": 2007,
@@ -414,7 +414,7 @@
 			"texture": "tree",
 			"scale": 0.6,
 			"x": 1400,
-			"y": 190
+			"y": 390
 		},
 		{
 			"id": 2008,
@@ -422,7 +422,7 @@
 			"texture": "wood_railing",
 			"scale": 0.6,
 			"x": 2900,
-			"y": 302
+			"y": 502
 		},
 		{
 			"id": 2009,
@@ -430,7 +430,7 @@
 			"texture": "signpost",
 			"scale": 0.8,
 			"x": 1800,
-			"y": 110
+			"y": 310
 		},
 		{
 			"id": 2010,
@@ -438,7 +438,7 @@
 			"texture": "tree",
 			"scale": 0.4,
 			"x": 3800,
-			"y": 65
+			"y": 265
 		}
 	]
 }

@@ -2,8 +2,8 @@
 	"id": 1,
 	"name": "Dummy Level",
 	"backgroundUrl": "assets/dummy.png",
-	"wordWidth": 1000,
-	"wordHeight": 700,
+	"worldWidth": 1000,
+	"worldHeight": 700,
 	"gameObjects": [
 		{
 			"id": 1000,

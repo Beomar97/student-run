@@ -2,8 +2,8 @@
 	"id": 0,
 	"name": "Demo Level",
 	"backgroundUrl": "assets/sky.png",
-	"wordWidth": 3000,
-	"wordHeight": 700,
+	"worldWidth": 3000,
+	"worldHeight": 700,
 	"gameObjects": [
 		{
 			"id": 1000,
