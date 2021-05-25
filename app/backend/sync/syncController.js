@@ -1,7 +1,6 @@
 const ServerSync = require("./serverSync");
 const events = require("../../public/js/shared/sync/events");
 const logger = require("../logger");
-const id = require("../util/id");
 
 class SyncController {
 	constructor(io) {

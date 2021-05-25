@@ -7,7 +7,7 @@ class BoostItem extends Item {
 	}
 
 	applyToPlayer(player) {
-		player.innerObject.positionImpulse.x = 200;
+		player.innerObject.positionImpulse.x = 100;
 		player.innerObject.positionImpulse.y = -20;
 	}
 }
