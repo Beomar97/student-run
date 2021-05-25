@@ -34,6 +34,6 @@ describe("Test the ItemAction class", () => {
 		let testee = new ItemAction(physics);
 		testee.run(gameState);
 
-		expect(player.innerObject.positionImpulse).toEqual({ x: 200, y: -20 });
+		expect(player.innerObject.positionImpulse).toEqual({ x: 100, y: -20 });
 	});
 });

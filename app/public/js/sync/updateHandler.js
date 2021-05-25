@@ -73,12 +73,17 @@ class UpdateHandler {
 					this.gameState.tic - gameStateUpdate.tic
 				)
 			) {
-				this.interpolator.interpolate(
-					this.gameState.getGameObject(gameObjectUpdate.id),
-					gameObjectUpdate,
-					this.gameState.tic,
-					gameStateUpdate.tic
+				let gameObjectNow = this.gameState.getGameObject(
+					gameObjectUpdate.id
 				);
+				if (gameObjectNow) {
+					this.interpolator.interpolate(
+						gameObjectNow,
+						gameObjectUpdate,
+						this.gameState.tic,
+						gameStateUpdate.tic
+					);
+				}
 			}
 		});
 	}

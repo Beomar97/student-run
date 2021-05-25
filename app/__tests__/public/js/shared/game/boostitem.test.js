@@ -4,7 +4,7 @@ const gameObjectTypes = require("../../../../../public/js/shared/game/gameObject
 
 beforeEach(() => {
 	player = new Player(0, {}, 0.005);
-    boostItem = new BoostItem(0, {});
+	boostItem = new BoostItem(0, {});
 });
 
 describe("Test the boostItem class", () => {
@@ -12,7 +12,7 @@ describe("Test the boostItem class", () => {
 		player.innerObject.positionImpulse = {};
 		boostItem.applyToPlayer(player);
 
-		expect(player.innerObject.positionImpulse.x).toStrictEqual(200);
+		expect(player.innerObject.positionImpulse.x).toStrictEqual(100);
 		expect(player.innerObject.positionImpulse.y).toStrictEqual(-20);
 	});
 });
