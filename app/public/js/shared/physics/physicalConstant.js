@@ -5,7 +5,7 @@ const physicalConstant = {
 	PLAYER_FRICTION_AIR: 0.1,
 	PLAYER_FRICTION: 0,
 	PLAYER_INTERIA: Infinity,
-	BASE_FORCE: 0.003,
+	BASE_FORCE: 0.002,
 	PLAYER_JUMP_DENSITY: 40,
 };
 
